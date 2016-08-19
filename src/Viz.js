@@ -1,19 +1,13 @@
-import {color as d3Color} from "d3-color";
-import {nest as d3Nest} from "d3-collection";
-import {mouse as d3Mouse, select as d3Select} from "d3-selection";
+import {color} from "d3-color";
+import {nest} from "d3-collection";
+import {mouse, select} from "d3-selection";
 import {transition} from "d3-transition";
-const d3 = {
-  color: d3Color,
-  mouse: d3Mouse,
-  nest: d3Nest,
-  select: d3Select
-};
 
 import {assign} from "d3plus-color";
 import {accessor, BaseClass, constant, elem, merge} from "d3plus-common";
 import {Legend} from "d3plus-legend";
-import {tooltip} from "d3plus-tooltip";
 import {TextBox} from "d3plus-text";
+import {tooltip} from "d3plus-tooltip";
 
 import {default as colorNest} from "./colorNest";
 import {default as getSize} from "./getSize";
@@ -33,6 +27,7 @@ export default class Viz extends BaseClass {
         if (this._history.length) this.config(this._history.pop()).render();
         else this.depth(this._drawDepth - 1).filter(false).render();
       });
+    this._data = [];
     this._duration = 600;
     this._history = [];
     this._groupBy = [accessor("id")];
@@ -77,7 +72,7 @@ export default class Viz extends BaseClass {
         if (this._tooltip) {
           this._tooltipClass.data([d])
             .footer(this._drawDepth < this._groupBy.length - 1 ? "Click to Expand" : "")
-            .translate(d3.mouse(d3.select("html").node()))
+            .translate(mouse(select("html").node()))
             ();
         }
 
@@ -91,7 +86,7 @@ export default class Viz extends BaseClass {
         if (this._tooltip) {
           this._tooltipClass
             .duration(0)
-            .translate(d3.mouse(d3.select("html").node()))
+            .translate(mouse(select("html").node()))
             ().duration(dd);
         }
 
@@ -109,7 +104,7 @@ export default class Viz extends BaseClass {
     this._shapeConfig = {
       fill: (d, i) => assign(this._id(d, i)),
       opacity: (d, i) => this._highlight ? this._highlight(d, i) ? 1 : 0.25 : 1,
-      stroke: (d, i) => d3.color(assign(this._id(d, i))).darker(),
+      stroke: (d, i) => color(assign(this._id(d, i))).darker(),
       strokeWidth: (d, i) => this._highlight ? this._highlight(d, i) ? 1 : 0 : 0
     };
     this._tooltip = {};
@@ -129,9 +124,9 @@ export default class Viz extends BaseClass {
 
     // Appends a fullscreen SVG to the BODY if a container has not been provided through .select().
     if (this._select === void 0) {
-      const [w, h] = getSize(d3.select("body").node());
+      const [w, h] = getSize(select("body").node());
       this.width(w).height(h);
-      this.select(d3.select("body").append("svg").style("width", `${w}px`).style("height", `${h}px`).style("display", "block").node());
+      this.select(select("body").append("svg").style("width", `${w}px`).style("height", `${h}px`).style("display", "block").node());
     }
 
     // Calculates the width and/or height of the Viz based on the this._select, if either has not been defined.
@@ -157,9 +152,11 @@ export default class Viz extends BaseClass {
     };
 
     this._filteredData = [];
-    const nest = d3.nest().rollup(leaves => this._filteredData.push(merge(leaves)));
-    for (let i = 0; i <= this._drawDepth; i++) nest.key(this._groupBy[i]);
-    nest.entries(this._filter ? this._data.filter(this._filter) : this._data);
+    if (this._data.length) {
+      const dataNest = nest().rollup(leaves => this._filteredData.push(merge(leaves)));
+      for (let i = 0; i <= this._drawDepth; i++) dataNest.key(this._groupBy[i]);
+      dataNest.entries(this._filter ? this._data.filter(this._filter) : this._data);
+    }
 
     // Manages visualization legend group
     const legendGroup = elem("g.d3plus-plot-legend", {
@@ -328,7 +325,7 @@ new Plot
       @param {String|HTMLElement} [*selector*]
   */
   select(_) {
-    return arguments.length ? (this._select = d3.select(_), this) : this._select;
+    return arguments.length ? (this._select = select(_), this) : this._select;
   }
 
   /**
