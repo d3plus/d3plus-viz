@@ -1,0 +1,45 @@
+{
+  "name": "d3plus-viz",
+  "version": "0.1.0",
+  "description": "Abstract ES6 class that drives d3plus visualizations.",
+  "main": "build/d3plus-viz.js",
+  "jsnext:main": "index",
+  "license": "MIT",
+  "homepage": "https://d3plus.org",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/d3plus/d3plus-viz.git"
+  },
+  "keywords": [
+    "viz",
+    "d3",
+    "d3plus",
+    "data",
+    "visualization"
+  ],
+  "author": {
+    "name": "Dave Landry",
+    "email": "landry.dave@gmail.com",
+    "url": "http://www.dave-landry.com"
+  },
+  "dependencies": {
+    "d3-array": "^1.0.1",
+    "d3-collection": "^1.0.1",
+    "d3-color": "^1.0.1",
+    "d3-selection": "^1.0.2",
+    "d3-transition": "^1.0.1",
+    "d3plus-color": "^0.5.1",
+    "d3plus-common": "^0.5.7",
+    "d3plus-legend": "^0.5.1",
+    "d3plus-text": "^0.9.3",
+    "d3plus-tooltip": "^0.1.2"
+  },
+  "scripts": {
+    "dev": "d3plus-dev",
+    "docs": "d3plus-docs",
+    "env": "d3plus-env",
+    "examples": "d3plus-examples",
+    "release": "d3plus-release",
+    "test": "d3plus-test"
+  }
+}
