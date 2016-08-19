@@ -40,6 +40,7 @@ function elementSize(element, s) {
     @function getSize
     @desc Finds the available width and height for a specified HTMLElement, traversing it's parents until it finds something with constrained dimensions. Falls back to the inner dimensions of the browser window if none is found.
     @param {HTMLElement} elem The HTMLElement to find dimensions for.
+    @private
 */
 export default function(elem) {
   return [elementSize(elem, "width"), elementSize(elem, "height")];
