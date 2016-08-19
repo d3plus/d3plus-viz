@@ -17,21 +17,6 @@ If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest releas
 
 
 ## API Reference
-### Classes
-
-<dl>
-<dt><a href="#Viz">Viz</a></dt>
-<dd></dd>
-</dl>
-
-### Functions
-
-<dl>
-<dt><a href="#getSize">getSize(elem)</a></dt>
-<dd><p>Finds the available width and height for a specified HTMLElement, traversing it&#39;s parents until it finds something with constrained dimensions. Falls back to the inner dimensions of the browser window if none is found.</p>
-</dd>
-</dl>
-
 <a name="Viz"></a>
 
 ### Viz
@@ -254,17 +239,6 @@ If *value* is specified, sets the overallwidth to the specified number and retur
 | --- | --- | --- |
 | [*value*] | <code>Number</code> | <code>window.innerWidth</code> | 
 
-<a name="getSize"></a>
-
-### getSize(elem)
-Finds the available width and height for a specified HTMLElement, traversing it's parents until it finds something with constrained dimensions. Falls back to the inner dimensions of the browser window if none is found.
-
-**Kind**: global function  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| elem | <code>HTMLElement</code> | The HTMLElement to find dimensions for. |
 
 
-
-###### <sub>Documentation generated on Fri, 19 Aug 2016 02:02:13 GMT</sub>
+###### <sub>Documentation generated on Fri, 19 Aug 2016 02:38:21 GMT</sub>
