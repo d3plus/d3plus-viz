@@ -192,7 +192,7 @@ export default class Viz extends BaseClass {
         .config(this._legend.constructor === Object ? this._legend : {})
         .render();
 
-      this._margin.bottom = this._legendClass.outerBounds().height + this._legendClass.padding() * 4;
+      this._margin.bottom = this._legendClass.outerBounds().height + this._legendClass.padding() * 2;
 
     }
 
