@@ -210,6 +210,14 @@ export default class Viz extends BaseClass {
 
     if (callback) setTimeout(callback, this._duration + 100);
 
+    // Draws a rectangle showing the available space for a visualization.
+    // const tester = this._select.selectAll(".tester").data([0]);
+    // tester.enter().append("rect").attr("fill", "#ccc").merge(tester)
+    //   .attr("width", this._width - this._margin.left - this._margin.right)
+    //   .attr("height", this._height - this._margin.top - this._margin.bottom)
+    //   .attr("x", this._margin.left)
+    //   .attr("y", this._margin.top);
+
     return this;
 
   }
