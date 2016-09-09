@@ -12,7 +12,7 @@ Abstract ES6 class that drives d3plus visualizations.
 If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest release](https://github.com/d3plus/d3plus-viz/releases/latest). The released bundle supports AMD, CommonJS, and vanilla environments. Create a [custom bundle using Rollup](https://github.com/rollup/rollup) or your preferred bundler. You can also load directly from [d3plus.org](https://d3plus.org):
 
 ```html
-<script src="https://d3plus.org/js/d3plus-viz.v0.1.full.min.js"></script>
+<script src="https://d3plus.org/js/d3plus-viz.v0.2.full.min.js"></script>
 ```
 
 
@@ -37,6 +37,9 @@ If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest releas
     * [.select([*selector*])](#Viz.select)
     * [.shape([*value*])](#Viz.shape)
     * [.shapeConfig([*value*])](#Viz.shapeConfig)
+    * [.time([*value*])](#Viz.time)
+    * [.timeFilter([*value*])](#Viz.timeFilter)
+    * [.timeline([*value*])](#Viz.timeline)
     * [.tooltip([*value*])](#Viz.tooltip)
     * [.update([*ms*])](#Viz.update)
     * [.width([*value*])](#Viz.width)
@@ -206,6 +209,39 @@ If *value* is specified, sets the config method for each shape and returns the c
 | --- | --- |
 | [*value*] | <code>Object</code> | 
 
+<a name="Viz.time"></a>
+
+#### Viz.time([*value*])
+If *value* is specified, sets the time accessor to the specified function or string and returns the current class instance. If *value* is not specified, returns the current time accessor. The time values that are returned should be valid Date objects, 4-digit year values, or strings that can be parsed into javascript Date objects (click [here](http://dygraphs.com/date-formats.html) for valid string formats).
+
+**Kind**: static method of <code>[Viz](#Viz)</code>  
+
+| Param | Type |
+| --- | --- |
+| [*value*] | <code>function</code> &#124; <code>String</code> | 
+
+<a name="Viz.timeFilter"></a>
+
+#### Viz.timeFilter([*value*])
+If *value* is specified, sets the time filter to the specified function and returns the current class instance. If *value* is not specified, returns the current time filter.
+
+**Kind**: static method of <code>[Viz](#Viz)</code>  
+
+| Param | Type |
+| --- | --- |
+| [*value*] | <code>function</code> | 
+
+<a name="Viz.timeline"></a>
+
+#### Viz.timeline([*value*])
+If *value* is specified, toggles the timeline based on the specified boolean and returns the current class instance. If *value* is an object, then it is passed to the timeline's config method. If *value* is not specified, returns the current value.
+
+**Kind**: static method of <code>[Viz](#Viz)</code>  
+
+| Param | Type | Default |
+| --- | --- | --- |
+| [*value*] | <code>Boolean</code> &#124; <code>Object</code> | <code>true</code> | 
+
 <a name="Viz.tooltip"></a>
 
 #### Viz.tooltip([*value*])
@@ -241,4 +277,4 @@ If *value* is specified, sets the overallwidth to the specified number and retur
 
 
 
-###### <sub>Documentation generated on Fri, 19 Aug 2016 02:38:21 GMT</sub>
+###### <sub>Documentation generated on Fri, 09 Sep 2016 18:11:28 GMT</sub>
