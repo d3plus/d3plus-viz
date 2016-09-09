@@ -1,3 +1,4 @@
+import {extent, merge as arrayMerge} from "d3-array";
 import {color} from "d3-color";
 import {nest} from "d3-collection";
 import {mouse, select} from "d3-selection";
@@ -7,6 +8,7 @@ import {assign} from "d3plus-color";
 import {accessor, BaseClass, constant, elem, merge} from "d3plus-common";
 import {Legend} from "d3plus-legend";
 import {TextBox} from "d3plus-text";
+import {Timeline} from "d3plus-timeline";
 import {tooltip} from "d3plus-tooltip";
 
 import {default as colorNest} from "./colorNest";
@@ -107,9 +109,28 @@ export default class Viz extends BaseClass {
       stroke: (d, i) => color(assign(this._id(d, i))).darker(),
       strokeWidth: (d, i) => this._highlight ? this._highlight(d, i) ? 1 : 0 : 0
     };
+    this._timeline = {};
+    this._timelineClass = new Timeline();
     this._tooltip = {};
     this._tooltipClass = tooltip().pointerEvents("none");
 
+  }
+
+  /**
+      @memberof Viz
+      @desc Manages the SVG group for a UI element.
+      @param {String} type
+      @private
+  */
+  _uiGroup(type, condition = true) {
+    return elem(`g.d3plus-plot-${type}`, {
+      condition,
+      enter: {transform: `translate(0, ${this._height / 2})`},
+      exit: {opacity: 0},
+      parent: this._select,
+      transition: this._transition,
+      update: {opacity: 1, transform: `translate(0, ${this._height / 2})`}
+    });
   }
 
   /**
@@ -153,22 +174,54 @@ export default class Viz extends BaseClass {
 
     this._filteredData = [];
     if (this._data.length) {
-      const dataNest = nest().rollup(leaves => this._filteredData.push(merge(leaves)));
+      const aggs = {};
+      if (this._timeKey) {
+        aggs[this._timeKey] = a => {
+          const v = Array.from(new Set(a));
+          return v.length === 1 ? v[0] : v;
+        };
+      }
+      const dataNest = nest().rollup(leaves => this._filteredData.push(merge(leaves, aggs)));
       for (let i = 0; i <= this._drawDepth; i++) dataNest.key(this._groupBy[i]);
-      dataNest.entries(this._filter ? this._data.filter(this._filter) : this._data);
+      const data = this._timeFilter ? this._data.filter(this._timeFilter) : this._data;
+      dataNest.entries(this._filter ? data.filter(this._filter) : data);
     }
 
-    // Manages visualization legend group
-    const legendGroup = elem("g.d3plus-plot-legend", {
-      condition: this._legend,
-      enter: {transform: `translate(0,${this._height / 2})`},
-      exit: {opacity: 0},
-      parent: this._select,
-      transition: this._transition,
-      update: {opacity: 1, transform: `translate(0,${this._height / 2})`}
-    });
+    // Renders the timeline if this._time and this._timeline is not falsy.
+    const timelineGroup = this._uiGroup("timeline", this._time && this._timeline);
+    if (this._time && this._timeline) {
+
+      const ticks = Array.from(new Set(this._data.map(this._time)))
+        .map(this._timelineClass._parseDate);
+
+      let selection = extent(Array.from(new Set(arrayMerge(this._filteredData.map(d => {
+        const t = this._time(d);
+        return t instanceof Array ? t : [t];
+      })))).map(this._timelineClass._parseDate));
+      if (selection.length === 1) selection = selection[0];
+
+      const timeline = this._timelineClass
+        .align("end")
+        .domain(extent(ticks))
+        .duration(this._duration)
+        .height(this._height / 2 - this._margin.bottom)
+        .on("end", s => {
+          if (!(s instanceof Array)) s = [s];
+          this.timeFilter(d => s.map(Number).includes(timeline._parseDate(this._time(d)).getTime())).render();
+        })
+        .select(timelineGroup.node())
+        .selection(selection)
+        .ticks(ticks)
+        .width(this._width)
+        .config(this._timeline.constructor === Object ? this._timeline : {})
+        .render();
+
+      this._margin.bottom += timeline.outerBounds().height + timeline.padding() * 2;
+
+    }
 
     // Renders the legend if this._legend is not falsy.
+    const legendGroup = this._uiGroup("legend", this._legend);
     if (this._legend) {
 
       const legend = colorNest(this._filteredData, this._shapeConfig.fill, this._groupBy);
@@ -177,7 +230,7 @@ export default class Viz extends BaseClass {
         .id((d, i) => legend.id(d, i))
         .duration(this._duration)
         .data(legend.data)
-        .height(this._height / 2)
+        .height(this._height / 2 - this._margin.bottom)
         .label(this._drawLabel)
         .select(legendGroup.node())
         .verticalAlign("bottom")
@@ -192,7 +245,7 @@ export default class Viz extends BaseClass {
         .config(this._legend.constructor === Object ? this._legend : {})
         .render();
 
-      this._margin.bottom = this._legendClass.outerBounds().height + this._legendClass.padding() * 2;
+      this._margin.bottom += this._legendClass.outerBounds().height + this._legendClass.padding() * 2;
 
     }
 
@@ -352,6 +405,44 @@ new Plot
   */
   shapeConfig(_) {
     return arguments.length ? (this._shapeConfig = Object.assign(this._shapeConfig, _), this) : this._shapeConfig;
+  }
+
+  /**
+      @memberof Viz
+      @desc If *value* is specified, sets the time accessor to the specified function or string and returns the current class instance. If *value* is not specified, returns the current time accessor. The time values that are returned should be valid Date objects, 4-digit year values, or strings that can be parsed into javascript Date objects (click [here](http://dygraphs.com/date-formats.html) for valid string formats).
+      @param {Function|String} [*value*]
+  */
+  time(_) {
+    if (arguments.length) {
+      if (typeof _ === "function") {
+        this._time = _;
+        this._timeKey = undefined;
+      }
+      else {
+        this._time = accessor(_);
+        this._timeKey = _;
+      }
+      return this;
+    }
+    else return this._timeKey || this._time;
+  }
+
+  /**
+      @memberof Viz
+      @desc If *value* is specified, sets the time filter to the specified function and returns the current class instance. If *value* is not specified, returns the current time filter.
+      @param {Function} [*value*]
+  */
+  timeFilter(_) {
+    return arguments.length ? (this._timeFilter = _, this) : this._timeFilter;
+  }
+
+  /**
+      @memberof Viz
+      @desc If *value* is specified, toggles the timeline based on the specified boolean and returns the current class instance. If *value* is an object, then it is passed to the timeline's config method. If *value* is not specified, returns the current value.
+      @param {Boolean|Object} [*value* = true]
+  */
+  timeline(_) {
+    return arguments.length ? (this._timeline = _, this) : this._timeline;
   }
 
   /**
