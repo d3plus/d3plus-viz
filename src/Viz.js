@@ -336,9 +336,7 @@ function value(d) {
     this._select.selectAll(".d3plus-Shape")
       .style(`${prefix()}transition`, `opacity ${this._tooltipClass.duration() / 1000}s`)
       .style("opacity", function() {
-        const id = this.className.baseVal.split(" ")
-          .filter(c => c.indexOf("d3plus-id-") === 0)[0]
-          .split("-")[2];
+        const id = this.className.baseVal.split(" ").filter(c => c.indexOf("d3plus-id-") === 0)[0].slice(10);
         return ids.length === 0 || ids.includes(id) ? 1 : 0.25;
       });
     return this;
