@@ -30,7 +30,7 @@ If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest releas
     * [.filter([*value*])](#Viz.filter)
     * [.groupBy([*value*])](#Viz.groupBy)
     * [.height([*value*])](#Viz.height)
-    * [.highlight([*value*])](#Viz.highlight)
+    * [.highlight([*data*])](#Viz.highlight)
     * [.label([*value*])](#Viz.label)
     * [.legend([*value*])](#Viz.legend)
     * [.on([*typenames*], [*listener*])](#Viz.on)
@@ -41,7 +41,6 @@ If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest releas
     * [.timeFilter([*value*])](#Viz.timeFilter)
     * [.timeline([*value*])](#Viz.timeline)
     * [.tooltip([*value*])](#Viz.tooltip)
-    * [.update([*ms*])](#Viz.update)
     * [.width([*value*])](#Viz.width)
 
 <a name="new_Viz_new"></a>
@@ -123,14 +122,14 @@ If *value* is specified, sets the overallheight to the specified number and retu
 
 <a name="Viz.highlight"></a>
 
-#### Viz.highlight([*value*])
-If *value* is specified, sets the highlight filter to the specified function and returns the current class instance. If *value* is not specified, returns the current highlight filter. When the highlight function returns true given a data point, the highlight styles will be used.
+#### Viz.highlight([*data*])
+Highlights elements elements based on supplied data.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
 
-| Param | Type | Default |
-| --- | --- | --- |
-| [*value*] | <code>function</code> | <code>false</code> | 
+| Param | Type |
+| --- | --- |
+| [*data*] | <code>Array</code> &#124; <code>Object</code> | 
 
 <a name="Viz.label"></a>
 
@@ -253,17 +252,6 @@ If *value* is specified, toggles the tooltip based on the specified boolean and 
 | --- | --- | --- |
 | [*value*] | <code>Boolean</code> &#124; <code>Object</code> | <code>true</code> | 
 
-<a name="Viz.update"></a>
-
-#### Viz.update([*ms*])
-If *ms* is specified, all shapes will redraw using the specified duration and return this generator. If *ms* is not specified, shapes will redraw instantly. This method is useful when only needing to change visual styles (and not data), like when setting custom [mouse events](#Plot.on).
-
-**Kind**: static method of <code>[Viz](#Viz)</code>  
-
-| Param | Type | Default |
-| --- | --- | --- |
-| [*ms*] | <code>Number</code> | <code>0</code> | 
-
 <a name="Viz.width"></a>
 
 #### Viz.width([*value*])
@@ -277,4 +265,4 @@ If *value* is specified, sets the overallwidth to the specified number and retur
 
 
 
-###### <sub>Documentation generated on Fri, 09 Sep 2016 18:11:28 GMT</sub>
+###### <sub>Documentation generated on Fri, 09 Sep 2016 23:02:33 GMT</sub>
