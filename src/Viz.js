@@ -94,11 +94,9 @@ export default class Viz extends BaseClass {
     this._shapes = [];
     this._shapeConfig = {
       fill: (d, i) => assign(this._id(d, i)),
-      opacity: 1,
-      // opacity: (d, i) => this._highlight ? this._highlight(d, i) ? 1 : 0.25 : 1,
+      opacity: constant(1),
       stroke: (d, i) => color(assign(this._id(d, i))).darker(),
-      strokeWidth: 0
-      // strokeWidth: (d, i) => this._highlight ? this._highlight(d, i) ? 1 : 0 : 0
+      strokeWidth: constant(0)
     };
     this._timeline = {};
     this._timelineClass = new Timeline();
