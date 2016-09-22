@@ -172,6 +172,7 @@ export default class Viz extends BaseClass {
       }
       const dataNest = nest().rollup(leaves => this._filteredData.push(merge(leaves, aggs)));
       for (let i = 0; i <= this._drawDepth; i++) dataNest.key(this._groupBy[i]);
+      if (this._discrete) dataNest.key(this[`_${this._discrete}`]);
       const data = this._timeFilter ? this._data.filter(this._timeFilter) : this._data;
       dataNest.entries(this._filter ? data.filter(this._filter) : data);
     }
@@ -280,6 +281,15 @@ export default class Viz extends BaseClass {
   */
   depth(_) {
     return arguments.length ? (this._depth = _, this) : this._depth;
+  }
+
+  /**
+      @memberof Viz
+      @desc If *value* is specified, sets the discrete accessor to the specified method name (usually an axis) and returns the current class instance. If *value* is not specified, returns the current discrete method.
+      @param {String} [*value*]
+  */
+  discrete(_) {
+    return arguments.length ? (this._discrete = _, this) : this._discrete;
   }
 
   /**
