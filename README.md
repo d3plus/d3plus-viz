@@ -26,6 +26,7 @@ If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest releas
     * [new Viz()](#new_Viz_new)
     * [.data([*data*])](#Viz.data)
     * [.depth([*value*])](#Viz.depth)
+    * [.discrete([*value*])](#Viz.discrete)
     * [.duration([*ms*])](#Viz.duration)
     * [.filter([*value*])](#Viz.filter)
     * [.groupBy([*value*])](#Viz.groupBy)
@@ -69,6 +70,17 @@ If *value* is specified, sets the depth to the specified number and returns the 
 | Param | Type |
 | --- | --- |
 | [*value*] | <code>Number</code> | 
+
+<a name="Viz.discrete"></a>
+
+#### Viz.discrete([*value*])
+If *value* is specified, sets the discrete accessor to the specified method name (usually an axis) and returns the current class instance. If *value* is not specified, returns the current discrete method.
+
+**Kind**: static method of <code>[Viz](#Viz)</code>  
+
+| Param | Type |
+| --- | --- |
+| [*value*] | <code>String</code> | 
 
 <a name="Viz.duration"></a>
 
@@ -265,4 +277,4 @@ If *value* is specified, sets the overallwidth to the specified number and retur
 
 
 
-###### <sub>Documentation generated on Fri, 16 Sep 2016 17:17:20 GMT</sub>
+###### <sub>Documentation generated on Thu, 22 Sep 2016 22:25:11 GMT</sub>
