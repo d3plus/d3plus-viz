@@ -133,10 +133,14 @@ export default class Viz extends BaseClass {
     this._transition = transition().duration(this._duration);
 
     // Appends a fullscreen SVG to the BODY if a container has not been provided through .select().
-    if (this._select === void 0) {
-      const [w, h] = getSize(select("body").node());
-      this.width(w).height(h);
-      this.select(select("body").append("svg").style("width", `${w}px`).style("height", `${h}px`).style("display", "block").node());
+    if (this._select === void 0 || this._select.node().tagName.toLowerCase() !== "svg") {
+      const parent = this._select === void 0 ? select("body") : this._select;
+      let [w, h] = getSize(parent.node());
+      if (!this._width) this.width(w);
+      if (!this._height) this.height(h);
+      w = this._width;
+      h = this._height;
+      this.select(parent.append("svg").style("width", `${w}px`).style("height", `${h}px`).style("display", "block").node());
     }
 
     // Calculates the width and/or height of the Viz based on the this._select, if either has not been defined.
