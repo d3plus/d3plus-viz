@@ -277,4 +277,4 @@ If *value* is specified, sets the overallwidth to the specified number and retur
 
 
 
-###### <sub>Documentation generated on Thu, 22 Sep 2016 22:25:11 GMT</sub>
+###### <sub>Documentation generated on Tue, 04 Oct 2016 21:02:46 GMT</sub>
