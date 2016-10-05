@@ -4,6 +4,7 @@ import {nest} from "d3-collection";
 import {mouse, select} from "d3-selection";
 import {transition} from "d3-transition";
 
+import {date} from "d3plus-axis";
 import {assign} from "d3plus-color";
 import {accessor, BaseClass, constant, elem, merge, prefix} from "d3plus-common";
 import {Legend} from "d3plus-legend";
@@ -185,13 +186,12 @@ export default class Viz extends BaseClass {
     const timelineGroup = this._uiGroup("timeline", this._time && this._timeline);
     if (this._time && this._timeline) {
 
-      const ticks = Array.from(new Set(this._data.map(this._time)))
-        .map(this._timelineClass._parseDate);
+      const ticks = Array.from(new Set(this._data.map(this._time))).map(date);
 
       let selection = extent(Array.from(new Set(arrayMerge(this._filteredData.map(d => {
         const t = this._time(d);
         return t instanceof Array ? t : [t];
-      })))).map(this._timelineClass._parseDate));
+      })))).map(date));
       if (selection.length === 1) selection = selection[0];
 
       const timeline = this._timelineClass
@@ -201,7 +201,7 @@ export default class Viz extends BaseClass {
         .height(this._height / 2 - this._margin.bottom)
         .on("end", s => {
           if (!(s instanceof Array)) s = [s];
-          this.timeFilter(d => s.map(Number).includes(timeline._parseDate(this._time(d)).getTime())).render();
+          this.timeFilter(d => s.map(Number).includes(date(this._time(d)).getTime())).render();
         })
         .select(timelineGroup.node())
         .selection(selection)
