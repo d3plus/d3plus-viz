@@ -210,8 +210,12 @@ export default class Viz extends BaseClass {
         .duration(this._duration)
         .height(this._height / 2 - this._margin.bottom)
         .on("end", s => {
-          if (!(s instanceof Array)) s = [s];
-          this.timeFilter(d => s.map(Number).includes(date(this._time(d)).getTime())).render();
+          if (!(s instanceof Array)) s = [s, s];
+          s = s.map(Number);
+          this.timeFilter(d => {
+            const ms = date(this._time(d)).getTime();
+            return ms >= s[0] && ms <= s[1];
+          }).render();
         })
         .select(timelineGroup.node())
         .selection(selection)
