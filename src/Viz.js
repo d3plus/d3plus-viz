@@ -34,7 +34,11 @@ export default class Viz extends BaseClass {
     this._duration = 600;
     this._history = [];
     this._groupBy = [accessor("id")];
-    this._legend = {};
+    this._legend = {
+      shapeConfig: {
+        fontResize: false
+      }
+    };
     this._legendClass = new Legend();
     this._on = {
       click: (d, i) => {
