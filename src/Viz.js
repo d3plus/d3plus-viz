@@ -21,6 +21,11 @@ import {default as getSize} from "./getSize";
 */
 export default class Viz extends BaseClass {
 
+  /**
+      @memberof Viz
+      @desc Invoked when creating a new class instance, and sets any default parameters.
+      @private
+  */
   constructor() {
 
     super();
