@@ -192,11 +192,12 @@ export default class Viz extends BaseClass {
       dataNest.entries(this._filter ? data.filter(this._filter) : data);
     }
 
-    // Renders the timeline if this._time and this._timeline is not falsy.
-    const timelineGroup = this._uiGroup("timeline", this._time && this._timeline);
-    if (this._time && this._timeline) {
-
-      const ticks = Array.from(new Set(this._data.map(this._time))).map(date);
+    // Renders the timeline if this._time and this._timeline are not falsy and there are more than 1 tick available.
+    let timelinePossible = this._time && this._timeline;
+    const ticks = timelinePossible ? Array.from(new Set(this._data.map(this._time))).map(date) : [];
+    timelinePossible = timelinePossible && ticks.length > 1;
+    const timelineGroup = this._uiGroup("timeline", timelinePossible);
+    if (timelinePossible) {
 
       let selection = extent(Array.from(new Set(arrayMerge(this._filteredData.map(d => {
         const t = this._time(d);
