@@ -34,6 +34,7 @@ If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest releas
     * [.highlight([*data*])](#Viz.highlight)
     * [.label([*value*])](#Viz.label)
     * [.legend([*value*])](#Viz.legend)
+    * [.legendConfig([*value*])](#Viz.legendConfig)
     * [.on([*typenames*], [*listener*])](#Viz.on)
     * [.select([*selector*])](#Viz.select)
     * [.shape([*value*])](#Viz.shape)
@@ -157,13 +158,24 @@ If *value* is specified, sets the label accessor to the specified function or st
 <a name="Viz.legend"></a>
 
 #### Viz.legend([*value*])
-If *value* is specified, toggles the legend based on the specified boolean and returns the current class instance. If *value* is an object, then it is passed to the legend's config method. If *value* is not specified, returns the current value.
+If *value* is specified, toggles the legend based on the specified boolean and returns the current class instance. If *value* is not specified, returns the current value.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
 
 | Param | Type | Default |
 | --- | --- | --- |
-| [*value*] | <code>Boolean</code> &#124; <code>Object</code> | <code>true</code> | 
+| [*value*] | <code>Boolean</code> | <code>true</code> | 
+
+<a name="Viz.legendConfig"></a>
+
+#### Viz.legendConfig([*value*])
+If *value* is specified, the object is passed to the legend's config method. If *value* is not specified, returns the current legend config.
+
+**Kind**: static method of <code>[Viz](#Viz)</code>  
+
+| Param | Type |
+| --- | --- |
+| [*value*] | <code>Object</code> | 
 
 <a name="Viz.on"></a>
 
@@ -277,4 +289,4 @@ If *value* is specified, sets the overallwidth to the specified number and retur
 
 
 
-###### <sub>Documentation generated on Wed, 05 Oct 2016 14:50:24 GMT</sub>
+###### <sub>Documentation generated on Wed, 05 Oct 2016 15:38:16 GMT</sub>
