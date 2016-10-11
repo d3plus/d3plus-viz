@@ -12,7 +12,7 @@ Abstract ES6 class that drives d3plus visualizations.
 If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest release](https://github.com/d3plus/d3plus-viz/releases/latest). The released bundle supports AMD, CommonJS, and vanilla environments. Create a [custom bundle using Rollup](https://github.com/rollup/rollup) or your preferred bundler. You can also load directly from [d3plus.org](https://d3plus.org):
 
 ```html
-<script src="https://d3plus.org/js/d3plus-viz.v0.2.full.min.js"></script>
+<script src="https://d3plus.org/js/d3plus-viz.v0.3.full.min.js"></script>
 ```
 
 
@@ -289,4 +289,4 @@ If *value* is specified, sets the overallwidth to the specified number and retur
 
 
 
-###### <sub>Documentation generated on Wed, 05 Oct 2016 15:38:16 GMT</sub>
+###### <sub>Documentation generated on Tue, 11 Oct 2016 20:04:02 GMT</sub>
