@@ -30,6 +30,7 @@ export default class Viz extends BaseClass {
 
     super();
 
+    this._aggs = {};
     this._backClass = new TextBox()
       .on("click", () => {
         if (this._history.length) this.config(this._history.pop()).render();
@@ -178,14 +179,7 @@ export default class Viz extends BaseClass {
 
     this._filteredData = [];
     if (this._data.length) {
-      const aggs = {};
-      if (this._timeKey) {
-        aggs[this._timeKey] = a => {
-          const v = Array.from(new Set(a));
-          return v.length === 1 ? v[0] : v;
-        };
-      }
-      const dataNest = nest().rollup(leaves => this._filteredData.push(merge(leaves, aggs)));
+      const dataNest = nest().rollup(leaves => this._filteredData.push(merge(leaves, this._aggs)));
       for (let i = 0; i <= this._drawDepth; i++) dataNest.key(this._groupBy[i]);
       if (this._discrete) dataNest.key(this[`_${this._discrete}`]);
       const data = this._timeFilter ? this._data.filter(this._timeFilter) : this._data;
@@ -203,6 +197,7 @@ export default class Viz extends BaseClass {
         const t = this._time(d);
         return t instanceof Array ? t : [t];
       })))).map(date));
+
       if (selection.length === 1) selection = selection[0];
 
       const timeline = this._timelineClass
@@ -286,6 +281,15 @@ export default class Viz extends BaseClass {
 
   /**
       @memberof Viz
+      @desc If *value* is specified, sets the aggregation method for each key in the object and returns the current class instance. If *value* is not specified, returns the current defined aggregation methods.
+      @param {Object} [*value*]
+  */
+  aggs(_) {
+    return arguments.length ? (this._aggs = Object.assign(this._aggs, _), this) : this._aggs;
+  }
+
+  /**
+      @memberof Viz
       @desc If *data* is specified, sets the data array to the specified array and returns the current class instance. If *data* is not specified, returns the current data array.
       @param {Array} [*data* = []]
   */
@@ -341,7 +345,18 @@ function value(d) {
   groupBy(_) {
     if (!arguments.length) return this._groupBy;
     if (!(_ instanceof Array)) _ = [_];
-    return this._groupBy = _.map(k => typeof k === "function" ? k : accessor(k)), this;
+    return this._groupBy = _.map(k => {
+      if (typeof k === "function") return k;
+      else {
+        if (!this._aggs[k]) {
+          this._aggs[k] = a => {
+            const v = Array.from(new Set(a));
+            return v.length === 1 ? v[0] : v;
+          };
+        }
+        return accessor(k);
+      }
+    }), this;
   }
 
   /**
@@ -450,15 +465,19 @@ new Plot
     if (arguments.length) {
       if (typeof _ === "function") {
         this._time = _;
-        this._timeKey = undefined;
       }
       else {
         this._time = accessor(_);
-        this._timeKey = _;
+        if (!this._aggs[_]) {
+          this._aggs[_] = a => {
+            const v = Array.from(new Set(a));
+            return v.length === 1 ? v[0] : v;
+          };
+        }
       }
       return this;
     }
-    else return this._timeKey || this._time;
+    else return this._time;
   }
 
   /**
