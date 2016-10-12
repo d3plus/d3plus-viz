@@ -111,7 +111,17 @@ export default class Viz extends BaseClass {
       strokeWidth: constant(0)
     };
     this._timeline = {};
-    this._timelineClass = new Timeline();
+    this._timelineClass = new Timeline()
+      .align("end")
+      .on("end", s => {
+        if (!(s instanceof Array)) s = [s, s];
+        s = s.map(Number);
+        this._timelineClass.selection(s);
+        this.timeFilter(d => {
+          const ms = date(this._time(d)).getTime();
+          return ms >= s[0] && ms <= s[1];
+        }).render();
+      });
     this._tooltip = {duration: 50};
     this._tooltipClass = tooltip().pointerEvents("none");
 
@@ -193,30 +203,27 @@ export default class Viz extends BaseClass {
     const timelineGroup = this._uiGroup("timeline", timelinePossible);
     if (timelinePossible) {
 
-      let selection = extent(Array.from(new Set(arrayMerge(this._filteredData.map(d => {
-        const t = this._time(d);
-        return t instanceof Array ? t : [t];
-      })))).map(date));
-
-      if (selection.length === 1) selection = selection[0];
-
       const timeline = this._timelineClass
-        .align("end")
         .domain(extent(ticks))
         .duration(this._duration)
         .height(this._height / 2 - this._margin.bottom)
-        .on("end", s => {
-          if (!(s instanceof Array)) s = [s, s];
-          s = s.map(Number);
-          this.timeFilter(d => {
-            const ms = date(this._time(d)).getTime();
-            return ms >= s[0] && ms <= s[1];
-          }).render();
-        })
         .select(timelineGroup.node())
-        .selection(selection)
         .ticks(ticks)
-        .width(this._width)
+        .width(this._width);
+
+      if (timeline.selection() === void 0) {
+
+        let selection = extent(Array.from(new Set(arrayMerge(this._filteredData.map(d => {
+          const t = this._time(d);
+          return t instanceof Array ? t : [t];
+        })))).map(date));
+
+        if (selection.length === 1) selection = selection[0];
+        timeline.selection(selection);
+
+      }
+
+      timeline
         .config(this._timeline.constructor === Object ? this._timeline : {})
         .render();
 
