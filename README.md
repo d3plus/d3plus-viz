@@ -24,6 +24,7 @@ If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest releas
 
 * [Viz](#Viz)
     * [new Viz()](#new_Viz_new)
+    * [.aggs([*value*])](#Viz.aggs)
     * [.data([*data*])](#Viz.data)
     * [.depth([*value*])](#Viz.depth)
     * [.discrete([*value*])](#Viz.discrete)
@@ -49,6 +50,17 @@ If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest releas
 
 #### new Viz()
 Creates an x/y plot based on an array of data. If *data* is specified, immediately draws the tree map based on the specified array and returns the current class instance. If *data* is not specified on instantiation, it can be passed/updated after instantiation using the [data](#treemap.data) method. See [this example](https://d3plus.org/examples/d3plus-treemap/getting-started/) for help getting started using the treemap generator.
+
+<a name="Viz.aggs"></a>
+
+#### Viz.aggs([*value*])
+If *value* is specified, sets the aggregation method for each key in the object and returns the current class instance. If *value* is not specified, returns the current defined aggregation methods.
+
+**Kind**: static method of <code>[Viz](#Viz)</code>  
+
+| Param | Type |
+| --- | --- |
+| [*value*] | <code>Object</code> | 
 
 <a name="Viz.data"></a>
 
@@ -289,4 +301,4 @@ If *value* is specified, sets the overallwidth to the specified number and retur
 
 
 
-###### <sub>Documentation generated on Tue, 11 Oct 2016 20:04:02 GMT</sub>
+###### <sub>Documentation generated on Wed, 12 Oct 2016 20:32:54 GMT</sub>
