@@ -187,13 +187,19 @@ export default class Viz extends BaseClass {
       return l;
     };
 
+    this._legendData = [];
     this._filteredData = [];
     if (this._data.length) {
-      const dataNest = nest().rollup(leaves => this._filteredData.push(merge(leaves, this._aggs)));
+
+      let data = this._timeFilter ? this._data.filter(this._timeFilter) : this._data;
+      if (this._filter) data = data.filter(this._filter);
+
+      const dataNest = nest();
       for (let i = 0; i <= this._drawDepth; i++) dataNest.key(this._groupBy[i]);
+      dataNest.rollup(leaves => this._legendData.push(merge(leaves, this._aggs))).entries(data);
       if (this._discrete && `_${this._discrete}` in this) dataNest.key(this[`_${this._discrete}`]);
-      const data = this._timeFilter ? this._data.filter(this._timeFilter) : this._data;
-      dataNest.entries(this._filter ? data.filter(this._filter) : data);
+      dataNest.rollup(leaves => this._filteredData.push(merge(leaves, this._aggs))).entries(data);
+
     }
 
     // Renders the timeline if this._time and this._timeline are not falsy and there are more than 1 tick available.
@@ -235,7 +241,7 @@ export default class Viz extends BaseClass {
     const legendGroup = this._uiGroup("legend", this._legend);
     if (this._legend) {
 
-      const legend = colorNest(this._filteredData, this._shapeConfig.fill, this._groupBy);
+      const legend = colorNest(this._legendData, this._shapeConfig.fill, this._groupBy);
 
       this._legendClass
         .id((d, i) => legend.id(d, i))
