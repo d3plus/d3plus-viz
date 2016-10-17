@@ -35,7 +35,8 @@ export default class Viz extends BaseClass {
       .on("click", () => {
         if (this._history.length) this.config(this._history.pop()).render();
         else this.depth(this._drawDepth - 1).filter(false).render();
-      });
+      })
+      .on("mousemove", () => this._backClass.select().style("cursor", "pointer"));
     this._data = [];
     this._duration = 600;
     this._history = [];
