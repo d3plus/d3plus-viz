@@ -439,7 +439,17 @@ new Plot
   })
   */
   on(typenames, listener) {
-    return arguments.length === 2 ? (this._on[typenames] = listener, this) : arguments.length ? this._on[typenames] : this._on;
+    if (arguments.length === 2) {
+      return this._on[typenames] = listener, this;
+    }
+    else if (arguments.length) {
+      if (typenames.constructor === String) return this._on[typenames];
+      else if (typenames.constructor === Object) {
+        for (const k in typenames) if ({}.hasOwnProperty.call(typenames, k)) this._on[k] = typenames[k];
+        return this;
+      }
+    }
+    return this._on;
   }
 
   /**
