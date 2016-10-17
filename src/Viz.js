@@ -247,7 +247,7 @@ export default class Viz extends BaseClass {
       this._legendClass
         .id((d, i) => legend.id(d, i))
         .duration(this._duration)
-        .data(legend.data)
+        .data(legend.data.length > 1 ? legend.data : [])
         .height(this._height / 2 - this._margin.bottom)
         .label(this._drawLabel)
         .select(legendGroup.node())
@@ -263,7 +263,8 @@ export default class Viz extends BaseClass {
         .config(this._legendConfig)
         .render();
 
-      this._margin.bottom += this._legendClass.outerBounds().height + this._legendClass.padding() * 2;
+      const legendBounds = this._legendClass.outerBounds();
+      if (legendBounds.height) this._margin.bottom += legendBounds.height + this._legendClass.padding() * 2;
 
     }
 
