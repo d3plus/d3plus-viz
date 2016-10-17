@@ -426,34 +426,6 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc Adds or removes a *listener* to each shape for the specified event *typenames*. If a *listener* is not specified, returns the currently-assigned listener for the specified event *typename*. Mirrors the core [d3-selection](https://github.com/d3/d3-selection#selection_on) behavior.
-      @param {String} [*typenames*]
-      @param {Function} [*listener*]
-      @example <caption>By default, listeners apply to both the shapes and the legend. Passing a namespace with the typename gives control over specific elements:</caption>
-new Plot
-  .on("click.shape", function(d) {
-    console.log("data for shape clicked:", d);
-  })
-  .on("click.legend", function(d) {
-    console.log("data for legend clicked:", d);
-  })
-  */
-  on(typenames, listener) {
-    if (arguments.length === 2) {
-      return this._on[typenames] = listener, this;
-    }
-    else if (arguments.length) {
-      if (typenames.constructor === String) return this._on[typenames];
-      else if (typenames.constructor === Object) {
-        for (const k in typenames) if ({}.hasOwnProperty.call(typenames, k)) this._on[k] = typenames[k];
-        return this;
-      }
-    }
-    return this._on;
-  }
-
-  /**
-      @memberof Viz
       @desc If *selector* is specified, sets the SVG container element to the specified d3 selector or DOM element and returns the current class instance. If *selector* is not specified, returns the current SVG container element, which is `undefined` by default.
       @param {String|HTMLElement} [*selector*]
   */
