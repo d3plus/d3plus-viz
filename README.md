@@ -36,7 +36,6 @@ If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest releas
     * [.label([*value*])](#Viz.label)
     * [.legend([*value*])](#Viz.legend)
     * [.legendConfig([*value*])](#Viz.legendConfig)
-    * [.on([*typenames*], [*listener*])](#Viz.on)
     * [.select([*selector*])](#Viz.select)
     * [.shape([*value*])](#Viz.shape)
     * [.shapeConfig([*value*])](#Viz.shapeConfig)
@@ -189,28 +188,6 @@ If *value* is specified, the object is passed to the legend's config method. If 
 | --- | --- |
 | [*value*] | <code>Object</code> | 
 
-<a name="Viz.on"></a>
-
-#### Viz.on([*typenames*], [*listener*])
-Adds or removes a *listener* to each shape for the specified event *typenames*. If a *listener* is not specified, returns the currently-assigned listener for the specified event *typename*. Mirrors the core [d3-selection](https://github.com/d3/d3-selection#selection_on) behavior.
-
-**Kind**: static method of <code>[Viz](#Viz)</code>  
-
-| Param | Type |
-| --- | --- |
-| [*typenames*] | <code>String</code> | 
-| [*listener*] | <code>function</code> | 
-
-**Example** *(By default, listeners apply to both the shapes and the legend. Passing a namespace with the typename gives control over specific elements:)*  
-```js
-new Plot
-  .on("click.shape", function(d) {
-    console.log("data for shape clicked:", d);
-  })
-  .on("click.legend", function(d) {
-    console.log("data for legend clicked:", d);
-  })
-```
 <a name="Viz.select"></a>
 
 #### Viz.select([*selector*])
@@ -301,4 +278,4 @@ If *value* is specified, sets the overallwidth to the specified number and retur
 
 
 
-###### <sub>Documentation generated on Fri, 14 Oct 2016 22:07:42 GMT</sub>
+###### <sub>Documentation generated on Mon, 17 Oct 2016 20:12:04 GMT</sub>
