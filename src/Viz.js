@@ -51,6 +51,7 @@ export default class Viz extends BaseClass {
     this._on = {
       click: (d, i) => {
 
+        this._select.style("cursor", "auto");
         if (this._drawDepth < this._groupBy.length - 1) {
 
           const filterGroup = this._groupBy[this._drawDepth],
@@ -84,8 +85,10 @@ export default class Viz extends BaseClass {
         });
 
         if (this._tooltip) {
+          const depth = this._drawDepth < this._groupBy.length - 1;
+          this._select.style("cursor", depth ? "pointer" : "auto");
           this._tooltipClass.data([d])
-            .footer(this._drawDepth < this._groupBy.length - 1 ? "Click to Expand" : "")
+            .footer(depth ? "Click to Expand" : "")
             .translate(mouse(select("html").node()))
             .render();
         }
@@ -100,6 +103,7 @@ export default class Viz extends BaseClass {
       },
       mouseleave: () => {
         this.highlight(false);
+        this._select.style("cursor", "auto");
         if (this._tooltip) this._tooltipClass.data([]).render();
       }
     };
