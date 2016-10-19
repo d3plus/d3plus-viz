@@ -42,7 +42,9 @@ If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest releas
     * [.time([*value*])](#Viz.time)
     * [.timeFilter([*value*])](#Viz.timeFilter)
     * [.timeline([*value*])](#Viz.timeline)
+    * [.timelineConfig([*value*])](#Viz.timelineConfig)
     * [.tooltip([*value*])](#Viz.tooltip)
+    * [.tooltipConfig([*value*])](#Viz.tooltipConfig)
     * [.width([*value*])](#Viz.width)
 
 <a name="new_Viz_new"></a>
@@ -246,24 +248,46 @@ If *value* is specified, sets the time filter to the specified function and retu
 <a name="Viz.timeline"></a>
 
 #### Viz.timeline([*value*])
-If *value* is specified, toggles the timeline based on the specified boolean and returns the current class instance. If *value* is an object, then it is passed to the timeline's config method. If *value* is not specified, returns the current value.
+If *value* is specified, toggles the timeline based on the specified boolean and returns the current class instance. If *value* is not specified, returns the current timeline visibility.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
 
 | Param | Type | Default |
 | --- | --- | --- |
-| [*value*] | <code>Boolean</code> &#124; <code>Object</code> | <code>true</code> | 
+| [*value*] | <code>Boolean</code> | <code>true</code> | 
+
+<a name="Viz.timelineConfig"></a>
+
+#### Viz.timelineConfig([*value*])
+If *value* is specified, sets the config method for the timeline and returns the current class instance. If *value* is not specified, returns the current timeline configuration.
+
+**Kind**: static method of <code>[Viz](#Viz)</code>  
+
+| Param | Type |
+| --- | --- |
+| [*value*] | <code>Object</code> | 
 
 <a name="Viz.tooltip"></a>
 
 #### Viz.tooltip([*value*])
-If *value* is specified, toggles the tooltip based on the specified boolean and returns the current class instance. If *value* is an object, then it is passed to the tooltip's config method. If *value* is not specified, returns the current tooltip visibility.
+If *value* is specified, toggles the tooltip based on the specified boolean and returns the current class instance. If *value* is not specified, returns the current tooltip visibility.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
 
 | Param | Type | Default |
 | --- | --- | --- |
-| [*value*] | <code>Boolean</code> &#124; <code>Object</code> | <code>true</code> | 
+| [*value*] | <code>Boolean</code> | <code>true</code> | 
+
+<a name="Viz.tooltipConfig"></a>
+
+#### Viz.tooltipConfig([*value*])
+If *value* is specified, sets the config method for the tooltip and returns the current class instance. If *value* is not specified, returns the current tooltip configuration.
+
+**Kind**: static method of <code>[Viz](#Viz)</code>  
+
+| Param | Type |
+| --- | --- |
+| [*value*] | <code>Object</code> | 
 
 <a name="Viz.width"></a>
 
@@ -278,4 +302,4 @@ If *value* is specified, sets the overallwidth to the specified number and retur
 
 
 
-###### <sub>Documentation generated on Tue, 18 Oct 2016 20:00:41 GMT</sub>
+###### <sub>Documentation generated on Wed, 19 Oct 2016 19:42:30 GMT</sub>
