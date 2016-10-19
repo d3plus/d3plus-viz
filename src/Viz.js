@@ -10,7 +10,7 @@ import {accessor, BaseClass, constant, elem, merge, prefix} from "d3plus-common"
 import {Legend} from "d3plus-legend";
 import {strip, TextBox} from "d3plus-text";
 import {Timeline} from "d3plus-timeline";
-import {tooltip} from "d3plus-tooltip";
+import {Tooltip} from "d3plus-tooltip";
 
 import {default as colorNest} from "./colorNest";
 import {default as getSize} from "./getSize";
@@ -57,7 +57,7 @@ export default class Viz extends BaseClass {
                 filterId = this._id(d, i);
 
           this.highlight(false);
-          if (this._tooltip) this._tooltipClass.data([])();
+          if (this._tooltip) this._tooltipClass.data([]).render();
 
           this._history.push({
             depth: this._depth,
@@ -87,20 +87,20 @@ export default class Viz extends BaseClass {
           this._tooltipClass.data([d])
             .footer(this._drawDepth < this._groupBy.length - 1 ? "Click to Expand" : "")
             .translate(mouse(select("html").node()))
-            ();
+            .render();
         }
 
       },
       mousemove: () => {
 
         if (this._tooltip) {
-          this._tooltipClass.translate(mouse(select("html").node()))();
+          this._tooltipClass.translate(mouse(select("html").node())).render();
         }
 
       },
       mouseleave: () => {
         this.highlight(false);
-        if (this._tooltip) this._tooltipClass.data([])();
+        if (this._tooltip) this._tooltipClass.data([]).render();
       }
     };
     this._padding = 5;
@@ -124,7 +124,7 @@ export default class Viz extends BaseClass {
         }).render();
       });
     this._tooltip = {duration: 50};
-    this._tooltipClass = tooltip().pointerEvents("none");
+    this._tooltipClass = new Tooltip().pointerEvents("none");
 
   }
 
