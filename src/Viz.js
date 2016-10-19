@@ -111,7 +111,7 @@ export default class Viz extends BaseClass {
       stroke: (d, i) => color(assign(this._id(d, i))).darker(),
       strokeWidth: constant(0)
     };
-    this._timeline = {};
+    this._timeline = true;
     this._timelineClass = new Timeline()
       .align("end")
       .on("end", s => {
@@ -123,8 +123,10 @@ export default class Viz extends BaseClass {
           return ms >= s[0] && ms <= s[1];
         }).render();
       });
-    this._tooltip = {duration: 50};
+    this._timelineConfig = {};
+    this._tooltip = true;
     this._tooltipClass = new Tooltip().pointerEvents("none");
+    this._tooltipConfig = {duration: 50};
 
   }
 
@@ -231,7 +233,7 @@ export default class Viz extends BaseClass {
       }
 
       timeline
-        .config(this._timeline.constructor === Object ? this._timeline : {})
+        .config(this._timelineConfig)
         .render();
 
       this._margin.bottom += timeline.outerBounds().height + timeline.padding() * 2;
@@ -277,8 +279,7 @@ export default class Viz extends BaseClass {
 
     this._margin.top += this._history.length ? this._backClass.fontSize()() + this._padding : 0;
 
-    this._tooltipClass.title(this._drawLabel);
-    if (this._tooltip.constructor === Object) this._tooltipClass.config(this._tooltip);
+    this._tooltipClass.title(this._drawLabel).config(this._tooltipConfig);
 
     if (callback) setTimeout(callback, this._duration + 100);
 
@@ -488,8 +489,8 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc If *value* is specified, toggles the timeline based on the specified boolean and returns the current class instance. If *value* is an object, then it is passed to the timeline's config method. If *value* is not specified, returns the current value.
-      @param {Boolean|Object} [*value* = true]
+      @desc If *value* is specified, toggles the timeline based on the specified boolean and returns the current class instance. If *value* is not specified, returns the current timeline visibility.
+      @param {Boolean} [*value* = true]
   */
   timeline(_) {
     return arguments.length ? (this._timeline = _, this) : this._timeline;
@@ -497,11 +498,29 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc If *value* is specified, toggles the tooltip based on the specified boolean and returns the current class instance. If *value* is an object, then it is passed to the tooltip's config method. If *value* is not specified, returns the current tooltip visibility.
-      @param {Boolean|Object} [*value* = true]
+      @desc If *value* is specified, sets the config method for the timeline and returns the current class instance. If *value* is not specified, returns the current timeline configuration.
+      @param {Object} [*value*]
+  */
+  timelineConfig(_) {
+    return arguments.length ? (this._timelineConfig = Object.assign(this._timelineConfig, _), this) : this._timelineConfig;
+  }
+
+  /**
+      @memberof Viz
+      @desc If *value* is specified, toggles the tooltip based on the specified boolean and returns the current class instance. If *value* is not specified, returns the current tooltip visibility.
+      @param {Boolean} [*value* = true]
   */
   tooltip(_) {
     return arguments.length ? (this._tooltip = _, this) : this._tooltip;
+  }
+
+  /**
+      @memberof Viz
+      @desc If *value* is specified, sets the config method for the tooltip and returns the current class instance. If *value* is not specified, returns the current tooltip configuration.
+      @param {Object} [*value*]
+  */
+  tooltipConfig(_) {
+    return arguments.length ? (this._tooltipConfig = Object.assign(this._tooltipConfig, _), this) : this._tooltipConfig;
   }
 
   /**
