@@ -37,6 +37,7 @@
     "d3plus-tooltip": "^0.2.0"
   },
   "scripts": {
+    "build": "d3plus-build",
     "dev": "d3plus-dev",
     "docs": "d3plus-docs",
     "env": "d3plus-env",
