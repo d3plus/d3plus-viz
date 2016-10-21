@@ -251,11 +251,11 @@ export default class Viz extends BaseClass {
       const legend = colorNest(this._legendData, this._shapeConfig.fill, this._groupBy);
 
       this._legendClass
-        .id((d, i) => legend.id(d, i))
+        .id(legend.id)
         .duration(this._duration)
         .data(legend.data.length > 1 ? legend.data : [])
         .height(this._height / 2 - this._margin.bottom)
-        .label(this._drawLabel)
+        .label(this._label || legend.id)
         .select(legendGroup.node())
         .verticalAlign("bottom")
         .width(this._width)
