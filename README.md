@@ -33,6 +33,7 @@ If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest releas
     * [.groupBy([*value*])](#Viz.groupBy)
     * [.height([*value*])](#Viz.height)
     * [.highlight([*data*])](#Viz.highlight)
+    * [.highlightOpacity([*value*])](#Viz.highlightOpacity)
     * [.label([*value*])](#Viz.label)
     * [.legend([*value*])](#Viz.legend)
     * [.legendConfig([*value*])](#Viz.legendConfig)
@@ -156,6 +157,17 @@ Highlights elements elements based on supplied data.
 | Param | Type |
 | --- | --- |
 | [*data*] | <code>Array</code> &#124; <code>Object</code> | 
+
+<a name="Viz.highlightOpacity"></a>
+
+#### Viz.highlightOpacity([*value*])
+If *value* is specified, sets the highlight opacity to the specified function and returns the current class instance. If *value* is not specified, returns the current highlight opacity.
+
+**Kind**: static method of <code>[Viz](#Viz)</code>  
+
+| Param | Type | Default |
+| --- | --- | --- |
+| [*value*] | <code>Number</code> | <code>0.5</code> | 
 
 <a name="Viz.label"></a>
 
@@ -302,4 +314,4 @@ If *value* is specified, sets the overallwidth to the specified number and retur
 
 
 
-###### <sub>Documentation generated on Fri, 21 Oct 2016 21:27:54 GMT</sub>
+###### <sub>Documentation generated on Thu, 27 Oct 2016 16:09:58 GMT</sub>
