@@ -28,13 +28,13 @@
     "d3-color": "^1.0.1",
     "d3-selection": "^1.0.2",
     "d3-transition": "^1.0.1",
-    "d3plus-axis": "^0.3.3",
-    "d3plus-color": "^0.5.1",
+    "d3plus-axis": "^0.3.11",
+    "d3plus-color": "^0.5.3",
     "d3plus-common": "^0.6.5",
-    "d3plus-legend": "^0.6.13",
-    "d3plus-text": "^0.9.5",
-    "d3plus-timeline": "^0.2.0",
-    "d3plus-tooltip": "^0.2.0"
+    "d3plus-legend": "^0.6.14",
+    "d3plus-text": "^0.9.8",
+    "d3plus-timeline": "^0.2.1",
+    "d3plus-tooltip": "^0.2.1"
   },
   "scripts": {
     "build": "d3plus-build",
@@ -46,6 +46,6 @@
     "test": "d3plus-test"
   },
   "devDependencies": {
-    "d3plus-dev": "^0.1.10"
+    "d3plus-dev": "^0.1.11"
   }
 }
