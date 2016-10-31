@@ -397,14 +397,19 @@ function value(d) {
   highlight(_) {
     const ids = _ ? Array.from(new Set(this._data.filter(_).map(this._id))).map(strip) : [],
           that = this;
-    let groups = this._select.select(".d3plus-viz-legend");
-    this._shapes.forEach(s => groups = groups.merge(s.select()));
-    groups.selectAll(".d3plus-Shape")
-      .style(`${prefix()}transition`, `opacity ${this._tooltipClass.duration() / 1000}s`)
-      .style("opacity", function() {
-        const id = this.className.baseVal.split(" ").filter(c => c.indexOf("d3plus-id-") === 0)[0].slice(10);
-        return ids.length === 0 || ids.includes(id) ? 1 : that._highlightOpacity;
-      });
+
+    function opacity(group) {
+      group.selectAll(".d3plus-Shape")
+        .style(`${prefix()}transition`, `opacity ${that._tooltipClass.duration() / 1000}s`)
+        .style("opacity", function() {
+          const id = this.className.baseVal.split(" ").filter(c => c.indexOf("d3plus-id-") === 0)[0].slice(10);
+          return ids.length === 0 || ids.includes(id) ? 1 : that._highlightOpacity;
+        });
+    }
+
+    this._shapes.forEach(s => s.select().call(opacity));
+    this._select.select(".d3plus-viz-legend").call(opacity);
+
     return this;
   }
 
