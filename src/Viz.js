@@ -135,6 +135,43 @@ export default class Viz extends BaseClass {
 
   /**
       @memberof Viz
+      @desc Preps a shapeConfig object for d3plus data, and optionally bubbles up a specific shape type.
+      @param {String} *shape* The shape key to bubble up to the parent config level.
+      @private
+  */
+  _shapeConfigPrep(shape = false) {
+
+    let newConfig = {duration: this._duration};
+
+    for (const key in this._shapeConfig) {
+
+      if ({}.hasOwnProperty.call(this._shapeConfig, key)) {
+
+        if (typeof this._shapeConfig[key] === "function") {
+          newConfig[key] = (d, i, s) =>
+            this._shapeConfig[key](d.__d3plus__ ? d.data : d, d.__d3plus__ ? d.i : i, s);
+        }
+        else newConfig[key] = this._shapeConfig[key];
+
+      }
+
+    }
+
+    newConfig.on = Object.keys(this._on)
+      .filter(e => !e.includes(".") || e.includes(".shape"))
+      .reduce((obj, e) => {
+        obj[e] = (d, i) =>
+          this._on[e] ? this._on[e](d.__d3plus__ ? d.data : d, d.__d3plus__ ? d.i : i) : null;
+        return obj;
+      }, {});
+
+    if (shape) newConfig = Object.assign(newConfig, this._shapeConfig[shape]);
+    return newConfig;
+
+  }
+
+  /**
+      @memberof Viz
       @desc Manages the SVG group for a UI element.
       @param {String} type
       @private
