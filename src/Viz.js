@@ -8,7 +8,7 @@ import {date} from "d3plus-axis";
 import {assign} from "d3plus-color";
 import {accessor, BaseClass, constant, elem, merge, prefix} from "d3plus-common";
 import {Legend} from "d3plus-legend";
-import {strip, TextBox} from "d3plus-text";
+import {TextBox} from "d3plus-text";
 import {Timeline} from "d3plus-timeline";
 import {Tooltip} from "d3plus-tooltip";
 
@@ -56,7 +56,7 @@ export default class Viz extends BaseClass {
         if (this._drawDepth < this._groupBy.length - 1) {
 
           const filterGroup = this._groupBy[this._drawDepth],
-                filterId = this._id(d, i);
+                filterId = filterGroup(d, i);
 
           this.highlight(false);
           if (this._tooltip) this._tooltipClass.data([]).render();
@@ -76,13 +76,11 @@ export default class Viz extends BaseClass {
       },
       mouseenter: (d, i) => {
 
-        const filterId = this._id(d, i);
+        const filterId = this._ids(d, i);
 
         this.highlight((h, x) => {
-          const myId = this._id(h, x);
-          if (myId.constructor === Array && filterId.constructor !== Array) return myId.includes(filterId);
-          if (myId.constructor !== Array && filterId.constructor === Array) return filterId.includes(myId);
-          return myId === filterId;
+          const ids = this._ids(h, x);
+          return filterId[filterId.length - 1] === ids[filterId.length - 1];
         });
 
         if (this._tooltip) {
@@ -111,9 +109,9 @@ export default class Viz extends BaseClass {
     this._padding = 5;
     this._shapes = [];
     this._shapeConfig = {
-      fill: (d, i) => assign(this._id(d, i)),
+      fill: (d, i) => assign(this._groupBy[0](d, i)),
       opacity: constant(1),
-      stroke: (d, i) => color(assign(this._id(d, i))).darker(),
+      stroke: (d, i) => color(assign(this._groupBy[0](d, i))).darker(),
       strokeWidth: constant(0)
     };
     this._timeline = true;
@@ -185,14 +183,12 @@ export default class Viz extends BaseClass {
     // based on the groupBy, determine the draw depth and current depth id
     this._drawDepth = this._depth !== void 0 ? this._depth : this._groupBy.length - 1;
     this._id = this._groupBy[this._drawDepth];
+    this._ids = (d, i) => this._groupBy
+      .map(g => g(d.__d3plus__ ? d.data : d, d.__d3plus__ ? d.i : i))
+      .filter(g => g !== void 0 && g.constructor !== Array);
     this._drawLabel = this._label || function(d, i) {
-      let l = that._id(d, i);
-      if (l.constructor !== Array) return l;
-      for (let x = that._drawDepth; x >= 0; x--) {
-        l = that._groupBy[x](d, i);
-        if (l.constructor !== Array) break;
-      }
-      return l;
+      const l = that._ids(d, i).filter(d => d && d.constructor !== Array);
+      return l[l.length - 1];
     };
 
     this._legendData = [];
@@ -395,15 +391,24 @@ function value(d) {
       @param {Array|Object} [*data*]
   */
   highlight(_) {
-    const ids = _ ? Array.from(new Set(this._data.filter(_).map(this._id))).map(strip) : [],
+
+    const highlightData = _ ? this._data.filter(_) : [],
           that = this;
+
+    let highlightIds = [];
+    highlightData.map(this._ids).forEach(ids => {
+      for (let x = 1; x <= ids.length; x++) {
+        highlightIds.push(JSON.stringify(ids.slice(0, x)));
+      }
+    });
+    highlightIds = highlightIds.filter((id, i) => highlightIds.indexOf(id) === i);
 
     function opacity(group) {
       group.selectAll(".d3plus-Shape")
         .style(`${prefix()}transition`, `opacity ${that._tooltipClass.duration() / 1000}s`)
-        .style("opacity", function() {
-          const id = this.className.baseVal.split(" ").filter(c => c.indexOf("d3plus-id-") === 0)[0].slice(10);
-          return ids.length === 0 || ids.includes(id) ? 1 : that._highlightOpacity;
+        .style("opacity", (d, i) => {
+          if (!highlightIds.length || !d) return 1;
+          return highlightIds.includes(JSON.stringify(that._ids(d, i))) ? 1 : that._highlightOpacity;
         });
     }
 
