@@ -15,6 +15,7 @@ export default function(raw, fill, groupBy = []) {
   if (groupBy && !(groupBy instanceof Array)) groupBy = [groupBy];
 
   const colors = nest().key(fill).entries(raw);
+  if (colors.length < 2) return {data: [], id: fill};
   let data, id;
 
   if (groupBy.length) {
