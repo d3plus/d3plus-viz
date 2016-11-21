@@ -255,7 +255,7 @@ export default class Viz extends BaseClass {
         .duration(this._duration)
         .height(this._height / 2 - this._margin.bottom)
         .select(timelineGroup.node())
-        .ticks(ticks)
+        .ticks(ticks.sort())
         .width(this._width);
 
       if (timeline.selection() === void 0) {
