@@ -165,7 +165,7 @@ export default class Viz extends BaseClass {
         return obj;
       }, {});
 
-    if (shape) newConfig = assign(newConfig, this._shapeConfig[shape]);
+    if (shape && this._shapeConfig[shape]) newConfig = assign(newConfig, this._shapeConfig[shape]);
     return newConfig;
 
   }
