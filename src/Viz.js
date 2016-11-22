@@ -5,8 +5,8 @@ import {mouse, select} from "d3-selection";
 import {transition} from "d3-transition";
 
 import {date} from "d3plus-axis";
-import {assign} from "d3plus-color";
-import {accessor, BaseClass, constant, elem, merge, prefix} from "d3plus-common";
+import {assign as colorAssign} from "d3plus-color";
+import {accessor, assign, BaseClass, constant, elem, merge, prefix} from "d3plus-common";
 import {Legend} from "d3plus-legend";
 import {TextBox} from "d3plus-text";
 import {Timeline} from "d3plus-timeline";
@@ -109,9 +109,9 @@ export default class Viz extends BaseClass {
     this._padding = 5;
     this._shapes = [];
     this._shapeConfig = {
-      fill: (d, i) => assign(this._groupBy[0](d, i)),
+      fill: (d, i) => colorAssign(this._groupBy[0](d, i)),
       opacity: constant(1),
-      stroke: (d, i) => color(assign(this._groupBy[0](d, i))).darker(),
+      stroke: (d, i) => color(colorAssign(this._groupBy[0](d, i))).darker(),
       strokeWidth: constant(0)
     };
     this._timeline = true;
@@ -165,7 +165,7 @@ export default class Viz extends BaseClass {
         return obj;
       }, {});
 
-    if (shape) newConfig = Object.assign(newConfig, this._shapeConfig[shape]);
+    if (shape) newConfig = assign(newConfig, this._shapeConfig[shape]);
     return newConfig;
 
   }
@@ -339,7 +339,7 @@ export default class Viz extends BaseClass {
       @param {Object} [*value*]
   */
   aggs(_) {
-    return arguments.length ? (this._aggs = Object.assign(this._aggs, _), this) : this._aggs;
+    return arguments.length ? (this._aggs = assign(this._aggs, _), this) : this._aggs;
   }
 
   /**
@@ -515,7 +515,7 @@ function value(d) {
       @param {Object} [*value*]
   */
   shapeConfig(_) {
-    return arguments.length ? (this._shapeConfig = Object.assign(this._shapeConfig, _), this) : this._shapeConfig;
+    return arguments.length ? (this._shapeConfig = assign(this._shapeConfig, _), this) : this._shapeConfig;
   }
 
   /**
@@ -566,7 +566,7 @@ function value(d) {
       @param {Object} [*value*]
   */
   timelineConfig(_) {
-    return arguments.length ? (this._timelineConfig = Object.assign(this._timelineConfig, _), this) : this._timelineConfig;
+    return arguments.length ? (this._timelineConfig = assign(this._timelineConfig, _), this) : this._timelineConfig;
   }
 
   /**
@@ -584,7 +584,7 @@ function value(d) {
       @param {Object} [*value*]
   */
   tooltipConfig(_) {
-    return arguments.length ? (this._tooltipConfig = Object.assign(this._tooltipConfig, _), this) : this._tooltipConfig;
+    return arguments.length ? (this._tooltipConfig = assign(this._tooltipConfig, _), this) : this._tooltipConfig;
   }
 
   /**
