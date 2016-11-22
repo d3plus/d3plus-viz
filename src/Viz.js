@@ -445,6 +445,10 @@ function value(d) {
         .style(`${prefix()}transition`, `opacity ${that._tooltipClass.duration() / 1000}s`)
         .style("opacity", (d, i) => {
           if (!highlightIds.length || !d) return 1;
+          if (d.__d3plusShape__) {
+            d = d.data;
+            i = d.i;
+          }
           return highlightIds.includes(JSON.stringify(that._ids(d, i))) ? 1 : that._highlightOpacity;
         });
     }
