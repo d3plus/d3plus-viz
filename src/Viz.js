@@ -6,7 +6,7 @@ import {transition} from "d3-transition";
 
 import {date} from "d3plus-axis";
 import {assign as colorAssign} from "d3plus-color";
-import {accessor, assign, BaseClass, constant, elem, merge, prefix} from "d3plus-common";
+import {accessor, assign, BaseClass, constant, elem, merge} from "d3plus-common";
 import {Legend} from "d3plus-legend";
 import {TextBox} from "d3plus-text";
 import {Timeline} from "d3plus-timeline";
@@ -415,7 +415,7 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc If *value* is specified, sets the overallheight to the specified number and returns the current class instance. If *value* is not specified, returns the current overall height.
+      @desc If *value* is specified, sets the overall height to the specified number and returns the current class instance. If *value* is not specified, returns the current overall height.
       @param {Number} [*value* = window.innerHeight]
   */
   height(_) {
@@ -424,13 +424,12 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc Highlights elements elements based on supplied data.
-      @param {Array|Object} [*data*]
+      @desc If *value* is specified, sets the highlight method to the specified function and returns the current class instance. If *value* is not specified, returns the current highlight method.
+      @param {Function} [*value*]
   */
   highlight(_) {
 
-    const highlightData = _ ? this._data.filter(_) : [],
-          that = this;
+    const highlightData = _ ? this._data.filter(_) : [];
 
     let highlightIds = [];
     highlightData.map(this._ids).forEach(ids => {
@@ -440,32 +439,13 @@ function value(d) {
     });
     highlightIds = highlightIds.filter((id, i) => highlightIds.indexOf(id) === i);
 
-    function opacity(group) {
-      group.selectAll(".d3plus-Shape")
-        .style(`${prefix()}transition`, `opacity ${that._tooltipClass.duration() / 1000}s`)
-        .style("opacity", (d, i) => {
-          if (!highlightIds.length || !d) return 1;
-          if (d.__d3plusShape__) {
-            d = d.data;
-            i = d.i;
-          }
-          return highlightIds.includes(JSON.stringify(that._ids(d, i))) ? 1 : that._highlightOpacity;
-        });
-    }
+    let highlightFunction;
+    if (highlightIds.length) highlightFunction = (d, i) => highlightIds.includes(JSON.stringify(this._ids(d, i)));
 
-    this._shapes.forEach(s => s.select().call(opacity));
-    this._select.select(".d3plus-viz-legend").call(opacity);
+    this._shapes.forEach(s => s.highlight(highlightFunction));
+    if (this._legend) this._legendClass.highlight(highlightFunction);
 
     return this;
-  }
-
-  /**
-      @memberof Viz
-      @desc If *value* is specified, sets the highlight opacity to the specified function and returns the current class instance. If *value* is not specified, returns the current highlight opacity.
-      @param {Number} [*value* = 0.5]
-  */
-  highlightOpacity(_) {
-    return arguments.length ? (this._highlightOpacity = _, this) : this._highlightOpacity;
   }
 
   /**
