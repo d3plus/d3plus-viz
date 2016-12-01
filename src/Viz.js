@@ -387,7 +387,9 @@ function value(d) {
   */
   highlight(_) {
 
-    const highlightData = _ ? this._data.filter(_) : [];
+    let shapeData = arrayMerge(this._shapes.map(s => s.data()));
+    shapeData = shapeData.concat(this._legendClass.data());
+    const highlightData = _ ? shapeData.filter(_) : [];
 
     let highlightIds = [];
     highlightData.map(this._ids).forEach(ids => {
