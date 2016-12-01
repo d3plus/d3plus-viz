@@ -32,8 +32,7 @@ If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest releas
     * [.filter([*value*])](#Viz.filter)
     * [.groupBy([*value*])](#Viz.groupBy)
     * [.height([*value*])](#Viz.height)
-    * [.highlight([*data*])](#Viz.highlight)
-    * [.highlightOpacity([*value*])](#Viz.highlightOpacity)
+    * [.highlight([*value*])](#Viz.highlight)
     * [.label([*value*])](#Viz.label)
     * [.legend([*value*])](#Viz.legend)
     * [.legendConfig([*value*])](#Viz.legendConfig)
@@ -139,7 +138,7 @@ function value(d) {
 <a name="Viz.height"></a>
 
 #### Viz.height([*value*])
-If *value* is specified, sets the overallheight to the specified number and returns the current class instance. If *value* is not specified, returns the current overall height.
+If *value* is specified, sets the overall height to the specified number and returns the current class instance. If *value* is not specified, returns the current overall height.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
 
@@ -149,25 +148,14 @@ If *value* is specified, sets the overallheight to the specified number and retu
 
 <a name="Viz.highlight"></a>
 
-#### Viz.highlight([*data*])
-Highlights elements elements based on supplied data.
+#### Viz.highlight([*value*])
+If *value* is specified, sets the highlight method to the specified function and returns the current class instance. If *value* is not specified, returns the current highlight method.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
 
 | Param | Type |
 | --- | --- |
-| [*data*] | <code>Array</code> &#124; <code>Object</code> | 
-
-<a name="Viz.highlightOpacity"></a>
-
-#### Viz.highlightOpacity([*value*])
-If *value* is specified, sets the highlight opacity to the specified function and returns the current class instance. If *value* is not specified, returns the current highlight opacity.
-
-**Kind**: static method of <code>[Viz](#Viz)</code>  
-
-| Param | Type | Default |
-| --- | --- | --- |
-| [*value*] | <code>Number</code> | <code>0.5</code> | 
+| [*value*] | <code>function</code> | 
 
 <a name="Viz.label"></a>
 
@@ -314,4 +302,4 @@ If *value* is specified, sets the overallwidth to the specified number and retur
 
 
 
-###### <sub>Documentation generated on Wed, 30 Nov 2016 23:49:27 GMT</sub>
+###### <sub>Documentation generated on Thu, 01 Dec 2016 16:08:06 GMT</sub>
