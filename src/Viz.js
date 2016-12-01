@@ -1,7 +1,7 @@
 import {extent, merge as arrayMerge} from "d3-array";
 import {color} from "d3-color";
 import {nest} from "d3-collection";
-import {mouse, select} from "d3-selection";
+import {select} from "d3-selection";
 import {transition} from "d3-transition";
 
 import {date} from "d3plus-axis";
@@ -14,6 +14,13 @@ import {Tooltip} from "d3plus-tooltip";
 
 import {default as colorNest} from "./colorNest";
 import {default as getSize} from "./getSize";
+
+import {default as click} from "./on/click";
+import {default as mouseenter} from "./on/mouseenter";
+import {default as mouseenterLegend} from "./on/mouseenter.legend";
+import {default as mouseenterShape} from "./on/mouseenter.shape";
+import {default as mousemove} from "./on/mousemove";
+import {default as mouseleave} from "./on/mouseleave";
 
 /**
     @class Viz
@@ -50,61 +57,12 @@ export default class Viz extends BaseClass {
     };
     this._legendClass = new Legend();
     this._on = {
-      click: (d, i) => {
-
-        this._select.style("cursor", "auto");
-        if (this._drawDepth < this._groupBy.length - 1) {
-
-          const filterGroup = this._groupBy[this._drawDepth],
-                filterId = filterGroup(d, i);
-
-          this.highlight(false);
-          if (this._tooltip) this._tooltipClass.data([]).render();
-
-          this._history.push({
-            depth: this._depth,
-            filter: this._filter
-          });
-
-          this.config({
-            depth: this._drawDepth + 1,
-            filter: (f, x) => filterGroup(f, x) === filterId
-          }).render();
-
-        }
-
-      },
-      mouseenter: (d, i) => {
-
-        const filterId = this._ids(d, i);
-
-        this.highlight((h, x) => {
-          const ids = this._ids(h, x);
-          return filterId[filterId.length - 1] === ids[filterId.length - 1];
-        });
-
-        if (this._tooltip) {
-          const depth = this._drawDepth < this._groupBy.length - 1;
-          this._select.style("cursor", depth ? "pointer" : "auto");
-          this._tooltipClass.data([d])
-            .footer(depth ? "Click to Expand" : "")
-            .translate(mouse(select("html").node()))
-            .render();
-        }
-
-      },
-      mousemove: () => {
-
-        if (this._tooltip) {
-          this._tooltipClass.translate(mouse(select("html").node())).render();
-        }
-
-      },
-      mouseleave: () => {
-        this.highlight(false);
-        this._select.style("cursor", "auto");
-        if (this._tooltip) this._tooltipClass.data([]).render();
-      }
+      "click": click.bind(this),
+      "mouseenter": mouseenter.bind(this),
+      "mouseenter.legend": mouseenterLegend.bind(this),
+      "mouseenter.shape": mouseenterShape.bind(this),
+      "mousemove": mousemove.bind(this),
+      "mouseleave": mouseleave.bind(this)
     };
     this._padding = 5;
     this._shapes = [];
@@ -317,7 +275,7 @@ export default class Viz extends BaseClass {
 
     this._margin.top += this._history.length ? this._backClass.fontSize()() + this._padding : 0;
 
-    this._tooltipClass.title(this._drawLabel).config(this._tooltipConfig);
+    this._tooltipClass.config(this._tooltipConfig);
 
     if (callback) setTimeout(callback, this._duration + 100);
 
