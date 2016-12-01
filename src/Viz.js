@@ -68,6 +68,7 @@ export default class Viz extends BaseClass {
     this._shapes = [];
     this._shapeConfig = {
       fill: (d, i) => colorAssign(this._groupBy[0](d, i)),
+      highlightDuration: 50,
       opacity: constant(1),
       stroke: (d, i) => color(colorAssign(this._groupBy[0](d, i))).darker(),
       strokeWidth: constant(0)
