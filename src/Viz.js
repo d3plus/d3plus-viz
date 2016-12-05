@@ -6,7 +6,7 @@ import {transition} from "d3-transition";
 
 import {date} from "d3plus-axis";
 import {assign as colorAssign} from "d3plus-color";
-import {accessor, assign, BaseClass, constant, elem, merge} from "d3plus-common";
+import {accessor, assign, BaseClass, constant, elem, locale, merge} from "d3plus-common";
 import {Legend} from "d3plus-legend";
 import {TextBox} from "d3plus-text";
 import {Timeline} from "d3plus-timeline";
@@ -273,7 +273,7 @@ export default class Viz extends BaseClass {
     const titleGroup = elem("g.d3plus-viz-titles", {parent: this._select});
 
     this._backClass
-      .data(this._history.length ? [{text: "Back", x: this._padding * 2, y: 0}] : [])
+      .data(this._history.length ? [{text: locale.t("Back", {lng: this._locale}), x: this._padding * 2, y: 0}] : [])
       .select(titleGroup.node())
       .render();
 
