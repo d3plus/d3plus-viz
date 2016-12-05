@@ -36,6 +36,7 @@ If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest releas
     * [.label([*value*])](#Viz.label)
     * [.legend([*value*])](#Viz.legend)
     * [.legendConfig([*value*])](#Viz.legendConfig)
+    * [.locale([*value*])](#Viz.locale)
     * [.select([*selector*])](#Viz.select)
     * [.shape([*value*])](#Viz.shape)
     * [.shapeConfig([*value*])](#Viz.shapeConfig)
@@ -190,6 +191,17 @@ If *value* is specified, the object is passed to the legend's config method. If 
 | --- | --- |
 | [*value*] | <code>Object</code> | 
 
+<a name="Viz.locale"></a>
+
+#### Viz.locale([*value*])
+If *value* is specified, sets the locale to the specified string and returns the current class instance. If *value* is not specified, returns the current locale.
+
+**Kind**: static method of <code>[Viz](#Viz)</code>  
+
+| Param | Type | Default |
+| --- | --- | --- |
+| [*value*] | <code>String</code> | <code>&quot;en-US&quot;</code> | 
+
 <a name="Viz.select"></a>
 
 #### Viz.select([*selector*])
@@ -302,4 +314,4 @@ If *value* is specified, sets the overallwidth to the specified number and retur
 
 
 
-###### <sub>Documentation generated on Thu, 01 Dec 2016 16:34:57 GMT</sub>
+###### <sub>Documentation generated on Mon, 05 Dec 2016 03:53:10 GMT</sub>
