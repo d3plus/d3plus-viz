@@ -219,7 +219,22 @@ export default class Viz extends BaseClass {
         .height(this._height / 2 - this._margin.bottom)
         .select(timelineGroup.node())
         .ticks(ticks.sort((a, b) => +a - +b))
-        .width(this._width)
+        .width(this._width);
+
+      if (timeline.selection() === void 0) {
+
+        const dates = Array.from(new Set(arrayMerge(this._filteredData.map(d => {
+          const t = this._time(d);
+          return t instanceof Array ? t : [t];
+        })))).map(date);
+
+        const d = this._data[0], i = 0;
+        if (this._discrete && `_${this._discrete}` in this && this[`_${this._discrete}`](d, i) === this._time(d, i)) timeline.selection(extent(dates));
+        else timeline.selection(max(dates));
+
+      }
+
+      timeline
         .config(this._timelineConfig)
         .render();
 
