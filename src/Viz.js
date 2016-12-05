@@ -56,6 +56,7 @@ export default class Viz extends BaseClass {
       }
     };
     this._legendClass = new Legend();
+    this._locale = "en-US";
     this._on = {
       "click": click.bind(this),
       "mouseenter": mouseenter.bind(this),
@@ -434,6 +435,15 @@ function value(d) {
   */
   legendConfig(_) {
     return arguments.length ? (this._legendConfig = _, this) : this._legendConfig;
+  }
+
+  /**
+      @memberof Viz
+      @desc If *value* is specified, sets the locale to the specified string and returns the current class instance. If *value* is not specified, returns the current locale.
+      @param {String} [*value* = "en-US"]
+  */
+  locale(_) {
+    return arguments.length ? (this._locale = _, this) : this._locale;
   }
 
   /**
