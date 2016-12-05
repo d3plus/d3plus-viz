@@ -1,4 +1,4 @@
-import {extent, merge as arrayMerge} from "d3-array";
+import {extent, max, merge as arrayMerge} from "d3-array";
 import {color} from "d3-color";
 import {nest} from "d3-collection";
 import {select} from "d3-selection";
@@ -222,12 +222,11 @@ export default class Viz extends BaseClass {
 
       if (timeline.selection() === void 0) {
 
-        let selection = extent(Array.from(new Set(arrayMerge(this._filteredData.map(d => {
+        const selection = max(Array.from(new Set(arrayMerge(this._filteredData.map(d => {
           const t = this._time(d);
           return t instanceof Array ? t : [t];
         })))).map(date));
 
-        if (selection.length === 1) selection = selection[0];
         timeline.selection(selection);
 
       }
