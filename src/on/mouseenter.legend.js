@@ -15,6 +15,7 @@ export default function(d) {
       .footer(depth ? "Click to Expand" : "")
       .title(this._legendClass.label())
       .translate(mouse(select("html").node()))
+      .config(this._tooltipConfig)
       .render();
   }
 

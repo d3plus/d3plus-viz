@@ -87,8 +87,11 @@ export default class Viz extends BaseClass {
       });
     this._timelineConfig = {};
     this._tooltip = true;
-    this._tooltipClass = new Tooltip().pointerEvents("none");
-    this._tooltipConfig = {duration: 50};
+    this._tooltipClass = new Tooltip();
+    this._tooltipConfig = {
+      duration: 50,
+      pointerEvents: "none"
+    };
 
   }
 
@@ -275,8 +278,6 @@ export default class Viz extends BaseClass {
       .render();
 
     this._margin.top += this._history.length ? this._backClass.fontSize()() + this._padding : 0;
-
-    this._tooltipClass.config(this._tooltipConfig);
 
     if (callback) setTimeout(callback, this._duration + 100);
 
