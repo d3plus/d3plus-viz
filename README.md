@@ -19,10 +19,11 @@ If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest releas
 ## API Reference
 <a name="Viz"></a>
 
-### Viz
+### Viz ⇐ <code>[BaseClass](https://github.com/d3plus/d3plus-common#BaseClass)</code>
 **Kind**: global class  
+**Extends:** <code>[BaseClass](https://github.com/d3plus/d3plus-common#BaseClass)</code>  
 
-* [Viz](#Viz)
+* [Viz](#Viz) ⇐ <code>[BaseClass](https://github.com/d3plus/d3plus-common#BaseClass)</code>
     * [new Viz()](#new_Viz_new)
     * [.aggs([*value*])](#Viz.aggs)
     * [.data([*data*])](#Viz.data)
@@ -314,4 +315,4 @@ If *value* is specified, sets the overallwidth to the specified number and retur
 
 
 
-###### <sub>Documentation generated on Mon, 05 Dec 2016 03:53:10 GMT</sub>
+###### <sub>Documentation generated on Wed, 07 Dec 2016 03:18:40 GMT</sub>
