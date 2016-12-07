@@ -157,8 +157,10 @@ export default class Viz extends BaseClass {
   }
 
   /**
-      The inner return object and draw function that gets assigned the public methods.
-      @private
+      @memberof Viz
+      @desc Draws the visualization given the specified configuration.
+      @param {Function} [*callback*] An optional callback function that, if passed, will be called after animation is complete.
+      @chainable
   */
   render(callback) {
 

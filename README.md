@@ -25,6 +25,7 @@ If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest releas
 
 * [Viz](#Viz) ⇐ <code>[BaseClass](https://github.com/d3plus/d3plus-common#BaseClass)</code>
     * [new Viz()](#new_Viz_new)
+    * [.render([*callback*])](#Viz.render) ↩︎
     * [.aggs([*value*])](#Viz.aggs)
     * [.data([*data*])](#Viz.data)
     * [.depth([*value*])](#Viz.depth)
@@ -53,6 +54,18 @@ If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest releas
 
 #### new Viz()
 Creates an x/y plot based on an array of data. If *data* is specified, immediately draws the tree map based on the specified array and returns the current class instance. If *data* is not specified on instantiation, it can be passed/updated after instantiation using the [data](#treemap.data) method. See [this example](https://d3plus.org/examples/d3plus-treemap/getting-started/) for help getting started using the treemap generator.
+
+<a name="Viz.render"></a>
+
+#### Viz.render([*callback*]) ↩︎
+Draws the visualization given the specified configuration.
+
+**Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [*callback*] | <code>function</code> | An optional callback function that, if passed, will be called after animation is complete. |
 
 <a name="Viz.aggs"></a>
 
@@ -315,4 +328,4 @@ If *value* is specified, sets the overallwidth to the specified number and retur
 
 
 
-###### <sub>Documentation generated on Wed, 07 Dec 2016 03:18:40 GMT</sub>
+###### <sub>Documentation generated on Wed, 07 Dec 2016 03:25:37 GMT</sub>
