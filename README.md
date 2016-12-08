@@ -12,7 +12,7 @@ Abstract ES6 class that drives d3plus visualizations.
 If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest release](https://github.com/d3plus/d3plus-viz/releases/latest). The released bundle supports AMD, CommonJS, and vanilla environments. Create a [custom bundle using Rollup](https://github.com/rollup/rollup) or your preferred bundler. You can also load directly from [d3plus.org](https://d3plus.org):
 
 ```html
-<script src="https://d3plus.org/js/d3plus-viz.v0.4.full.min.js"></script>
+<script src="https://d3plus.org/js/d3plus-viz.v0.5.full.min.js"></script>
 ```
 
 
@@ -26,29 +26,35 @@ If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest releas
 * [Viz](#Viz) ⇐ <code>[BaseClass](https://github.com/d3plus/d3plus-common#BaseClass)</code>
     * [new Viz()](#new_Viz_new)
     * [.render([*callback*])](#Viz.render) ↩︎
-    * [.aggs([*value*])](#Viz.aggs)
-    * [.data([*data*])](#Viz.data)
-    * [.depth([*value*])](#Viz.depth)
-    * [.discrete([*value*])](#Viz.discrete)
-    * [.duration([*ms*])](#Viz.duration)
-    * [.filter([*value*])](#Viz.filter)
-    * [.groupBy([*value*])](#Viz.groupBy)
-    * [.height([*value*])](#Viz.height)
-    * [.highlight([*value*])](#Viz.highlight)
-    * [.label([*value*])](#Viz.label)
-    * [.legend([*value*])](#Viz.legend)
-    * [.legendConfig([*value*])](#Viz.legendConfig)
-    * [.locale([*value*])](#Viz.locale)
-    * [.select([*selector*])](#Viz.select)
-    * [.shape([*value*])](#Viz.shape)
-    * [.shapeConfig([*value*])](#Viz.shapeConfig)
-    * [.time([*value*])](#Viz.time)
-    * [.timeFilter([*value*])](#Viz.timeFilter)
-    * [.timeline([*value*])](#Viz.timeline)
-    * [.timelineConfig([*value*])](#Viz.timelineConfig)
-    * [.tooltip([*value*])](#Viz.tooltip)
-    * [.tooltipConfig([*value*])](#Viz.tooltipConfig)
-    * [.width([*value*])](#Viz.width)
+    * [.active([*value*])](#Viz.active) ↩︎
+    * [.aggs([*value*])](#Viz.aggs) ↩︎
+    * [.backConfig([*value*])](#Viz.backConfig) ↩︎
+    * [.data([*data*])](#Viz.data) ↩︎
+    * [.depth([*value*])](#Viz.depth) ↩︎
+    * [.discrete([*value*])](#Viz.discrete) ↩︎
+    * [.duration([*ms*])](#Viz.duration) ↩︎
+    * [.filter([*value*])](#Viz.filter) ↩︎
+    * [.groupBy([*value*])](#Viz.groupBy) ↩︎
+    * [.height([*value*])](#Viz.height) ↩︎
+    * [.hover([*value*])](#Viz.hover) ↩︎
+    * [.label([*value*])](#Viz.label) ↩︎
+    * [.legend([*value*])](#Viz.legend) ↩︎
+    * [.legendConfig([*value*])](#Viz.legendConfig) ↩︎
+    * [.locale([*value*])](#Viz.locale) ↩︎
+    * [.select([*selector*])](#Viz.select) ↩︎
+    * [.shape([*value*])](#Viz.shape) ↩︎
+    * [.shapeConfig([*value*])](#Viz.shapeConfig) ↩︎
+    * [.time([*value*])](#Viz.time) ↩︎
+    * [.timeFilter([*value*])](#Viz.timeFilter) ↩︎
+    * [.timeline([*value*])](#Viz.timeline) ↩︎
+    * [.timelineConfig([*value*])](#Viz.timelineConfig) ↩︎
+    * [.title([*value*])](#Viz.title) ↩︎
+    * [.titleConfig([*value*])](#Viz.titleConfig) ↩︎
+    * [.tooltip([*value*])](#Viz.tooltip) ↩︎
+    * [.tooltipConfig([*value*])](#Viz.tooltipConfig) ↩︎
+    * [.total([*value*])](#Viz.total) ↩︎
+    * [.totalConfig([*value*])](#Viz.totalConfig) ↩︎
+    * [.width([*value*])](#Viz.width) ↩︎
 
 <a name="new_Viz_new"></a>
 
@@ -67,12 +73,37 @@ Draws the visualization given the specified configuration.
 | --- | --- | --- |
 | [*callback*] | <code>function</code> | An optional callback function that, if passed, will be called after animation is complete. |
 
+<a name="Viz.active"></a>
+
+#### Viz.active([*value*]) ↩︎
+If *value* is specified, sets the active method to the specified function and returns the current class instance. If *value* is not specified, returns the current active method.
+
+**Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
+
+| Param | Type |
+| --- | --- |
+| [*value*] | <code>function</code> | 
+
 <a name="Viz.aggs"></a>
 
-#### Viz.aggs([*value*])
+#### Viz.aggs([*value*]) ↩︎
 If *value* is specified, sets the aggregation method for each key in the object and returns the current class instance. If *value* is not specified, returns the current defined aggregation methods.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
+
+| Param | Type |
+| --- | --- |
+| [*value*] | <code>Object</code> | 
+
+<a name="Viz.backConfig"></a>
+
+#### Viz.backConfig([*value*]) ↩︎
+If *value* is specified, sets the config method for the back button and returns the current class instance. If *value* is not specified, returns the current back button configuration.
+
+**Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
 
 | Param | Type |
 | --- | --- |
@@ -80,10 +111,11 @@ If *value* is specified, sets the aggregation method for each key in the object 
 
 <a name="Viz.data"></a>
 
-#### Viz.data([*data*])
+#### Viz.data([*data*]) ↩︎
 If *data* is specified, sets the data array to the specified array and returns the current class instance. If *data* is not specified, returns the current data array.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
 
 | Param | Type | Default |
 | --- | --- | --- |
@@ -91,10 +123,11 @@ If *data* is specified, sets the data array to the specified array and returns t
 
 <a name="Viz.depth"></a>
 
-#### Viz.depth([*value*])
+#### Viz.depth([*value*]) ↩︎
 If *value* is specified, sets the depth to the specified number and returns the current class instance. The *value* should correspond with an index in the [groupBy](#groupBy) array. If *value* is not specified, returns the current depth.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
 
 | Param | Type |
 | --- | --- |
@@ -102,10 +135,11 @@ If *value* is specified, sets the depth to the specified number and returns the 
 
 <a name="Viz.discrete"></a>
 
-#### Viz.discrete([*value*])
+#### Viz.discrete([*value*]) ↩︎
 If *value* is specified, sets the discrete accessor to the specified method name (usually an axis) and returns the current class instance. If *value* is not specified, returns the current discrete method.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
 
 | Param | Type |
 | --- | --- |
@@ -113,10 +147,11 @@ If *value* is specified, sets the discrete accessor to the specified method name
 
 <a name="Viz.duration"></a>
 
-#### Viz.duration([*ms*])
+#### Viz.duration([*ms*]) ↩︎
 If *ms* is specified, sets the animation duration to the specified number and returns the current class instance. If *ms* is not specified, returns the current animation duration.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
 
 | Param | Type | Default |
 | --- | --- | --- |
@@ -124,10 +159,11 @@ If *ms* is specified, sets the animation duration to the specified number and re
 
 <a name="Viz.filter"></a>
 
-#### Viz.filter([*value*])
+#### Viz.filter([*value*]) ↩︎
 If *value* is specified, sets the filter to the specified function and returns the current class instance. If *value* is not specified, returns the current filter.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
 
 | Param | Type |
 | --- | --- |
@@ -135,10 +171,11 @@ If *value* is specified, sets the filter to the specified function and returns t
 
 <a name="Viz.groupBy"></a>
 
-#### Viz.groupBy([*value*])
+#### Viz.groupBy([*value*]) ↩︎
 If *value* is specified, sets the group accessor(s) to the specified string, function, or array of values and returns the current class instance. If *value* is not specified, returns the current group accessor.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
 
 | Param | Type |
 | --- | --- |
@@ -152,21 +189,23 @@ function value(d) {
 ```
 <a name="Viz.height"></a>
 
-#### Viz.height([*value*])
+#### Viz.height([*value*]) ↩︎
 If *value* is specified, sets the overall height to the specified number and returns the current class instance. If *value* is not specified, returns the current overall height.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
 
 | Param | Type | Default |
 | --- | --- | --- |
 | [*value*] | <code>Number</code> | <code>window.innerHeight</code> | 
 
-<a name="Viz.highlight"></a>
+<a name="Viz.hover"></a>
 
-#### Viz.highlight([*value*])
-If *value* is specified, sets the highlight method to the specified function and returns the current class instance. If *value* is not specified, returns the current highlight method.
+#### Viz.hover([*value*]) ↩︎
+If *value* is specified, sets the hover method to the specified function and returns the current class instance. If *value* is not specified, returns the current hover method.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
 
 | Param | Type |
 | --- | --- |
@@ -174,10 +213,11 @@ If *value* is specified, sets the highlight method to the specified function and
 
 <a name="Viz.label"></a>
 
-#### Viz.label([*value*])
+#### Viz.label([*value*]) ↩︎
 If *value* is specified, sets the label accessor to the specified function or string and returns the current class instance. If *value* is not specified, returns the current text accessor, which is `undefined` by default.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
 
 | Param | Type |
 | --- | --- |
@@ -185,10 +225,11 @@ If *value* is specified, sets the label accessor to the specified function or st
 
 <a name="Viz.legend"></a>
 
-#### Viz.legend([*value*])
+#### Viz.legend([*value*]) ↩︎
 If *value* is specified, toggles the legend based on the specified boolean and returns the current class instance. If *value* is not specified, returns the current value.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
 
 | Param | Type | Default |
 | --- | --- | --- |
@@ -196,10 +237,11 @@ If *value* is specified, toggles the legend based on the specified boolean and r
 
 <a name="Viz.legendConfig"></a>
 
-#### Viz.legendConfig([*value*])
+#### Viz.legendConfig([*value*]) ↩︎
 If *value* is specified, the object is passed to the legend's config method. If *value* is not specified, returns the current legend config.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
 
 | Param | Type |
 | --- | --- |
@@ -207,10 +249,11 @@ If *value* is specified, the object is passed to the legend's config method. If 
 
 <a name="Viz.locale"></a>
 
-#### Viz.locale([*value*])
+#### Viz.locale([*value*]) ↩︎
 If *value* is specified, sets the locale to the specified string and returns the current class instance. If *value* is not specified, returns the current locale.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
 
 | Param | Type | Default |
 | --- | --- | --- |
@@ -218,10 +261,11 @@ If *value* is specified, sets the locale to the specified string and returns the
 
 <a name="Viz.select"></a>
 
-#### Viz.select([*selector*])
+#### Viz.select([*selector*]) ↩︎
 If *selector* is specified, sets the SVG container element to the specified d3 selector or DOM element and returns the current class instance. If *selector* is not specified, returns the current SVG container element, which is `undefined` by default.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
 
 | Param | Type |
 | --- | --- |
@@ -229,10 +273,11 @@ If *selector* is specified, sets the SVG container element to the specified d3 s
 
 <a name="Viz.shape"></a>
 
-#### Viz.shape([*value*])
+#### Viz.shape([*value*]) ↩︎
 If *value* is specified, sets the shape accessor to the specified function or number and returns the current class instance. If *value* is not specified, returns the current shape accessor.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
 
 | Param | Type |
 | --- | --- |
@@ -240,10 +285,11 @@ If *value* is specified, sets the shape accessor to the specified function or nu
 
 <a name="Viz.shapeConfig"></a>
 
-#### Viz.shapeConfig([*value*])
+#### Viz.shapeConfig([*value*]) ↩︎
 If *value* is specified, sets the config method for each shape and returns the current class instance. If *value* is not specified, returns the current shape configuration.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
 
 | Param | Type |
 | --- | --- |
@@ -251,10 +297,11 @@ If *value* is specified, sets the config method for each shape and returns the c
 
 <a name="Viz.time"></a>
 
-#### Viz.time([*value*])
+#### Viz.time([*value*]) ↩︎
 If *value* is specified, sets the time accessor to the specified function or string and returns the current class instance. If *value* is not specified, returns the current time accessor. The time values that are returned should be valid Date objects, 4-digit year values, or strings that can be parsed into javascript Date objects (click [here](http://dygraphs.com/date-formats.html) for valid string formats).
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
 
 | Param | Type |
 | --- | --- |
@@ -262,10 +309,11 @@ If *value* is specified, sets the time accessor to the specified function or str
 
 <a name="Viz.timeFilter"></a>
 
-#### Viz.timeFilter([*value*])
+#### Viz.timeFilter([*value*]) ↩︎
 If *value* is specified, sets the time filter to the specified function and returns the current class instance. If *value* is not specified, returns the current time filter.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
 
 | Param | Type |
 | --- | --- |
@@ -273,10 +321,11 @@ If *value* is specified, sets the time filter to the specified function and retu
 
 <a name="Viz.timeline"></a>
 
-#### Viz.timeline([*value*])
+#### Viz.timeline([*value*]) ↩︎
 If *value* is specified, toggles the timeline based on the specified boolean and returns the current class instance. If *value* is not specified, returns the current timeline visibility.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
 
 | Param | Type | Default |
 | --- | --- | --- |
@@ -284,10 +333,35 @@ If *value* is specified, toggles the timeline based on the specified boolean and
 
 <a name="Viz.timelineConfig"></a>
 
-#### Viz.timelineConfig([*value*])
+#### Viz.timelineConfig([*value*]) ↩︎
 If *value* is specified, sets the config method for the timeline and returns the current class instance. If *value* is not specified, returns the current timeline configuration.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
+
+| Param | Type |
+| --- | --- |
+| [*value*] | <code>Object</code> | 
+
+<a name="Viz.title"></a>
+
+#### Viz.title([*value*]) ↩︎
+If *value* is specified, sets the title accessor to the specified function or string and returns the current class instance. If *value* is not specified, returns the current title accessor.
+
+**Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
+
+| Param | Type |
+| --- | --- |
+| [*value*] | <code>function</code> &#124; <code>String</code> | 
+
+<a name="Viz.titleConfig"></a>
+
+#### Viz.titleConfig([*value*]) ↩︎
+If *value* is specified, sets the config method for the title and returns the current class instance. If *value* is not specified, returns the current title configuration.
+
+**Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
 
 | Param | Type |
 | --- | --- |
@@ -295,10 +369,11 @@ If *value* is specified, sets the config method for the timeline and returns the
 
 <a name="Viz.tooltip"></a>
 
-#### Viz.tooltip([*value*])
+#### Viz.tooltip([*value*]) ↩︎
 If *value* is specified, toggles the tooltip based on the specified boolean and returns the current class instance. If *value* is not specified, returns the current tooltip visibility.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
 
 | Param | Type | Default |
 | --- | --- | --- |
@@ -306,10 +381,35 @@ If *value* is specified, toggles the tooltip based on the specified boolean and 
 
 <a name="Viz.tooltipConfig"></a>
 
-#### Viz.tooltipConfig([*value*])
+#### Viz.tooltipConfig([*value*]) ↩︎
 If *value* is specified, sets the config method for the tooltip and returns the current class instance. If *value* is not specified, returns the current tooltip configuration.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
+
+| Param | Type |
+| --- | --- |
+| [*value*] | <code>Object</code> | 
+
+<a name="Viz.total"></a>
+
+#### Viz.total([*value*]) ↩︎
+If *value* is specified, sets the total accessor to the specified function or string and returns the current class instance. If *value* is not specified, returns the current total accessor.
+
+**Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
+
+| Param | Type |
+| --- | --- |
+| [*value*] | <code>Boolean</code> &#124; <code>function</code> &#124; <code>String</code> | 
+
+<a name="Viz.totalConfig"></a>
+
+#### Viz.totalConfig([*value*]) ↩︎
+If *value* is specified, sets the config method for the total and returns the current class instance. If *value* is not specified, returns the current total configuration.
+
+**Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
 
 | Param | Type |
 | --- | --- |
@@ -317,10 +417,11 @@ If *value* is specified, sets the config method for the tooltip and returns the 
 
 <a name="Viz.width"></a>
 
-#### Viz.width([*value*])
+#### Viz.width([*value*]) ↩︎
 If *value* is specified, sets the overallwidth to the specified number and returns the current class instance. If *value* is not specified, returns the current overall width.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
 
 | Param | Type | Default |
 | --- | --- | --- |
@@ -328,4 +429,4 @@ If *value* is specified, sets the overallwidth to the specified number and retur
 
 
 
-###### <sub>Documentation generated on Wed, 07 Dec 2016 03:25:37 GMT</sub>
+###### <sub>Documentation generated on Thu, 08 Dec 2016 22:13:56 GMT</sub>
