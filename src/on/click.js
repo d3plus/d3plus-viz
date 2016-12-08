@@ -12,7 +12,7 @@ export default function(d, i) {
     const filterGroup = this._groupBy[this._drawDepth],
           filterId = filterGroup(d, i);
 
-    this.highlight(false);
+    this.hover(false);
     if (this._tooltip) this._tooltipClass.data([]).render();
 
     this._history.push({

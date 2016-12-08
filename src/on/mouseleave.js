@@ -6,7 +6,7 @@
 */
 export default function() {
 
-  this.highlight(false);
+  this.hover(false);
   this._select.style("cursor", "auto");
   if (this._tooltip) this._tooltipClass.data([]).render();
 

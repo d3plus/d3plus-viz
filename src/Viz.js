@@ -52,7 +52,6 @@ export default class Viz extends BaseClass {
       .on("mousemove", () => this._backClass.select().style("cursor", "pointer"));
     this._data = [];
     this._duration = 600;
-    this._highlightOpacity = 0.5;
     this._history = [];
     this._groupBy = [accessor("id")];
     this._legend = true;
@@ -75,7 +74,6 @@ export default class Viz extends BaseClass {
     this._shapes = [];
     this._shapeConfig = {
       fill: (d, i) => colorAssign(this._groupBy[0](d, i)),
-      highlightDuration: 50,
       opacity: constant(1),
       stroke: (d, i) => color(colorAssign(this._groupBy[0](d, i))).darker(),
       strokeWidth: constant(0)
@@ -402,29 +400,29 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc If *value* is specified, sets the highlight method to the specified function and returns the current class instance. If *value* is not specified, returns the current highlight method.
+      @desc If *value* is specified, sets the hover method to the specified function and returns the current class instance. If *value* is not specified, returns the current hover method.
       @param {Function} [*value*]
       @chainable
   */
-  highlight(_) {
+  hover(_) {
 
     let shapeData = arrayMerge(this._shapes.map(s => s.data()));
     shapeData = shapeData.concat(this._legendClass.data());
-    const highlightData = _ ? shapeData.filter(_) : [];
+    const hoverData = _ ? shapeData.filter(_) : [];
 
-    let highlightIds = [];
-    highlightData.map(this._ids).forEach(ids => {
+    let hoverIds = [];
+    hoverData.map(this._ids).forEach(ids => {
       for (let x = 1; x <= ids.length; x++) {
-        highlightIds.push(JSON.stringify(ids.slice(0, x)));
+        hoverIds.push(JSON.stringify(ids.slice(0, x)));
       }
     });
-    highlightIds = highlightIds.filter((id, i) => highlightIds.indexOf(id) === i);
+    hoverIds = hoverIds.filter((id, i) => hoverIds.indexOf(id) === i);
 
-    let highlightFunction;
-    if (highlightIds.length) highlightFunction = (d, i) => highlightIds.includes(JSON.stringify(this._ids(d, i)));
+    let hoverFunction;
+    if (hoverIds.length) hoverFunction = (d, i) => hoverIds.includes(JSON.stringify(this._ids(d, i)));
 
-    this._shapes.forEach(s => s.highlight(highlightFunction));
-    if (this._legend) this._legendClass.highlight(highlightFunction);
+    this._shapes.forEach(s => s.hover(hoverFunction));
+    if (this._legend) this._legendClass.hover(hoverFunction);
 
     return this;
   }

@@ -8,7 +8,7 @@ export default function(d, i) {
 
   const filterId = this._ids(d, i);
 
-  this.highlight((h, x) => {
+  this.hover((h, x) => {
     const ids = this._ids(h, x);
     return filterId[filterId.length - 1] === ids[filterId.length - 1];
   });
