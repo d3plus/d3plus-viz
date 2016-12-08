@@ -11,12 +11,14 @@ export default function() {
 
   const backGroup = elem("g.d3plus-viz-back", {
     parent: this._select,
-    transition: this._transition
+    transition: this._transition,
+    update: {transform: `translate(${this._margin.left}, ${this._margin.top})`}
   }).node();
 
   this._backClass
     .data(visible ? [{text: locale.t("Back", {lng: this._locale}), x: this._padding * 2, y: 0}] : [])
     .select(backGroup)
+    .config(this._backConfig)
     .render();
 
   this._margin.top += visible ? this._backClass.fontSize()() + this._padding : 0;

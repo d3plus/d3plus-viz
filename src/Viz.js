@@ -55,6 +55,10 @@ export default class Viz extends BaseClass {
         else this.depth(this._drawDepth - 1).filter(false).render();
       })
       .on("mousemove", () => this._backClass.select().style("cursor", "pointer"));
+    this._backConfig = {
+      fontSize: 10,
+      resize: false
+    };
     this._data = [];
     this._duration = 600;
     this._history = [];
@@ -294,6 +298,16 @@ export default class Viz extends BaseClass {
   */
   aggs(_) {
     return arguments.length ? (this._aggs = assign(this._aggs, _), this) : this._aggs;
+  }
+
+  /**
+      @memberof Viz
+      @desc If *value* is specified, sets the config method for the back button and returns the current class instance. If *value* is not specified, returns the current back button configuration.
+      @param {Object} [*value*]
+      @chainable
+  */
+  backConfig(_) {
+    return arguments.length ? (this._backConfig = assign(this._backConfig, _), this) : this._backConfig;
   }
 
   /**
