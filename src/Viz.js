@@ -1,4 +1,4 @@
-import {extent, max, merge as arrayMerge} from "d3-array";
+import {max, merge as arrayMerge} from "d3-array";
 import {color} from "d3-color";
 import {nest} from "d3-collection";
 import {select} from "d3-selection";
@@ -13,6 +13,7 @@ import {Timeline} from "d3plus-timeline";
 import {Tooltip} from "d3plus-tooltip";
 
 import {default as drawLegend} from "./_drawLegend";
+import {default as drawTimeline} from "./_drawTimeline";
 import {default as getSize} from "./_getSize";
 
 import {default as click} from "./on/click";
@@ -199,57 +200,38 @@ export default class Viz extends BaseClass {
       return l[l.length - 1];
     };
 
+    // set the default timeFilter if it has not been specified
+    if (this._time && this._timeFilter === void 0) {
+
+      const dates = this._data.map(this._time).map(date);
+      const d = this._data[0], i = 0;
+
+      if (this._discrete && `_${this._discrete}` in this && this[`_${this._discrete}`](d, i) === this._time(d, i)) {
+        this._timeFilter = () => true;
+      }
+      else {
+        const latestTime = +max(dates);
+        this._timeFilter = (d, i) => +date(this._time(d, i)) === latestTime;
+      }
+
+    }
+
     this._filteredData = [];
-    let filteredData = [];
+    let flatData = [];
     if (this._data.length) {
 
-      filteredData = this._timeFilter ? this._data.filter(this._timeFilter) : this._data;
-      if (this._filter) filteredData = filteredData.filter(this._filter);
+      flatData = this._timeFilter ? this._data.filter(this._timeFilter) : this._data;
+      if (this._filter) flatData = flatData.filter(this._filter);
 
       const dataNest = nest();
       for (let i = 0; i <= this._drawDepth; i++) dataNest.key(this._groupBy[i]);
       if (this._discrete && `_${this._discrete}` in this) dataNest.key(this[`_${this._discrete}`]);
-      dataNest.rollup(leaves => this._filteredData.push(merge(leaves, this._aggs))).entries(filteredData);
+      dataNest.rollup(leaves => this._filteredData.push(merge(leaves, this._aggs))).entries(flatData);
 
     }
 
-    // Renders the timeline if this._time and this._timeline are not falsy and there are more than 1 tick available.
-    let timelinePossible = this._time && this._timeline;
-    const ticks = timelinePossible ? Array.from(new Set(this._data.map(this._time))).map(date) : [];
-    timelinePossible = timelinePossible && ticks.length > 1;
-    const timelineGroup = this._uiGroup("timeline", timelinePossible);
-    if (timelinePossible) {
-
-      const timeline = this._timelineClass
-        .domain(extent(ticks))
-        .duration(this._duration)
-        .height(this._height / 2 - this._margin.bottom)
-        .select(timelineGroup.node())
-        .ticks(ticks.sort((a, b) => +a - +b))
-        .width(this._width);
-
-      if (timeline.selection() === void 0) {
-
-        const dates = Array.from(new Set(arrayMerge(this._filteredData.map(d => {
-          const t = this._time(d);
-          return t instanceof Array ? t : [t];
-        })))).map(date);
-
-        const d = this._data[0], i = 0;
-        if (this._discrete && `_${this._discrete}` in this && this[`_${this._discrete}`](d, i) === this._time(d, i)) timeline.selection(extent(dates));
-        else timeline.selection(max(dates));
-
-      }
-
-      timeline
-        .config(this._timelineConfig)
-        .render();
-
-      this._margin.bottom += timeline.outerBounds().height + timeline.padding() * 2;
-
-    }
-
-    drawLegend.bind(this)(filteredData);
+    drawTimeline.bind(this)(flatData);
+    drawLegend.bind(this)(flatData);
 
     const titleGroup = elem("g.d3plus-viz-titles", {parent: this._select});
 
@@ -412,7 +394,7 @@ function value(d) {
   */
   hover(_) {
 
-    let hoverFunction = false;
+    let hoverFunction = this._hover = _;
     if (typeof _ === "function") {
 
       let shapeData = arrayMerge(this._shapes.map(s => s.data()));
