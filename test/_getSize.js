@@ -1,6 +1,6 @@
 import {test} from "tape";
 import {select} from "d3-selection";
-import {default as getSize} from "../src/getSize.js";
+import {default as getSize} from "../src/_getSize.js";
 
 test("getSize", assert => {
 

@@ -1,5 +1,5 @@
 import {test} from "tape";
-import {default as colorNest} from "../src/colorNest.js";
+import {default as colorNest} from "../src/_colorNest.js";
 
 test("colorNest", assert => {
 
