@@ -1,3 +1,4 @@
+import {default as mouseenter} from "./mouseenter";
 import {default as tooltip} from "./tooltip";
 
 /**
@@ -8,10 +9,11 @@ import {default as tooltip} from "./tooltip";
 */
 export default function(d, i) {
 
-  if (this._drawDepth >= this._groupBy.length - 1) {
+  if (this._hover && this._drawDepth >= this._groupBy.length - 1) {
 
     if (this._active && this._active(d, i)) {
       this.active(false);
+      mouseenter.bind(this)(d, i);
     }
     else {
 

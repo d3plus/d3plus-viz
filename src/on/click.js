@@ -7,6 +7,7 @@
 export default function(d, i) {
 
   this._select.style("cursor", "auto");
+  
   if (this._drawDepth < this._groupBy.length - 1) {
 
     const filterGroup = this._groupBy[this._drawDepth],
