@@ -17,7 +17,7 @@ export default function(data = []) {
   const legendGroup = this._uiGroup("legend", this._legend);
 
   this._legendData = [];
-  if (this._data.length) {
+  if (data.length) {
 
     const dataNest = nest();
     for (let i = 0; i <= this._drawDepth; i++) dataNest.key(this._groupBy[i]);
