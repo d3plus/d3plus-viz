@@ -14,7 +14,9 @@ export default function(data = []) {
               : this._total === true && this._size ? sum(data.map(this._size)) : false;
 
   const group = elem("g.d3plus-viz-total", {
+    enter: {transform: `translate(${this._margin.left}, ${this._margin.top})`},
     parent: this._select,
+    transition: this._transition,
     update: {transform: `translate(${this._margin.left}, ${this._margin.top})`}
   }).node();
 
