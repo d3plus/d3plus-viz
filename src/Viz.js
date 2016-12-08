@@ -6,7 +6,7 @@ import {transition} from "d3-transition";
 
 import {date} from "d3plus-axis";
 import {assign as colorAssign} from "d3plus-color";
-import {accessor, assign, BaseClass, constant, elem, merge} from "d3plus-common";
+import {accessor, assign, BaseClass, constant, merge} from "d3plus-common";
 import {Legend} from "d3plus-legend";
 import {TextBox} from "d3plus-text";
 import {Timeline} from "d3plus-timeline";
@@ -15,6 +15,7 @@ import {Tooltip} from "d3plus-tooltip";
 import {default as drawBack} from "./_drawBack";
 import {default as drawLegend} from "./_drawLegend";
 import {default as drawTimeline} from "./_drawTimeline";
+import {default as drawTitle} from "./_drawTitle";
 import {default as getSize} from "./_getSize";
 
 import {default as click} from "./on/click";
@@ -94,6 +95,12 @@ export default class Viz extends BaseClass {
           return ms >= s[0] && ms <= s[1];
         }).render();
       });
+    this._titleClass = new TextBox();
+    this._titleConfig = {
+      fontSize: 12,
+      resize: false,
+      textAnchor: "middle"
+    };
     this._timelineConfig = {};
     this._tooltip = true;
     this._tooltipClass = new Tooltip();
@@ -139,23 +146,6 @@ export default class Viz extends BaseClass {
     if (shape && this._shapeConfig[shape]) newConfig = assign(newConfig, this._shapeConfig[shape]);
     return newConfig;
 
-  }
-
-  /**
-      @memberof Viz
-      @desc Manages the SVG group for a UI element.
-      @param {String} type
-      @private
-  */
-  _uiGroup(type, condition = true) {
-    return elem(`g.d3plus-viz-${type}`, {
-      condition,
-      enter: {transform: `translate(0, ${this._height / 2})`},
-      exit: {opacity: 0},
-      parent: this._select,
-      transition: this._transition,
-      update: {opacity: 1, transform: `translate(0, ${this._height / 2})`}
-    });
   }
 
   /**
@@ -234,6 +224,7 @@ export default class Viz extends BaseClass {
     drawTimeline.bind(this)(flatData);
     drawLegend.bind(this)(flatData);
     drawBack.bind(this)();
+    drawTitle.bind(this)(flatData);
 
     if (callback) setTimeout(callback, this._duration + 100);
 
@@ -535,6 +526,26 @@ function value(d) {
   */
   timelineConfig(_) {
     return arguments.length ? (this._timelineConfig = assign(this._timelineConfig, _), this) : this._timelineConfig;
+  }
+
+  /**
+      @memberof Viz
+      @desc If *value* is specified, sets the title accessor to the specified function or string and returns the current class instance. If *value* is not specified, returns the current title accessor.
+      @param {Function|String} [*value*]
+      @chainable
+  */
+  title(_) {
+    return arguments.length ? (this._title = typeof _ === "function" ? _ : constant(_), this) : this._title;
+  }
+
+  /**
+      @memberof Viz
+      @desc If *value* is specified, sets the config method for the title and returns the current class instance. If *value* is not specified, returns the current title configuration.
+      @param {Object} [*value*]
+      @chainable
+  */
+  titleConfig(_) {
+    return arguments.length ? (this._titleConfig = assign(this._titleConfig, _), this) : this._titleConfig;
   }
 
   /**
