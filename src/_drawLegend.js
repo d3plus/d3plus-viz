@@ -4,16 +4,13 @@ import {merge} from "d3plus-common";
 import {default as colorNest} from "./_colorNest";
 
 /**
-    @function _colorNest
-    @desc Returns an Array of data objects based on a given color accessor and groupBy levels.
-    @param {Array} raw The raw data Array to be grouped by color.
-    @param {Function} fill The color accessor for each data object.
-    @param {Array} [groupBy = []] An optional array of grouping accessors. Will autodetect if a certain group by level is assigning the colors, and will return the appropriate accessor.
+    @function _drawLegend
+    @desc Renders the legend if this._legend is not falsy.
+    @param {Array} dara The filtered data array to be displayed.
     @private
 */
 export default function(data = []) {
 
-  // Renders the legend if this._legend is not falsy.
   const legendGroup = this._uiGroup("legend", this._legend);
 
   this._legendData = [];
