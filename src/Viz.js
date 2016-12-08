@@ -307,6 +307,7 @@ export default class Viz extends BaseClass {
       @memberof Viz
       @desc If *value* is specified, sets the aggregation method for each key in the object and returns the current class instance. If *value* is not specified, returns the current defined aggregation methods.
       @param {Object} [*value*]
+      @chainable
   */
   aggs(_) {
     return arguments.length ? (this._aggs = assign(this._aggs, _), this) : this._aggs;
@@ -316,6 +317,7 @@ export default class Viz extends BaseClass {
       @memberof Viz
       @desc If *data* is specified, sets the data array to the specified array and returns the current class instance. If *data* is not specified, returns the current data array.
       @param {Array} [*data* = []]
+      @chainable
   */
   data(_) {
     return arguments.length ? (this._data = _, this) : this._data;
@@ -325,6 +327,7 @@ export default class Viz extends BaseClass {
       @memberof Viz
       @desc If *value* is specified, sets the depth to the specified number and returns the current class instance. The *value* should correspond with an index in the [groupBy](#groupBy) array. If *value* is not specified, returns the current depth.
       @param {Number} [*value*]
+      @chainable
   */
   depth(_) {
     return arguments.length ? (this._depth = _, this) : this._depth;
@@ -334,6 +337,7 @@ export default class Viz extends BaseClass {
       @memberof Viz
       @desc If *value* is specified, sets the discrete accessor to the specified method name (usually an axis) and returns the current class instance. If *value* is not specified, returns the current discrete method.
       @param {String} [*value*]
+      @chainable
   */
   discrete(_) {
     return arguments.length ? (this._discrete = _, this) : this._discrete;
@@ -343,6 +347,7 @@ export default class Viz extends BaseClass {
       @memberof Viz
       @desc If *ms* is specified, sets the animation duration to the specified number and returns the current class instance. If *ms* is not specified, returns the current animation duration.
       @param {Number} [*ms* = 600]
+      @chainable
   */
   duration(_) {
     return arguments.length ? (this._duration = _, this) : this._duration;
@@ -352,6 +357,7 @@ export default class Viz extends BaseClass {
       @memberof Viz
       @desc If *value* is specified, sets the filter to the specified function and returns the current class instance. If *value* is not specified, returns the current filter.
       @param {Function} [*value*]
+      @chainable
   */
   filter(_) {
     return arguments.length ? (this._filter = _, this) : this._filter;
@@ -361,6 +367,7 @@ export default class Viz extends BaseClass {
       @memberof Viz
       @desc If *value* is specified, sets the group accessor(s) to the specified string, function, or array of values and returns the current class instance. If *value* is not specified, returns the current group accessor.
       @param {String|Function|Array} [*value*]
+      @chainable
       @example
 function value(d) {
   return d.id;
@@ -387,6 +394,7 @@ function value(d) {
       @memberof Viz
       @desc If *value* is specified, sets the overall height to the specified number and returns the current class instance. If *value* is not specified, returns the current overall height.
       @param {Number} [*value* = window.innerHeight]
+      @chainable
   */
   height(_) {
     return arguments.length ? (this._height = _, this) : this._height;
@@ -396,6 +404,7 @@ function value(d) {
       @memberof Viz
       @desc If *value* is specified, sets the highlight method to the specified function and returns the current class instance. If *value* is not specified, returns the current highlight method.
       @param {Function} [*value*]
+      @chainable
   */
   highlight(_) {
 
@@ -424,6 +433,7 @@ function value(d) {
       @memberof Viz
       @desc If *value* is specified, sets the label accessor to the specified function or string and returns the current class instance. If *value* is not specified, returns the current text accessor, which is `undefined` by default.
       @param {Function|String} [*value*]
+      @chainable
   */
   label(_) {
     return arguments.length ? (this._label = typeof _ === "function" ? _ : constant(_), this) : this._label;
@@ -433,6 +443,7 @@ function value(d) {
       @memberof Viz
       @desc If *value* is specified, toggles the legend based on the specified boolean and returns the current class instance. If *value* is not specified, returns the current value.
       @param {Boolean} [*value* = true]
+      @chainable
   */
   legend(_) {
     return arguments.length ? (this._legend = _, this) : this._legend;
@@ -442,6 +453,7 @@ function value(d) {
       @memberof Viz
       @desc If *value* is specified, the object is passed to the legend's config method. If *value* is not specified, returns the current legend config.
       @param {Object} [*value*]
+      @chainable
   */
   legendConfig(_) {
     return arguments.length ? (this._legendConfig = _, this) : this._legendConfig;
@@ -451,6 +463,7 @@ function value(d) {
       @memberof Viz
       @desc If *value* is specified, sets the locale to the specified string and returns the current class instance. If *value* is not specified, returns the current locale.
       @param {String} [*value* = "en-US"]
+      @chainable
   */
   locale(_) {
     return arguments.length ? (this._locale = _, this) : this._locale;
@@ -460,6 +473,7 @@ function value(d) {
       @memberof Viz
       @desc If *selector* is specified, sets the SVG container element to the specified d3 selector or DOM element and returns the current class instance. If *selector* is not specified, returns the current SVG container element, which is `undefined` by default.
       @param {String|HTMLElement} [*selector*]
+      @chainable
   */
   select(_) {
     return arguments.length ? (this._select = select(_), this) : this._select;
@@ -469,6 +483,7 @@ function value(d) {
       @memberof Viz
       @desc If *value* is specified, sets the shape accessor to the specified function or number and returns the current class instance. If *value* is not specified, returns the current shape accessor.
       @param {Function|String} [*value*]
+      @chainable
   */
   shape(_) {
     return arguments.length ? (this._shape = typeof _ === "function" ? _ : constant(_), this) : this._shape;
@@ -478,6 +493,7 @@ function value(d) {
       @memberof Viz
       @desc If *value* is specified, sets the config method for each shape and returns the current class instance. If *value* is not specified, returns the current shape configuration.
       @param {Object} [*value*]
+      @chainable
   */
   shapeConfig(_) {
     return arguments.length ? (this._shapeConfig = assign(this._shapeConfig, _), this) : this._shapeConfig;
@@ -487,6 +503,7 @@ function value(d) {
       @memberof Viz
       @desc If *value* is specified, sets the time accessor to the specified function or string and returns the current class instance. If *value* is not specified, returns the current time accessor. The time values that are returned should be valid Date objects, 4-digit year values, or strings that can be parsed into javascript Date objects (click [here](http://dygraphs.com/date-formats.html) for valid string formats).
       @param {Function|String} [*value*]
+      @chainable
   */
   time(_) {
     if (arguments.length) {
@@ -511,6 +528,7 @@ function value(d) {
       @memberof Viz
       @desc If *value* is specified, sets the time filter to the specified function and returns the current class instance. If *value* is not specified, returns the current time filter.
       @param {Function} [*value*]
+      @chainable
   */
   timeFilter(_) {
     return arguments.length ? (this._timeFilter = _, this) : this._timeFilter;
@@ -520,6 +538,7 @@ function value(d) {
       @memberof Viz
       @desc If *value* is specified, toggles the timeline based on the specified boolean and returns the current class instance. If *value* is not specified, returns the current timeline visibility.
       @param {Boolean} [*value* = true]
+      @chainable
   */
   timeline(_) {
     return arguments.length ? (this._timeline = _, this) : this._timeline;
@@ -529,6 +548,7 @@ function value(d) {
       @memberof Viz
       @desc If *value* is specified, sets the config method for the timeline and returns the current class instance. If *value* is not specified, returns the current timeline configuration.
       @param {Object} [*value*]
+      @chainable
   */
   timelineConfig(_) {
     return arguments.length ? (this._timelineConfig = assign(this._timelineConfig, _), this) : this._timelineConfig;
@@ -538,6 +558,7 @@ function value(d) {
       @memberof Viz
       @desc If *value* is specified, toggles the tooltip based on the specified boolean and returns the current class instance. If *value* is not specified, returns the current tooltip visibility.
       @param {Boolean} [*value* = true]
+      @chainable
   */
   tooltip(_) {
     return arguments.length ? (this._tooltip = _, this) : this._tooltip;
@@ -547,6 +568,7 @@ function value(d) {
       @memberof Viz
       @desc If *value* is specified, sets the config method for the tooltip and returns the current class instance. If *value* is not specified, returns the current tooltip configuration.
       @param {Object} [*value*]
+      @chainable
   */
   tooltipConfig(_) {
     return arguments.length ? (this._tooltipConfig = assign(this._tooltipConfig, _), this) : this._tooltipConfig;
@@ -556,6 +578,7 @@ function value(d) {
       @memberof Viz
       @desc If *value* is specified, sets the overallwidth to the specified number and returns the current class instance. If *value* is not specified, returns the current overall width.
       @param {Number} [*value* = window.innerWidth]
+      @chainable
   */
   width(_) {
     return arguments.length ? (this._width = _, this) : this._width;
