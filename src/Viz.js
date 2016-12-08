@@ -16,11 +16,12 @@ import {default as colorNest} from "./colorNest";
 import {default as getSize} from "./getSize";
 
 import {default as click} from "./on/click";
+import {default as clickLegend} from "./on/click.legend";
+import {default as clickShape} from "./on/click.shape";
 import {default as mouseenter} from "./on/mouseenter";
-import {default as mouseenterLegend} from "./on/mouseenter.legend";
-import {default as mouseenterShape} from "./on/mouseenter.shape";
-import {default as mousemove} from "./on/mousemove";
 import {default as mouseleave} from "./on/mouseleave";
+import {default as mousemoveLegend} from "./on/mousemove.legend";
+import {default as mousemoveShape} from "./on/mousemove.shape";
 
 /**
     @external BaseClass
@@ -64,10 +65,11 @@ export default class Viz extends BaseClass {
     this._locale = "en-US";
     this._on = {
       "click": click.bind(this),
+      "click.legend": clickLegend.bind(this),
+      "click.shape": clickShape.bind(this),
       "mouseenter": mouseenter.bind(this),
-      "mouseenter.legend": mouseenterLegend.bind(this),
-      "mouseenter.shape": mouseenterShape.bind(this),
-      "mousemove": mousemove.bind(this),
+      "mousemove.legend": mousemoveLegend.bind(this),
+      "mousemove.shape": mousemoveShape.bind(this),
       "mouseleave": mouseleave.bind(this)
     };
     this._padding = 5;
@@ -309,7 +311,7 @@ export default class Viz extends BaseClass {
   */
   active(_) {
 
-    let activeFunction = false;
+    let activeFunction = this._active = _;
     if (typeof _ === "function") {
 
       let shapeData = arrayMerge(this._shapes.map(s => s.data()));
