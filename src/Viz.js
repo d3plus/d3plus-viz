@@ -12,8 +12,8 @@ import {TextBox} from "d3plus-text";
 import {Timeline} from "d3plus-timeline";
 import {Tooltip} from "d3plus-tooltip";
 
-import {default as colorNest} from "./colorNest";
-import {default as getSize} from "./getSize";
+import {default as drawLegend} from "./_drawLegend";
+import {default as getSize} from "./_getSize";
 
 import {default as click} from "./on/click";
 import {default as clickLegend} from "./on/click.legend";
@@ -199,18 +199,17 @@ export default class Viz extends BaseClass {
       return l[l.length - 1];
     };
 
-    this._legendData = [];
     this._filteredData = [];
+    let filteredData = [];
     if (this._data.length) {
 
-      let data = this._timeFilter ? this._data.filter(this._timeFilter) : this._data;
-      if (this._filter) data = data.filter(this._filter);
+      filteredData = this._timeFilter ? this._data.filter(this._timeFilter) : this._data;
+      if (this._filter) filteredData = filteredData.filter(this._filter);
 
       const dataNest = nest();
       for (let i = 0; i <= this._drawDepth; i++) dataNest.key(this._groupBy[i]);
-      dataNest.rollup(leaves => this._legendData.push(merge(leaves, this._aggs))).entries(data);
       if (this._discrete && `_${this._discrete}` in this) dataNest.key(this[`_${this._discrete}`]);
-      dataNest.rollup(leaves => this._filteredData.push(merge(leaves, this._aggs))).entries(data);
+      dataNest.rollup(leaves => this._filteredData.push(merge(leaves, this._aggs))).entries(filteredData);
 
     }
 
@@ -250,35 +249,7 @@ export default class Viz extends BaseClass {
 
     }
 
-    // Renders the legend if this._legend is not falsy.
-    const legendGroup = this._uiGroup("legend", this._legend);
-    if (this._legend) {
-
-      const legend = colorNest(this._legendData, this._shapeConfig.fill, this._groupBy);
-
-      this._legendClass
-        .id(legend.id)
-        .duration(this._duration)
-        .data(legend.data.length > 1 ? legend.data : [])
-        .height(this._height / 2 - this._margin.bottom)
-        .label(this._label || legend.id)
-        .select(legendGroup.node())
-        .verticalAlign("bottom")
-        .width(this._width)
-        .shapeConfig(this._shapeConfig)
-        .shapeConfig({on: Object.keys(this._on)
-          .filter(e => !e.includes(".") || e.includes(".legend"))
-          .reduce((obj, e) => {
-            obj[e] = this._on[e];
-            return obj;
-          }, {})})
-        .config(this._legendConfig)
-        .render();
-
-      const legendBounds = this._legendClass.outerBounds();
-      if (legendBounds.height) this._margin.bottom += legendBounds.height + this._legendClass.padding() * 2;
-
-    }
+    drawLegend.bind(this)(filteredData);
 
     const titleGroup = elem("g.d3plus-viz-titles", {parent: this._select});
 

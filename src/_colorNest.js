@@ -3,7 +3,7 @@ import {nest} from "d3-collection";
 import {merge as combine} from "d3plus-common";
 
 /**
-    @function colorNest
+    @function _colorNest
     @desc Returns an Array of data objects based on a given color accessor and groupBy levels.
     @param {Array} raw The raw data Array to be grouped by color.
     @param {Function} fill The color accessor for each data object.

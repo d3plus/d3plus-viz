@@ -1,10 +1,10 @@
 import {select} from "d3-selection";
 
 /**
-  Given an HTMLElement and a "width" or "height" string, this function returns the current calculated size for the DOM element.
+  @desc Given an HTMLElement and a "width" or "height" string, this function returns the current calculated size for the DOM element.
   @private
 */
-function elementSize(element, s) {
+function _elementSize(element, s) {
 
   if (element.tagName === undefined || ["BODY", "HTML"].indexOf(element.tagName) >= 0) {
 
@@ -31,7 +31,7 @@ function elementSize(element, s) {
 
     const val = parseFloat(select(element).style(s), 10);
     if (typeof val === "number" && val > 0) return val;
-    else return elementSize(element.parentNode, s);
+    else return _elementSize(element.parentNode, s);
 
   }
 }
@@ -43,5 +43,5 @@ function elementSize(element, s) {
     @private
 */
 export default function(elem) {
-  return [elementSize(elem, "width"), elementSize(elem, "height")];
+  return [_elementSize(elem, "width"), _elementSize(elem, "height")];
 }
