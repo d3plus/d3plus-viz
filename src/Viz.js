@@ -303,6 +303,39 @@ export default class Viz extends BaseClass {
 
   /**
       @memberof Viz
+      @desc If *value* is specified, sets the active method to the specified function and returns the current class instance. If *value* is not specified, returns the current active method.
+      @param {Function} [*value*]
+      @chainable
+  */
+  active(_) {
+
+    let activeFunction = false;
+    if (typeof _ === "function") {
+
+      let shapeData = arrayMerge(this._shapes.map(s => s.data()));
+      shapeData = shapeData.concat(this._legendClass.data());
+      const activeData = _ ? shapeData.filter(_) : [];
+
+      let activeIds = [];
+      activeData.map(this._ids).forEach(ids => {
+        for (let x = 1; x <= ids.length; x++) {
+          activeIds.push(JSON.stringify(ids.slice(0, x)));
+        }
+      });
+      activeIds = activeIds.filter((id, i) => activeIds.indexOf(id) === i);
+
+      if (activeIds.length) activeFunction = (d, i) => activeIds.includes(JSON.stringify(this._ids(d, i)));
+
+    }
+
+    this._shapes.forEach(s => s.active(activeFunction));
+    if (this._legend) this._legendClass.active(activeFunction);
+
+    return this;
+  }
+
+  /**
+      @memberof Viz
       @desc If *value* is specified, sets the aggregation method for each key in the object and returns the current class instance. If *value* is not specified, returns the current defined aggregation methods.
       @param {Object} [*value*]
       @chainable
@@ -406,20 +439,24 @@ function value(d) {
   */
   hover(_) {
 
-    let shapeData = arrayMerge(this._shapes.map(s => s.data()));
-    shapeData = shapeData.concat(this._legendClass.data());
-    const hoverData = _ ? shapeData.filter(_) : [];
+    let hoverFunction = false;
+    if (typeof _ === "function") {
 
-    let hoverIds = [];
-    hoverData.map(this._ids).forEach(ids => {
-      for (let x = 1; x <= ids.length; x++) {
-        hoverIds.push(JSON.stringify(ids.slice(0, x)));
-      }
-    });
-    hoverIds = hoverIds.filter((id, i) => hoverIds.indexOf(id) === i);
+      let shapeData = arrayMerge(this._shapes.map(s => s.data()));
+      shapeData = shapeData.concat(this._legendClass.data());
+      const activeData = _ ? shapeData.filter(_) : [];
 
-    let hoverFunction;
-    if (hoverIds.length) hoverFunction = (d, i) => hoverIds.includes(JSON.stringify(this._ids(d, i)));
+      let activeIds = [];
+      activeData.map(this._ids).forEach(ids => {
+        for (let x = 1; x <= ids.length; x++) {
+          activeIds.push(JSON.stringify(ids.slice(0, x)));
+        }
+      });
+      activeIds = activeIds.filter((id, i) => activeIds.indexOf(id) === i);
+
+      if (activeIds.length) hoverFunction = (d, i) => activeIds.includes(JSON.stringify(this._ids(d, i)));
+
+    }
 
     this._shapes.forEach(s => s.hover(hoverFunction));
     if (this._legend) this._legendClass.hover(hoverFunction);
