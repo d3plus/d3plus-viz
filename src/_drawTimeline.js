@@ -1,6 +1,7 @@
 import {extent} from "d3-array";
 
 import {date} from "d3plus-axis";
+import {elem} from "d3plus-common";
 
 /**
     @function _drawTimeline
@@ -13,14 +14,20 @@ export default function(data = []) {
   let timelinePossible = this._time && this._timeline;
   const ticks = timelinePossible ? Array.from(new Set(this._data.map(this._time))).map(date) : [];
   timelinePossible = timelinePossible && ticks.length > 1;
-  const timelineGroup = this._uiGroup("timeline", timelinePossible);
+
+  const timelineGroup = elem("g.d3plus-viz-timeline", {
+    condition: timelinePossible,
+    parent: this._select,
+    transition: this._transition
+  }).node();
+
   if (timelinePossible) {
 
     const timeline = this._timelineClass
       .domain(extent(ticks))
       .duration(this._duration)
-      .height(this._height / 2 - this._margin.bottom)
-      .select(timelineGroup.node())
+      .height(this._height - this._margin.bottom)
+      .select(timelineGroup)
       .ticks(ticks.sort((a, b) => +a - +b))
       .width(this._width);
 

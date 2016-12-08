@@ -7,11 +7,18 @@ import {elem, locale} from "d3plus-common";
 */
 export default function() {
 
+  const visible = this._history.length;
+
+  const backGroup = elem("g.d3plus-viz-back", {
+    parent: this._select,
+    transition: this._transition
+  }).node();
+
   this._backClass
-    .data(this._history.length ? [{text: locale.t("Back", {lng: this._locale}), x: this._padding * 2, y: 0}] : [])
-    .select(elem("g.d3plus-viz-back", {parent: this._select}).node())
+    .data(visible ? [{text: locale.t("Back", {lng: this._locale}), x: this._padding * 2, y: 0}] : [])
+    .select(backGroup)
     .render();
 
-  this._margin.top += this._history.length ? this._backClass.fontSize()() + this._padding : 0;
+  this._margin.top += visible ? this._backClass.fontSize()() + this._padding : 0;
 
 }

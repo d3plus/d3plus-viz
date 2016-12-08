@@ -1,5 +1,5 @@
 import {nest} from "d3-collection";
-import {merge} from "d3plus-common";
+import {elem, merge} from "d3plus-common";
 
 import {default as colorNest} from "./_colorNest";
 
@@ -11,8 +11,6 @@ import {default as colorNest} from "./_colorNest";
 */
 export default function(data = []) {
 
-  const legendGroup = this._uiGroup("legend", this._legend);
-
   this._legendData = [];
   if (data.length) {
 
@@ -22,6 +20,12 @@ export default function(data = []) {
 
   }
 
+  const legendGroup = elem("g.d3plus-viz-legend", {
+    condition: this._legend,
+    parent: this._select,
+    transition: this._transition
+  }).node();
+
   if (this._legend) {
 
     const legend = colorNest(this._legendData, this._shapeConfig.fill, this._groupBy);
@@ -30,9 +34,9 @@ export default function(data = []) {
       .id(legend.id)
       .duration(this._duration)
       .data(legend.data.length > 1 ? legend.data : [])
-      .height(this._height / 2 - this._margin.bottom)
+      .height(this._height - this._margin.bottom)
       .label(this._label || legend.id)
-      .select(legendGroup.node())
+      .select(legendGroup)
       .verticalAlign("bottom")
       .width(this._width)
       .shapeConfig(this._shapeConfig)
