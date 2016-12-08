@@ -16,6 +16,7 @@ import {default as drawBack} from "./_drawBack";
 import {default as drawLegend} from "./_drawLegend";
 import {default as drawTimeline} from "./_drawTimeline";
 import {default as drawTitle} from "./_drawTitle";
+import {default as drawTotal} from "./_drawTotal";
 import {default as getSize} from "./_getSize";
 
 import {default as click} from "./on/click";
@@ -76,6 +77,7 @@ export default class Viz extends BaseClass {
       "mouseleave": mouseleave.bind(this)
     };
     this._padding = 5;
+
     this._shapes = [];
     this._shapeConfig = {
       fill: (d, i) => colorAssign(this._groupBy[0](d, i)),
@@ -83,6 +85,7 @@ export default class Viz extends BaseClass {
       stroke: (d, i) => color(colorAssign(this._groupBy[0](d, i))).darker(),
       strokeWidth: constant(0)
     };
+
     this._timeline = true;
     this._timelineClass = new Timeline()
       .align("end")
@@ -95,18 +98,27 @@ export default class Viz extends BaseClass {
           return ms >= s[0] && ms <= s[1];
         }).render();
       });
+
     this._titleClass = new TextBox();
     this._titleConfig = {
       fontSize: 12,
       resize: false,
       textAnchor: "middle"
     };
+
     this._timelineConfig = {};
     this._tooltip = true;
     this._tooltipClass = new Tooltip();
     this._tooltipConfig = {
       duration: 50,
       pointerEvents: "none"
+    };
+
+    this._totalClass = new TextBox();
+    this._totalConfig = {
+      fontSize: 10,
+      resize: false,
+      textAnchor: "middle"
     };
 
   }
@@ -225,6 +237,7 @@ export default class Viz extends BaseClass {
     drawLegend.bind(this)(flatData);
     drawBack.bind(this)();
     drawTitle.bind(this)(flatData);
+    drawTotal.bind(this)(flatData);
 
     if (callback) setTimeout(callback, this._duration + 100);
 
@@ -566,6 +579,26 @@ function value(d) {
   */
   tooltipConfig(_) {
     return arguments.length ? (this._tooltipConfig = assign(this._tooltipConfig, _), this) : this._tooltipConfig;
+  }
+
+  /**
+      @memberof Viz
+      @desc If *value* is specified, sets the total accessor to the specified function or string and returns the current class instance. If *value* is not specified, returns the current total accessor.
+      @param {Boolean|Function|String} [*value*]
+      @chainable
+  */
+  total(_) {
+    return arguments.length ? (this._total = typeof _ === "function" ? _ : accessor(_), this) : this._total;
+  }
+
+  /**
+      @memberof Viz
+      @desc If *value* is specified, sets the config method for the total and returns the current class instance. If *value* is not specified, returns the current total configuration.
+      @param {Object} [*value*]
+      @chainable
+  */
+  totalConfig(_) {
+    return arguments.length ? (this._totalConfig = assign(this._totalConfig, _), this) : this._totalConfig;
   }
 
   /**
