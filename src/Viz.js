@@ -6,12 +6,13 @@ import {transition} from "d3-transition";
 
 import {date} from "d3plus-axis";
 import {assign as colorAssign} from "d3plus-color";
-import {accessor, assign, BaseClass, constant, elem, locale, merge} from "d3plus-common";
+import {accessor, assign, BaseClass, constant, elem, merge} from "d3plus-common";
 import {Legend} from "d3plus-legend";
 import {TextBox} from "d3plus-text";
 import {Timeline} from "d3plus-timeline";
 import {Tooltip} from "d3plus-tooltip";
 
+import {default as drawBack} from "./_drawBack";
 import {default as drawLegend} from "./_drawLegend";
 import {default as drawTimeline} from "./_drawTimeline";
 import {default as getSize} from "./_getSize";
@@ -232,15 +233,7 @@ export default class Viz extends BaseClass {
 
     drawTimeline.bind(this)(flatData);
     drawLegend.bind(this)(flatData);
-
-    const titleGroup = elem("g.d3plus-viz-titles", {parent: this._select});
-
-    this._backClass
-      .data(this._history.length ? [{text: locale.t("Back", {lng: this._locale}), x: this._padding * 2, y: 0}] : [])
-      .select(titleGroup.node())
-      .render();
-
-    this._margin.top += this._history.length ? this._backClass.fontSize()() + this._padding : 0;
+    drawBack.bind(this)();
 
     if (callback) setTimeout(callback, this._duration + 100);
 
