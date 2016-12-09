@@ -17,7 +17,9 @@ export default function(d, i, config = {}) {
       .footer(this._drawDepth < this._groupBy.length - 1
             ? locale.t("Click to Expand", {lng: this._locale})
             : this._active && this._active(d, i)
+            ? !this._focus || this._focus === this._id(d, i)
             ? locale.t("Click to Remove Highlight", {lng: this._locale})
+            : locale.t("Click to Highlight", {lng: this._locale})
             : locale.t("Click to Highlight", {lng: this._locale}))
       .title(this._drawLabel)
       .translate(mouse(select("html").node()))
