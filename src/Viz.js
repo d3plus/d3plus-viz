@@ -82,7 +82,6 @@ export default class Viz extends BaseClass {
     };
     this._padding = 5;
 
-    this._shapes = [];
     this._shapeConfig = {
       fill: (d, i) => colorAssign(this._groupBy[0](d, i)),
       opacity: constant(1),
@@ -243,6 +242,7 @@ export default class Viz extends BaseClass {
     drawTitle.bind(this)(flatData);
     drawTotal.bind(this)(flatData);
 
+    this._shapes = [];
     if (callback) setTimeout(callback, this._duration + 100);
 
     // Draws a rectangle showing the available space for a visualization.
