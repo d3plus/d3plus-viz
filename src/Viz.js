@@ -1,3 +1,8 @@
+/**
+    @external BaseClass
+    @see https://github.com/d3plus/d3plus-common#BaseClass
+*/
+
 import {max, merge as arrayMerge} from "d3-array";
 import {color} from "d3-color";
 import {nest} from "d3-collection";
@@ -26,11 +31,6 @@ import {default as mouseenter} from "./on/mouseenter";
 import {default as mouseleave} from "./on/mouseleave";
 import {default as mousemoveLegend} from "./on/mousemove.legend";
 import {default as mousemoveShape} from "./on/mousemove.shape";
-
-/**
-    @external BaseClass
-    @see https://github.com/d3plus/d3plus-common#BaseClass
-*/
 
 /**
     @class Viz
