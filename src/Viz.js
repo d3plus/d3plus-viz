@@ -265,27 +265,9 @@ export default class Viz extends BaseClass {
   */
   active(_) {
 
-    let activeFunction = this._active = _;
-    if (typeof _ === "function") {
-
-      let shapeData = arrayMerge(this._shapes.map(s => s.data()));
-      shapeData = shapeData.concat(this._legendClass.data());
-      const activeData = _ ? shapeData.filter(_) : [];
-
-      let activeIds = [];
-      activeData.map(this._ids).forEach(ids => {
-        for (let x = 1; x <= ids.length; x++) {
-          activeIds.push(JSON.stringify(ids.slice(0, x)));
-        }
-      });
-      activeIds = activeIds.filter((id, i) => activeIds.indexOf(id) === i);
-
-      if (activeIds.length) activeFunction = (d, i) => activeIds.includes(JSON.stringify(this._ids(d, i)));
-
-    }
-
-    this._shapes.forEach(s => s.active(activeFunction));
-    if (this._legend) this._legendClass.active(activeFunction);
+    this._active = _;
+    this._shapes.forEach(s => s.active(_));
+    if (this._legend) this._legendClass.active(_);
 
     return this;
   }
