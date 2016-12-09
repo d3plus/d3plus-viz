@@ -33,7 +33,7 @@
     "d3plus-common": "^0.6.9",
     "d3plus-legend": "^0.7.0",
     "d3plus-text": "^0.9.10",
-    "d3plus-timeline": "^0.2.3",
+    "d3plus-timeline": "^0.3.0",
     "d3plus-tooltip": "^0.2.3"
   },
   "scripts": {
