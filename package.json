@@ -28,12 +28,12 @@
     "d3-color": "^1.0.2",
     "d3-selection": "^1.0.3",
     "d3-transition": "^1.0.3",
-    "d3plus-axis": "^0.3.15",
+    "d3plus-axis": "^0.3.20",
     "d3plus-color": "^0.5.3",
-    "d3plus-common": "^0.6.9",
-    "d3plus-legend": "^0.7.0",
-    "d3plus-text": "^0.9.10",
-    "d3plus-timeline": "^0.3.0",
+    "d3plus-common": "^0.6.12",
+    "d3plus-legend": "^0.7.1",
+    "d3plus-text": "^0.9.11",
+    "d3plus-timeline": "^0.3.2",
     "d3plus-tooltip": "^0.2.3"
   },
   "scripts": {
