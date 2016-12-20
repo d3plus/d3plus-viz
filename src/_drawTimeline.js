@@ -31,12 +31,11 @@ export default function(data = []) {
       .ticks(ticks.sort((a, b) => +a - +b))
       .width(this._width);
 
-    if (timeline.selection() === void 0) {
+    if (this._timelineSelection === void 0) {
 
       const dates = extent(data.map(this._time).map(date));
-
-      if (dates[0] === dates[1]) timeline.selection(dates[0]);
-      else timeline.selection(dates);
+      this._timelineSelection = dates[0] === dates[1] ? dates[0] : dates;
+      timeline.selection(this._timelineSelection);
 
     }
 
