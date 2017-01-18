@@ -6,6 +6,7 @@
 import {max, merge as arrayMerge} from "d3-array";
 import {color} from "d3-color";
 import {nest} from "d3-collection";
+import {queue} from "d3-queue";
 import {select} from "d3-selection";
 import {transition} from "d3-transition";
 
@@ -23,6 +24,7 @@ import {default as drawTimeline} from "./_drawTimeline";
 import {default as drawTitle} from "./_drawTitle";
 import {default as drawTotal} from "./_drawTotal";
 import {default as getSize} from "./_getSize";
+import {default as loadData} from "./_loadData";
 
 import {default as click} from "./on/click";
 import {default as clickLegend} from "./on/click.legend";
@@ -81,6 +83,7 @@ export default class Viz extends BaseClass {
       "mouseleave": mouseleave.bind(this)
     };
     this._padding = 5;
+    this._queue = [];
 
     this._shapeConfig = {
       fill: (d, i) => colorAssign(this._groupBy[0](d, i)),
@@ -167,11 +170,10 @@ export default class Viz extends BaseClass {
 
   /**
       @memberof Viz
-      @desc Draws the visualization given the specified configuration.
-      @param {Function} [*callback*] An optional callback function that, if passed, will be called after animation is complete.
-      @chainable
+      @desc Called by render once all checks are passed.
+      @private
   */
-  render(callback) {
+  _draw() {
 
     // Resets margins
     this._margin = {bottom: 0, left: 0, right: 0, top: 0};
@@ -245,7 +247,6 @@ export default class Viz extends BaseClass {
     drawTotal.bind(this)(flatData);
 
     this._shapes = [];
-    if (callback) setTimeout(callback, this._duration + 100);
 
     // Draws a rectangle showing the available space for a visualization.
     // const tester = this._select.selectAll(".tester").data([0]);
@@ -256,6 +257,23 @@ export default class Viz extends BaseClass {
     //   .attr("y", this._margin.top);
 
     return this;
+
+  }
+
+  /**
+      @memberof Viz
+      @desc Draws the visualization given the specified configuration.
+      @param {Function} [*callback*] An optional callback function that, if passed, will be called after animation is complete.
+      @chainable
+  */
+  render(callback) {
+
+    const q = queue();
+    this._queue.forEach(p => q.defer(...p));
+    q.awaitAll(() => {
+      this._draw(callback);
+      if (callback) setTimeout(callback, this._duration + 100);
+    });
 
   }
 
@@ -296,12 +314,17 @@ export default class Viz extends BaseClass {
 
   /**
       @memberof Viz
-      @desc If *data* is specified, sets the data array to the specified array and returns the current class instance. If *data* is not specified, returns the current data array.
-      @param {Array} [*data* = []]
+      @desc Sets the primary data array to be used when drawing the visualization. The value passed should be an *Array* of objects or a *String* representing a filepath or URL to be loaded. The following filetypes are supported: `csv`, `tsv`, `txt`, and `json`.
+
+Additionally, a custom formatting function can be passed as a second argument to this method. This custom function will be passed the data that has been loaded, as long as there are no errors. This function should return the final array of obejcts to be used as the primary data array. For example, some JSON APIs return the headers split from the data values to save bandwidth. These would need be joined using a custom formatter.
+
+If *data* is not specified, this method returns the current primary data array, which defaults to an empty array (`[]`);
+      @param {Array|String} *data* = []
+      @param {Function} [*formatter*]
       @chainable
   */
-  data(_) {
-    return arguments.length ? (this._data = _, this) : this._data;
+  data(_, f) {
+    return arguments.length ? (this._queue.push([loadData.bind(this), "data", _, f]), this) : this._data;
   }
 
   /**
