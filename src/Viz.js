@@ -327,6 +327,7 @@ export default class Viz extends BaseClass {
 
       const q = queue();
       this._queue.forEach(p => q.defer(...p));
+      this._queue = [];
       q.awaitAll(() => {
         this._draw(callback);
 
