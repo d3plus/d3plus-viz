@@ -344,11 +344,10 @@ export default class Viz extends BaseClass {
               h -= parseFloat(this._select.style("border-top-width"), 10);
               h -= parseFloat(this._select.style("border-bottom-width"), 10);
               this._select.style("display", display);
-              // console.log(this._height, h, this._autoHeight);
               if (this._autoWidth) this.width(w);
               if (this._autoHeight) this.height(h);
               this.render(callback);
-            }, 400);
+            }, 200);
           });
         }
 
