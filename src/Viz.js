@@ -24,6 +24,7 @@ import {default as drawTimeline} from "./_drawTimeline";
 import {default as drawTitle} from "./_drawTitle";
 import {default as drawTotal} from "./_drawTotal";
 import {default as getSize} from "./_getSize";
+import {default as inViewport} from "./_inViewport";
 import {default as loadData} from "./_loadData";
 
 import {default as click} from "./on/click";
@@ -62,6 +63,7 @@ export default class Viz extends BaseClass {
       resize: false
     };
     this._data = [];
+    this._detectVisible = true;
     this._duration = 600;
     this._history = [];
     this._groupBy = [accessor("id")];
@@ -175,28 +177,6 @@ export default class Viz extends BaseClass {
   */
   _draw() {
 
-    // Resets margins
-    this._margin = {bottom: 0, left: 0, right: 0, top: 0};
-    this._transition = transition().duration(this._duration);
-
-    // Appends a fullscreen SVG to the BODY if a container has not been provided through .select().
-    if (this._select === void 0 || this._select.node().tagName.toLowerCase() !== "svg") {
-      const parent = this._select === void 0 ? select("body") : this._select;
-      let [w, h] = getSize(parent.node());
-      if (!this._width) this.width(w);
-      if (!this._height) this.height(h);
-      w = this._width;
-      h = this._height;
-      this.select(parent.append("svg").style("width", `${w}px`).style("height", `${h}px`).style("display", "block").node());
-    }
-
-    // Calculates the width and/or height of the Viz based on the this._select, if either has not been defined.
-    if (!this._width || !this._height) {
-      const [w, h] = getSize(this._select.node());
-      if (!this._width) this.width(w);
-      if (!this._height) this.height(h);
-    }
-
     const that = this;
 
     // based on the groupBy, determine the draw depth and current depth id
@@ -256,8 +236,6 @@ export default class Viz extends BaseClass {
     //   .attr("x", this._margin.left)
     //   .attr("y", this._margin.top);
 
-    return this;
-
   }
 
   /**
@@ -268,12 +246,79 @@ export default class Viz extends BaseClass {
   */
   render(callback) {
 
-    const q = queue();
-    this._queue.forEach(p => q.defer(...p));
-    q.awaitAll(() => {
-      this._draw(callback);
-      if (callback) setTimeout(callback, this._duration + 100);
-    });
+    // Resets margins
+    this._margin = {bottom: 0, left: 0, right: 0, top: 0};
+    this._transition = transition().duration(this._duration);
+
+    // Appends a fullscreen SVG to the BODY if a container has not been provided through .select().
+    if (this._select === void 0 || this._select.node().tagName.toLowerCase() !== "svg") {
+
+      const parent = this._select === void 0 ? select("body") : this._select;
+      let [w, h] = getSize(parent.node());
+      if (!this._width) this.width(w);
+      if (!this._height) this.height(h);
+      w = this._width;
+      h = this._height;
+
+      const svg = parent.append("svg")
+        .style("width", `${w}px`)
+        .style("height", `${h}px`);
+
+      this.select(svg.node());
+
+    }
+
+    // Calculates the width and/or height of the Viz based on the this._select, if either has not been defined.
+    if (!this._width || !this._height) {
+      const [w, h] = getSize(this._select.node());
+      if (!this._width) this.width(w);
+      if (!this._height) this.height(h);
+    }
+
+    clearInterval(this._poll);
+    select(window).on(`scroll.${this._uuid}`, null);
+    if (this._detectVisible && this._select.style("visibility") === "hidden") {
+
+      this._poll = setInterval(() => {
+        if (this._select.style("visibility") !== "hidden") {
+          clearInterval(this._poll);
+          this.render(callback);
+        }
+      }, 1000);
+
+    }
+    else if (this._detectVisible && this._select.style("display") === "none") {
+
+      this._poll = setInterval(() => {
+        if (this._select.style("display") !== "none") {
+          clearInterval(this._poll);
+          this.render(callback);
+        }
+      }, 1000);
+
+    }
+    else if (this._detectVisible && !inViewport(this._select.node())) {
+
+      select(window).on(`scroll.${this._uuid}`, () => {
+        if (inViewport(this._select.node())) {
+          select(window).on(`scroll.${this._uuid}`, null);
+          this.render(callback);
+        }
+      });
+
+    }
+    else {
+
+      const q = queue();
+      this._queue.forEach(p => q.defer(...p));
+      q.awaitAll(() => {
+        this._draw(callback);
+        if (callback) setTimeout(callback, this._duration + 100);
+      });
+
+    }
+
+    return this;
 
   }
 
@@ -345,6 +390,18 @@ If *data* is not specified, this method returns the current primary data array, 
   */
   discrete(_) {
     return arguments.length ? (this._discrete = _, this) : this._discrete;
+  }
+
+  /**
+      @memberof Viz
+      @desc Toggles whether or not the Viz should try to detect if it visible in the current viewport. When this method is set to `true`, the Viz will only be rendered when it has entered the viewport either through scrolling or if it's display or visibility is changed.
+
+  If no value is specified, the method will return the current *Boolean* value.
+      @param {Boolean} *value* = true
+      @chainable
+  */
+  detectVisible(_) {
+    return arguments.length ? (this._detectVisible = _, this) : this._detectVisible;
   }
 
   /**
