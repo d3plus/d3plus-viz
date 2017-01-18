@@ -63,6 +63,7 @@ export default class Viz extends BaseClass {
       resize: false
     };
     this._data = [];
+    this._detectResize = true;
     this._detectVisible = true;
     this._duration = 600;
     this._history = [];
@@ -255,14 +256,23 @@ export default class Viz extends BaseClass {
 
       const parent = this._select === void 0 ? select("body") : this._select;
       let [w, h] = getSize(parent.node());
-      if (!this._width) this.width(w);
-      if (!this._height) this.height(h);
-      w = this._width;
-      h = this._height;
+      const svg = parent.append("svg");
+      w -= parseFloat(svg.style("border-left-width"), 10);
+      w -= parseFloat(svg.style("border-right-width"), 10);
+      h -= parseFloat(svg.style("border-top-width"), 10);
+      h -= parseFloat(svg.style("border-bottom-width"), 10);
+      if (!this._width) {
+        this._autoWidth = true;
+        this.width(w);
+      }
+      if (!this._height) {
+        this._autoHeight = true;
+        this.height(h);
+      }
 
-      const svg = parent.append("svg")
-        .style("width", `${w}px`)
-        .style("height", `${h}px`);
+      svg
+        .style("width", `${this._width}px`)
+        .style("height", `${this._height}px`);
 
       this.select(svg.node());
 
@@ -275,13 +285,19 @@ export default class Viz extends BaseClass {
       if (!this._height) this.height(h);
     }
 
-    clearInterval(this._poll);
+    this._select.transition(this._transition)
+      .style("width", `${this._width}px`)
+      .style("height", `${this._height}px`);
+
+    clearInterval(this._visiblePoll);
+    clearTimeout(this._resizePoll);
     select(window).on(`scroll.${this._uuid}`, null);
+    select(window).on(`resize.${this._uuid}`, null);
     if (this._detectVisible && this._select.style("visibility") === "hidden") {
 
-      this._poll = setInterval(() => {
+      this._visiblePoll = setInterval(() => {
         if (this._select.style("visibility") !== "hidden") {
-          clearInterval(this._poll);
+          clearInterval(this._visiblePoll);
           this.render(callback);
         }
       }, 1000);
@@ -289,9 +305,9 @@ export default class Viz extends BaseClass {
     }
     else if (this._detectVisible && this._select.style("display") === "none") {
 
-      this._poll = setInterval(() => {
+      this._visiblePoll = setInterval(() => {
         if (this._select.style("display") !== "none") {
-          clearInterval(this._poll);
+          clearInterval(this._visiblePoll);
           this.render(callback);
         }
       }, 1000);
@@ -313,6 +329,28 @@ export default class Viz extends BaseClass {
       this._queue.forEach(p => q.defer(...p));
       q.awaitAll(() => {
         this._draw(callback);
+
+        if (this._detectResize && (this._autoWidth || this._autoHeight)) {
+          select(window).on(`resize.${this._uuid}`, () => {
+            clearTimeout(this._resizePoll);
+            this._resizePoll = setTimeout(() => {
+              clearTimeout(this._resizePoll);
+              const display = this._select.style("display");
+              this._select.style("display", "none");
+              let [w, h] = getSize(this._select.node().parentNode);
+              w -= parseFloat(this._select.style("border-left-width"), 10);
+              w -= parseFloat(this._select.style("border-right-width"), 10);
+              h -= parseFloat(this._select.style("border-top-width"), 10);
+              h -= parseFloat(this._select.style("border-bottom-width"), 10);
+              this._select.style("display", display);
+              // console.log(this._height, h, this._autoHeight);
+              if (this._autoWidth) this.width(w);
+              if (this._autoHeight) this.height(h);
+              this.render(callback);
+            }, 400);
+          });
+        }
+
         if (callback) setTimeout(callback, this._duration + 100);
       });
 
@@ -384,24 +422,36 @@ If *data* is not specified, this method returns the current primary data array, 
 
   /**
       @memberof Viz
-      @desc If *value* is specified, sets the discrete accessor to the specified method name (usually an axis) and returns the current class instance. If *value* is not specified, returns the current discrete method.
-      @param {String} [*value*]
+      @desc If the width and/or height of a Viz is not user-defined, it is determined by the size of it's parent element. When this method is set to `true`, the Viz will listen for the `window.onresize` event and adjust it's dimensions accordingly.
+
+If no value is specified, the method will return the current *Boolean* value.
+      @param {Boolean} *value* = true
       @chainable
   */
-  discrete(_) {
-    return arguments.length ? (this._discrete = _, this) : this._discrete;
+  detectResize(_) {
+    return arguments.length ? (this._detectResize = _, this) : this._detectResize;
   }
 
   /**
       @memberof Viz
       @desc Toggles whether or not the Viz should try to detect if it visible in the current viewport. When this method is set to `true`, the Viz will only be rendered when it has entered the viewport either through scrolling or if it's display or visibility is changed.
 
-  If no value is specified, the method will return the current *Boolean* value.
+If no value is specified, the method will return the current *Boolean* value.
       @param {Boolean} *value* = true
       @chainable
   */
   detectVisible(_) {
     return arguments.length ? (this._detectVisible = _, this) : this._detectVisible;
+  }
+
+  /**
+      @memberof Viz
+      @desc If *value* is specified, sets the discrete accessor to the specified method name (usually an axis) and returns the current class instance. If *value* is not specified, returns the current discrete method.
+      @param {String} [*value*]
+      @chainable
+  */
+  discrete(_) {
+    return arguments.length ? (this._discrete = _, this) : this._discrete;
   }
 
   /**
