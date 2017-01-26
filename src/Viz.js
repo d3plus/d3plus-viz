@@ -11,7 +11,7 @@ import {select} from "d3-selection";
 import {transition} from "d3-transition";
 
 import {date} from "d3plus-axis";
-import {assign as colorAssign} from "d3plus-color";
+import {colorAssign} from "d3plus-color";
 import {accessor, assign, BaseClass, constant, merge} from "d3plus-common";
 import {Legend} from "d3plus-legend";
 import {TextBox} from "d3plus-text";
