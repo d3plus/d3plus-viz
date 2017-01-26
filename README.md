@@ -12,7 +12,7 @@ Abstract ES6 class that drives d3plus visualizations.
 If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest release](https://github.com/d3plus/d3plus-viz/releases/latest). The released bundle supports AMD, CommonJS, and vanilla environments. Create a [custom bundle using Rollup](https://github.com/rollup/rollup) or your preferred bundler. You can also load directly from [d3plus.org](https://d3plus.org):
 
 ```html
-<script src="https://d3plus.org/js/d3plus-viz.v0.5.full.min.js"></script>
+<script src="https://d3plus.org/js/d3plus-viz.v0.6.full.min.js"></script>
 ```
 
 
@@ -29,8 +29,10 @@ If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest releas
     * [.active([*value*])](#Viz.active) ↩︎
     * [.aggs([*value*])](#Viz.aggs) ↩︎
     * [.backConfig([*value*])](#Viz.backConfig) ↩︎
-    * [.data([*data*])](#Viz.data) ↩︎
+    * [.data(*data*, [*formatter*])](#Viz.data) ↩︎
     * [.depth([*value*])](#Viz.depth) ↩︎
+    * [.detectResize(*value*)](#Viz.detectResize) ↩︎
+    * [.detectVisible(*value*)](#Viz.detectVisible) ↩︎
     * [.discrete([*value*])](#Viz.discrete) ↩︎
     * [.duration([*ms*])](#Viz.duration) ↩︎
     * [.filter([*value*])](#Viz.filter) ↩︎
@@ -111,15 +113,20 @@ If *value* is specified, sets the config method for the back button and returns 
 
 <a name="Viz.data"></a>
 
-#### Viz.data([*data*]) ↩︎
-If *data* is specified, sets the data array to the specified array and returns the current class instance. If *data* is not specified, returns the current data array.
+#### Viz.data(*data*, [*formatter*]) ↩︎
+Sets the primary data array to be used when drawing the visualization. The value passed should be an *Array* of objects or a *String* representing a filepath or URL to be loaded. The following filetypes are supported: `csv`, `tsv`, `txt`, and `json`.
+
+Additionally, a custom formatting function can be passed as a second argument to this method. This custom function will be passed the data that has been loaded, as long as there are no errors. This function should return the final array of obejcts to be used as the primary data array. For example, some JSON APIs return the headers split from the data values to save bandwidth. These would need be joined using a custom formatter.
+
+If *data* is not specified, this method returns the current primary data array, which defaults to an empty array (`[]`);
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
 **Chainable**  
 
-| Param | Type | Default |
+| Param | Type | Description |
 | --- | --- | --- |
-| [*data*] | <code>Array</code> | <code>[]</code> | 
+| *data* | <code>Array</code> &#124; <code>String</code> | = [] |
+| [*formatter*] | <code>function</code> |  |
 
 <a name="Viz.depth"></a>
 
@@ -132,6 +139,34 @@ If *value* is specified, sets the depth to the specified number and returns the 
 | Param | Type |
 | --- | --- |
 | [*value*] | <code>Number</code> | 
+
+<a name="Viz.detectResize"></a>
+
+#### Viz.detectResize(*value*) ↩︎
+If the width and/or height of a Viz is not user-defined, it is determined by the size of it's parent element. When this method is set to `true`, the Viz will listen for the `window.onresize` event and adjust it's dimensions accordingly.
+
+If no value is specified, the method will return the current *Boolean* value.
+
+**Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| *value* | <code>Boolean</code> | = true |
+
+<a name="Viz.detectVisible"></a>
+
+#### Viz.detectVisible(*value*) ↩︎
+Toggles whether or not the Viz should try to detect if it visible in the current viewport. When this method is set to `true`, the Viz will only be rendered when it has entered the viewport either through scrolling or if it's display or visibility is changed.
+
+If no value is specified, the method will return the current *Boolean* value.
+
+**Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| *value* | <code>Boolean</code> | = true |
 
 <a name="Viz.discrete"></a>
 
@@ -429,4 +464,4 @@ If *value* is specified, sets the overallwidth to the specified number and retur
 
 
 
-###### <sub>Documentation generated on Tue, 20 Dec 2016 20:14:25 GMT</sub>
+###### <sub>Documentation generated on Thu, 26 Jan 2017 16:50:50 GMT</sub>
