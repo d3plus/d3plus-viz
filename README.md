@@ -27,8 +27,11 @@ If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest releas
 ### Functions
 
 <dl>
-<dt><a href="#datafold">datafold(json, [data], [headers])</a></dt>
+<dt><a href="#dataFold">dataFold(json, [data], [headers])</a></dt>
 <dd><p>Given a JSON object where the data values and headers have been split into separate key lookups, this function will combine the data values with the headers and returns one large array of objects.</p>
+</dd>
+<dt><a href="#dataLoad">dataLoad(path, [formatter], [key], [callback])</a></dt>
+<dd><p>Loads data from a filepath or URL, converts it to a valid JSON object, and returns it to a callback function.</p>
 </dd>
 </dl>
 
@@ -477,9 +480,9 @@ If *value* is specified, sets the overallwidth to the specified number and retur
 | --- | --- | --- |
 | [*value*] | <code>Number</code> | <code>window.innerWidth</code> | 
 
-<a name="datafold"></a>
+<a name="dataFold"></a>
 
-### datafold(json, [data], [headers])
+### dataFold(json, [data], [headers])
 Given a JSON object where the data values and headers have been split into separate key lookups, this function will combine the data values with the headers and returns one large array of objects.
 
 **Kind**: global function  
@@ -490,6 +493,20 @@ Given a JSON object where the data values and headers have been split into separ
 | [data] | <code>String</code> | <code>&quot;data&quot;</code> | The key used for the flat data array inside of the JSON object. |
 | [headers] | <code>String</code> | <code>&quot;headers&quot;</code> | The key used for the flat headers array inside of the JSON object. |
 
+<a name="dataLoad"></a>
+
+### dataLoad(path, [formatter], [key], [callback])
+Loads data from a filepath or URL, converts it to a valid JSON object, and returns it to a callback function.
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| path | <code>Array</code> &#124; <code>String</code> | The path to the file or url to be loaded. If an Array is passed, the xhr request logic is skipped. |
+| [formatter] | <code>function</code> | An optional formatter function that is run on the loaded data. |
+| [key] | <code>String</code> | The key in the `this` context to save the resulting data to. |
+| [callback] | <code>function</code> | A function that is called when the final data is loaded. It is passed 2 variables, any error present and the data loaded. |
 
 
-###### <sub>Documentation generated on Sat, 28 Jan 2017 02:40:57 GMT</sub>
+
+###### <sub>Documentation generated on Sat, 28 Jan 2017 19:23:48 GMT</sub>
