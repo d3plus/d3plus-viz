@@ -509,4 +509,4 @@ Loads data from a filepath or URL, converts it to a valid JSON object, and retur
 
 
 
-###### <sub>Documentation generated on Sat, 28 Jan 2017 19:23:48 GMT</sub>
+###### <sub>Documentation generated on Sat, 28 Jan 2017 20:30:31 GMT</sub>
