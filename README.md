@@ -17,6 +17,21 @@ If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest releas
 
 
 ## API Reference
+### Classes
+
+<dl>
+<dt><a href="#Viz">Viz</a> ⇐ <code><a href="https://github.com/d3plus/d3plus-common#BaseClass">BaseClass</a></code></dt>
+<dd></dd>
+</dl>
+
+### Functions
+
+<dl>
+<dt><a href="#datafold">datafold(json, [data], [headers])</a></dt>
+<dd><p>Given a JSON object where the data values and headers have been split into separate key lookups, this function will combine the data values with the headers and returns one large array of objects.</p>
+</dd>
+</dl>
+
 <a name="Viz"></a>
 
 ### Viz ⇐ <code>[BaseClass](https://github.com/d3plus/d3plus-common#BaseClass)</code>
@@ -462,6 +477,19 @@ If *value* is specified, sets the overallwidth to the specified number and retur
 | --- | --- | --- |
 | [*value*] | <code>Number</code> | <code>window.innerWidth</code> | 
 
+<a name="datafold"></a>
+
+### datafold(json, [data], [headers])
+Given a JSON object where the data values and headers have been split into separate key lookups, this function will combine the data values with the headers and returns one large array of objects.
+
+**Kind**: global function  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| json | <code>Object</code> |  | A JSON data Object with `data` and `headers` keys. |
+| [data] | <code>String</code> | <code>&quot;data&quot;</code> | The key used for the flat data array inside of the JSON object. |
+| [headers] | <code>String</code> | <code>&quot;headers&quot;</code> | The key used for the flat headers array inside of the JSON object. |
 
 
-###### <sub>Documentation generated on Thu, 26 Jan 2017 16:50:50 GMT</sub>
+
+###### <sub>Documentation generated on Sat, 28 Jan 2017 02:40:57 GMT</sub>
