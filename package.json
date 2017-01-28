@@ -30,13 +30,13 @@
     "d3-request": "^1.0.3",
     "d3-selection": "^1.0.3",
     "d3-transition": "^1.0.3",
-    "d3plus-axis": "^0.3.22",
+    "d3plus-axis": "^0.3.23",
     "d3plus-color": "^0.6.0",
-    "d3plus-common": "^0.6.12",
-    "d3plus-legend": "^0.7.1",
-    "d3plus-text": "^0.9.11",
-    "d3plus-timeline": "^0.3.4",
-    "d3plus-tooltip": "^0.2.3"
+    "d3plus-common": "^0.6.13",
+    "d3plus-legend": "^0.7.2",
+    "d3plus-text": "^0.9.14",
+    "d3plus-timeline": "^0.3.5",
+    "d3plus-tooltip": "^0.2.4"
   },
   "scripts": {
     "build": "d3plus-build",
