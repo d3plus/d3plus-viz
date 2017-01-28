@@ -1,4 +1,5 @@
 import {csv, json, text, tsv} from "d3-request";
+import {default as datafold} from "./datafold";
 
 /**
   @desc Loads data from a filepath or URL, converts it to a valid JSON object, and returns it to a callback function.
@@ -39,6 +40,7 @@ export default function(key, path, formatter, callback) {
       }
 
       data = err ? [] : formatter ? formatter(data) : data;
+      if (data && !(data instanceof Array) && data.data && data.headers) data = datafold(data);
       if (`_${key}` in this) this[`_${key}`] = data;
       callback(err, data);
 
