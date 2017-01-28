@@ -1,9 +1,9 @@
 import {test} from "tape";
-import {default as datafold} from "../src/datafold.js";
+import {default as fold} from "../../src/data/fold.js";
 
-test("datafold", assert => {
+test("data/fold", assert => {
 
-  const data = datafold({
+  const data = fold({
     data: [[0, "Dave"], [1, "Alex"]],
     headers: ["id", "name"]
   });
