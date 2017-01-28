@@ -25,7 +25,7 @@ import {default as drawTitle} from "./_drawTitle";
 import {default as drawTotal} from "./_drawTotal";
 import {default as getSize} from "./_getSize";
 import {default as inViewport} from "./_inViewport";
-import {default as loadData} from "./_loadData";
+import {default as load} from "./data/load";
 
 import {default as click} from "./on/click";
 import {default as clickLegend} from "./on/click.legend";
@@ -407,7 +407,7 @@ If *data* is not specified, this method returns the current primary data array, 
       @chainable
   */
   data(_, f) {
-    return arguments.length ? (this._queue.push([loadData.bind(this), "data", _, f]), this) : this._data;
+    return arguments.length ? (this._queue.push([load.bind(this), _, f, "data"]), this) : this._data;
   }
 
   /**

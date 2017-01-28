@@ -1,21 +1,21 @@
 import {csv, json, text, tsv} from "d3-request";
-import {default as fold} from "./data/fold";
+import {default as fold} from "./fold";
 
 /**
+  @function dataLoad
   @desc Loads data from a filepath or URL, converts it to a valid JSON object, and returns it to a callback function.
-  @param {String} key The key in the `this` context to save the resulting data to.
   @param {Array|String} path The path to the file or url to be loaded. If an Array is passed, the xhr request logic is skipped.
-  @param {Function} [*formatter*] An optional formatter function that is run on the loaded data.
-  @param {Function} callback A function that is called when the final data is loaded. It is passed 2 variables, any error present and the data loaded.
-  @private
+  @param {Function} [formatter] An optional formatter function that is run on the loaded data.
+  @param {String} [key] The key in the `this` context to save the resulting data to.
+  @param {Function} [callback] A function that is called when the final data is loaded. It is passed 2 variables, any error present and the data loaded.
 */
-export default function(key, path, formatter, callback) {
+export default function(path, formatter, key, callback) {
 
   if (typeof path !== "string") {
 
     const data = formatter ? formatter(path) : path;
-    if (`_${key}` in this) this[`_${key}`] = data;
-    callback(null, data);
+    if (key && `_${key}` in this) this[`_${key}`] = data;
+    if (callback) callback(null, data);
 
   }
   else {
@@ -41,8 +41,8 @@ export default function(key, path, formatter, callback) {
 
       data = err ? [] : formatter ? formatter(data) : data;
       if (data && !(data instanceof Array) && data.data && data.headers) data = fold(data);
-      if (`_${key}` in this) this[`_${key}`] = data;
-      callback(err, data);
+      if (key && `_${key}` in this) this[`_${key}`] = data;
+      if (callback) callback(err, data);
 
     });
 
