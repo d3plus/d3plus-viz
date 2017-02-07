@@ -11,6 +11,10 @@ import {default as colorNest} from "./_colorNest";
 */
 export default function(data = []) {
 
+  const position = this._legendPosition;
+  const wide = ["top", "bottom"].includes(position);
+  const transform = {transform: `translate(${this._margin.left}, ${this._margin.top})`};
+
   this._legendData = [];
   if (data.length) {
 
@@ -22,8 +26,10 @@ export default function(data = []) {
 
   const legendGroup = elem("g.d3plus-viz-legend", {
     condition: this._legend,
+    enter: transform,
     parent: this._select,
-    transition: this._transition
+    transition: this._transition,
+    update: transform
   }).node();
 
   if (this._legend) {
@@ -32,13 +38,15 @@ export default function(data = []) {
 
     this._legendClass
       .id(legend.id)
+      .align(wide ? "center" : position)
+      .direction(wide ? "row" : "column")
       .duration(this._duration)
       .data(legend.data.length > 1 ? legend.data : [])
-      .height(this._height - this._margin.bottom)
+      .height(this._height - this._margin.bottom - this._margin.top)
       .label(this._label || legend.id)
       .select(legendGroup)
-      .verticalAlign("bottom")
-      .width(this._width)
+      .verticalAlign(!wide ? "middle" : position)
+      .width(this._width - this._margin.left - this._margin.right)
       .shapeConfig(this._shapeConfig)
       .shapeConfig({on: Object.keys(this._on)
         .filter(e => !e.includes(".") || e.includes(".legend"))
@@ -50,7 +58,10 @@ export default function(data = []) {
       .render();
 
     const legendBounds = this._legendClass.outerBounds();
-    if (legendBounds.height) this._margin.bottom += legendBounds.height + this._legendClass.padding() * 2;
+    if (legendBounds.height) {
+      if (wide) this._margin[position] += legendBounds.height + this._legendClass.padding() * 2;
+      else this._margin[position] += legendBounds.width + this._legendClass.padding() * 2;
+    }
 
   }
 

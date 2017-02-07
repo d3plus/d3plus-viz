@@ -14,8 +14,8 @@ export default function() {
   const transform = {
     height: this._height - this._margin.top - this._margin.bottom,
     width: this._width - this._margin.left - this._margin.right,
-    x: 0,
-    y: 0
+    x: this._margin.left,
+    y: this._margin.top
   };
 
   const foreign = elem("foreignObject.d3plus-viz-controls", {

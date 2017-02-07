@@ -13,6 +13,7 @@ import {transition} from "d3-transition";
 import {date} from "d3plus-axis";
 import {colorAssign} from "d3plus-color";
 import {accessor, assign, BaseClass, constant, merge} from "d3plus-common";
+import {Select} from "d3plus-form";
 import {Legend} from "d3plus-legend";
 import {TextBox} from "d3plus-text";
 import {Timeline} from "d3plus-timeline";
@@ -63,8 +64,11 @@ export default class Viz extends BaseClass {
       fontSize: 10,
       resize: false
     };
+    const controlTest = new Select();
     this._controlCache = {};
-    this._controlConfig = {};
+    this._controlConfig = {
+      selectStyle: Object.assign({margin: "5px"}, controlTest.selectStyle())
+    };
     this._data = [];
     this._detectResize = true;
     this._detectVisible = true;
@@ -78,6 +82,7 @@ export default class Viz extends BaseClass {
       }
     };
     this._legendClass = new Legend();
+    this._legendPosition = "bottom";
     this._locale = "en-US";
     this._on = {
       "click": click.bind(this),
@@ -224,22 +229,26 @@ export default class Viz extends BaseClass {
 
     }
 
+    drawTitle.bind(this)(flatData);
     drawControls.bind(this)(flatData);
     drawTimeline.bind(this)(flatData);
     drawLegend.bind(this)(flatData);
     drawBack.bind(this)();
-    drawTitle.bind(this)(flatData);
     drawTotal.bind(this)(flatData);
 
     this._shapes = [];
 
     // Draws a rectangle showing the available space for a visualization.
     // const tester = this._select.selectAll(".tester").data([0]);
-    // tester.enter().append("rect").attr("fill", "#ccc").merge(tester)
-    //   .attr("width", this._width - this._margin.left - this._margin.right)
-    //   .attr("height", this._height - this._margin.top - this._margin.bottom)
-    //   .attr("x", this._margin.left)
-    //   .attr("y", this._margin.top);
+    // console.log(this._margin);
+    // tester.enter().append("rect")
+    //     .attr("class", "tester")
+    //     .attr("fill", "#ccc")
+    //   .merge(tester)
+    //     .attr("width", this._width - this._margin.left - this._margin.right)
+    //     .attr("height", this._height - this._margin.top - this._margin.bottom)
+    //     .attr("x", this._margin.left)
+    //     .attr("y", this._margin.top);
 
   }
 
@@ -596,6 +605,16 @@ function value(d) {
   */
   legendConfig(_) {
     return arguments.length ? (this._legendConfig = _, this) : this._legendConfig;
+  }
+
+  /**
+      @memberof Viz
+      @desc Defines which side of the visualization to anchor the legend. Acceptable values are `"top"`, `"bottom"`, `"left"`, and `"right"`. If no value is passed, the current legend position will be returned.
+      @param {String} [*value* = "bottom"]
+      @chainable
+  */
+  legendPosition(_) {
+    return arguments.length ? (this._legendPosition = _, this) : this._legendPosition;
   }
 
   /**
