@@ -47,6 +47,8 @@ If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest releas
     * [.active([*value*])](#Viz.active) ↩︎
     * [.aggs([*value*])](#Viz.aggs) ↩︎
     * [.backConfig([*value*])](#Viz.backConfig) ↩︎
+    * [.controls([*value*])](#Viz.controls) ↩︎
+    * [.controlConfig([*value*])](#Viz.controlConfig) ↩︎
     * [.data(*data*, [*formatter*])](#Viz.data) ↩︎
     * [.depth([*value*])](#Viz.depth) ↩︎
     * [.detectResize(*value*)](#Viz.detectResize) ↩︎
@@ -60,6 +62,7 @@ If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest releas
     * [.label([*value*])](#Viz.label) ↩︎
     * [.legend([*value*])](#Viz.legend) ↩︎
     * [.legendConfig([*value*])](#Viz.legendConfig) ↩︎
+    * [.legendPosition([*value*])](#Viz.legendPosition) ↩︎
     * [.locale([*value*])](#Viz.locale) ↩︎
     * [.select([*selector*])](#Viz.select) ↩︎
     * [.shape([*value*])](#Viz.shape) ↩︎
@@ -121,6 +124,30 @@ If *value* is specified, sets the aggregation method for each key in the object 
 
 #### Viz.backConfig([*value*]) ↩︎
 If *value* is specified, sets the config method for the back button and returns the current class instance. If *value* is not specified, returns the current back button configuration.
+
+**Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
+
+| Param | Type |
+| --- | --- |
+| [*value*] | <code>Object</code> | 
+
+<a name="Viz.controls"></a>
+
+#### Viz.controls([*value*]) ↩︎
+Defines a list of controls to be rendered at the bottom of the visualization.
+
+**Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
+
+| Param | Type |
+| --- | --- |
+| [*value*] | <code>Array</code> | 
+
+<a name="Viz.controlConfig"></a>
+
+#### Viz.controlConfig([*value*]) ↩︎
+If *value* is specified, sets the config method for the controls and returns the current class instance. If *value* is not specified, returns the current control configuration.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
 **Chainable**  
@@ -299,6 +326,18 @@ If *value* is specified, the object is passed to the legend's config method. If 
 | Param | Type |
 | --- | --- |
 | [*value*] | <code>Object</code> | 
+
+<a name="Viz.legendPosition"></a>
+
+#### Viz.legendPosition([*value*]) ↩︎
+Defines which side of the visualization to anchor the legend. Acceptable values are `"top"`, `"bottom"`, `"left"`, and `"right"`. If no value is passed, the current legend position will be returned.
+
+**Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
+
+| Param | Type | Default |
+| --- | --- | --- |
+| [*value*] | <code>String</code> | <code>&quot;bottom&quot;</code> | 
 
 <a name="Viz.locale"></a>
 
@@ -509,4 +548,4 @@ Loads data from a filepath or URL, converts it to a valid JSON object, and retur
 
 
 
-###### <sub>Documentation generated on Sat, 28 Jan 2017 20:30:31 GMT</sub>
+###### <sub>Documentation generated on Tue, 07 Feb 2017 23:16:07 GMT</sub>
