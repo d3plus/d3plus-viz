@@ -19,6 +19,7 @@ import {Timeline} from "d3plus-timeline";
 import {Tooltip} from "d3plus-tooltip";
 
 import {default as drawBack} from "./_drawBack";
+import {default as drawControls} from "./_drawControls";
 import {default as drawLegend} from "./_drawLegend";
 import {default as drawTimeline} from "./_drawTimeline";
 import {default as drawTitle} from "./_drawTitle";
@@ -62,6 +63,8 @@ export default class Viz extends BaseClass {
       fontSize: 10,
       resize: false
     };
+    this._controlCache = {};
+    this._controlConfig = {};
     this._data = [];
     this._detectResize = true;
     this._detectVisible = true;
@@ -221,6 +224,7 @@ export default class Viz extends BaseClass {
 
     }
 
+    drawControls.bind(this)(flatData);
     drawTimeline.bind(this)(flatData);
     drawLegend.bind(this)(flatData);
     drawBack.bind(this)();
@@ -393,6 +397,26 @@ export default class Viz extends BaseClass {
   */
   backConfig(_) {
     return arguments.length ? (this._backConfig = assign(this._backConfig, _), this) : this._backConfig;
+  }
+
+  /**
+      @memberof Viz
+      @desc Defines a list of controls to be rendered at the bottom of the visualization.
+      @param {Array} [*value*]
+      @chainable
+  */
+  controls(_) {
+    return arguments.length ? (this._controls = _, this) : this._controls;
+  }
+
+  /**
+      @memberof Viz
+      @desc If *value* is specified, sets the config method for the controls and returns the current class instance. If *value* is not specified, returns the current control configuration.
+      @param {Object} [*value*]
+      @chainable
+  */
+  controlConfig(_) {
+    return arguments.length ? (this._controlConfig = assign(this._controlConfig, _), this) : this._controlConfig;
   }
 
   /**
