@@ -21,7 +21,7 @@ export default function(d, i) {
 
       this.active((h, x) => {
         const ids = this._ids(h, x);
-        return filterId[this._depth] === ids[this._depth];
+        return filterId[this._drawDepth] === ids[this._drawDepth];
       });
     }
 
