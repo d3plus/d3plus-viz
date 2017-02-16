@@ -10,7 +10,7 @@ export default function(d, i) {
 
   this.hover((h, x) => {
     const ids = this._ids(h, x);
-    return filterId[filterId.length - 1] === ids[filterId.length - 1];
+    return filterId[this._depth] === ids[this._depth];
   });
 
 }
