@@ -34,7 +34,7 @@ export default function(data = []) {
 
   if (this._legend) {
 
-    const legend = colorNest(this._legendData, this._shapeConfig.fill, this._groupBy);
+    const legend = colorNest.bind(this)(this._legendData);
 
     this._legendClass
       .id(legend.id)
