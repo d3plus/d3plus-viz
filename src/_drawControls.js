@@ -1,5 +1,6 @@
 import {elem} from "d3plus-common";
-import {Select} from "d3plus-form";
+import {Radio, Select} from "d3plus-form";
+const formTypes = {Radio, Select};
 
 /**
     @function _drawLegend
@@ -54,7 +55,10 @@ export default function() {
       }
 
       const id = control.label || i;
-      if (!this._controlCache[id]) this._controlCache[id] = new Select().container(container.node());
+      if (!this._controlCache[id]) {
+        const type = control.type && formTypes[control.type] ? control.type : "Select";
+        this._controlCache[id] = new formTypes[type]().container(container.node());
+      }
       this._controlCache[id]
         .config(control)
         .config({on})
