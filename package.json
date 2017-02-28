@@ -28,7 +28,7 @@
     "d3-color": "^1.0.2",
     "d3-queue": "^3.0.3",
     "d3-request": "^1.0.3",
-    "d3-selection": "^1.0.3",
+    "d3-selection": "^1.0.4",
     "d3-transition": "^1.0.3",
     "d3plus-axis": "^0.3.24",
     "d3plus-color": "^0.6.0",
