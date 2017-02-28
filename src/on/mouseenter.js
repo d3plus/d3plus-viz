@@ -1,3 +1,5 @@
+import {min} from "d3-array";
+
 /**
     @desc On mouseenter event for all shapes in a Viz.
     @param {Object} *d* The data object being interacted with.
@@ -10,7 +12,8 @@ export default function(d, i) {
 
   this.hover((h, x) => {
     const ids = this._ids(h, x);
-    return filterId[this._drawDepth] === ids[this._drawDepth];
+    const index = min([ids.length - 1, filterId.length - 1, this._drawDepth]);
+    return filterId.slice(0, index + 1).join("_") === ids.slice(0, index + 1).join("_");
   });
 
 }

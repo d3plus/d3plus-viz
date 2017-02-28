@@ -1,3 +1,5 @@
+import {min} from "d3-array";
+
 import {default as mouseenter} from "./mouseenter";
 import {default as tooltip} from "./tooltip";
 
@@ -21,7 +23,8 @@ export default function(d, i) {
 
       this.active((h, x) => {
         const ids = this._ids(h, x);
-        return filterId[this._drawDepth] === ids[this._drawDepth];
+        const index = min([ids.length - 1, filterId.length - 1, this._drawDepth]);
+        return filterId.slice(0, index + 1).join("_") === ids.slice(0, index + 1).join("_");
       });
     }
 
