@@ -12,7 +12,6 @@ export default function(raw) {
 
   const fill = (d, i) => `${this._shapeConfig.fill(d, i)}_${this._shapeConfig.opacity(d, i)}`;
   const colors = nest().key(fill).entries(raw);
-  if (colors.length < 2) return {data: [], id: fill};
   let data, id;
 
   if (this._groupBy.length) {
