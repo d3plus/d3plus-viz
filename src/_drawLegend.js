@@ -6,7 +6,7 @@ import {default as colorNest} from "./_colorNest";
 /**
     @function _drawLegend
     @desc Renders the legend if this._legend is not falsy.
-    @param {Array} dara The filtered data array to be displayed.
+    @param {Array} data The filtered data array to be displayed.
     @private
 */
 export default function(data = []) {
