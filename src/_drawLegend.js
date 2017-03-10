@@ -11,18 +11,7 @@ import {default as colorNest} from "./_colorNest";
 */
 export default function(data = []) {
 
-  const position = this._legendPosition;
-  const wide = ["top", "bottom"].includes(position);
   const transform = {transform: `translate(${this._margin.left}, ${this._margin.top})`};
-
-  this._legendData = [];
-  if (data.length) {
-
-    const dataNest = nest();
-    for (let i = 0; i <= this._drawDepth; i++) dataNest.key(this._groupBy[i]);
-    dataNest.rollup(leaves => this._legendData.push(merge(leaves, this._aggs))).entries(data);
-
-  }
 
   const legendGroup = elem("g.d3plus-viz-legend", {
     condition: this._legend,
@@ -34,14 +23,27 @@ export default function(data = []) {
 
   if (this._legend) {
 
-    const legend = colorNest.bind(this)(this._legendData);
+    const legendData = [];
+    if (data.length) {
+
+      const dataNest = nest();
+      for (let i = 0; i <= this._drawDepth; i++) dataNest.key(this._groupBy[i]);
+      dataNest
+        .rollup(leaves => legendData.push(merge(leaves, this._aggs)))
+        .entries(this._colorScale ? data.filter((d, i) => this._colorScale(d, i) === undefined) : data);
+
+    }
+
+    const position = this._legendPosition;
+    const wide = ["top", "bottom"].includes(position);
+    const legend = colorNest.bind(this)(legendData);
 
     this._legendClass
       .id(legend.id)
       .align(wide ? "center" : position)
       .direction(wide ? "row" : "column")
       .duration(this._duration)
-      .data(legend.data.length > 1 ? legend.data : [])
+      .data(legend.data.length > 1 || this._colorScale ? legend.data : [])
       .height(this._height - this._margin.bottom - this._margin.top)
       .label(this._label || legend.id)
       .select(legendGroup)
