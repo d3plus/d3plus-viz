@@ -12,7 +12,7 @@ Abstract ES6 class that drives d3plus visualizations.
 If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest release](https://github.com/d3plus/d3plus-viz/releases/latest). The released bundle supports AMD, CommonJS, and vanilla environments. Create a [custom bundle using Rollup](https://github.com/rollup/rollup) or your preferred bundler. You can also load directly from [d3plus.org](https://d3plus.org):
 
 ```html
-<script src="https://d3plus.org/js/d3plus-viz.v0.6.full.min.js"></script>
+<script src="https://d3plus.org/js/d3plus-viz.v0.7.full.min.js"></script>
 ```
 
 
@@ -39,7 +39,7 @@ If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest releas
 
 ### Viz ⇐ <code>[BaseClass](https://github.com/d3plus/d3plus-common#BaseClass)</code>
 **Kind**: global class  
-**Extends:** <code>[BaseClass](https://github.com/d3plus/d3plus-common#BaseClass)</code>  
+**Extends**: <code>[BaseClass](https://github.com/d3plus/d3plus-common#BaseClass)</code>  
 
 * [Viz](#Viz) ⇐ <code>[BaseClass](https://github.com/d3plus/d3plus-common#BaseClass)</code>
     * [new Viz()](#new_Viz_new)
@@ -47,6 +47,10 @@ If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest releas
     * [.active([*value*])](#Viz.active) ↩︎
     * [.aggs([*value*])](#Viz.aggs) ↩︎
     * [.backConfig([*value*])](#Viz.backConfig) ↩︎
+    * [.color([*value*])](#Viz.color) ↩︎
+    * [.colorScale([*value*])](#Viz.colorScale) ↩︎
+    * [.colorScaleConfig([*value*])](#Viz.colorScaleConfig) ↩︎
+    * [.colorScalePosition([*value*])](#Viz.colorScalePosition) ↩︎
     * [.controls([*value*])](#Viz.controls) ↩︎
     * [.controlConfig([*value*])](#Viz.controlConfig) ↩︎
     * [.data(*data*, [*formatter*])](#Viz.data) ↩︎
@@ -131,6 +135,54 @@ If *value* is specified, sets the config method for the back button and returns 
 | Param | Type |
 | --- | --- |
 | [*value*] | <code>Object</code> | 
+
+<a name="Viz.color"></a>
+
+#### Viz.color([*value*]) ↩︎
+Defines the main color to be used for each data point in a visualization. Can be either an accessor function or a string key to reference in each data point. If a color value is returned, it will be used as is. If a string is returned, a unique color will be assigned based on the string.
+
+**Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
+
+| Param | Type |
+| --- | --- |
+| [*value*] | <code>function</code> &#124; <code>String</code> | 
+
+<a name="Viz.colorScale"></a>
+
+#### Viz.colorScale([*value*]) ↩︎
+Defines the value to be used for a color scale. Can be either an accessor function or a string key to reference in each data point.
+
+**Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
+
+| Param | Type |
+| --- | --- |
+| [*value*] | <code>function</code> &#124; <code>String</code> | 
+
+<a name="Viz.colorScaleConfig"></a>
+
+#### Viz.colorScaleConfig([*value*]) ↩︎
+A pass-through to the config method of ColorScale.
+
+**Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
+
+| Param | Type |
+| --- | --- |
+| [*value*] | <code>Object</code> | 
+
+<a name="Viz.colorScalePosition"></a>
+
+#### Viz.colorScalePosition([*value*]) ↩︎
+Defines which side of the visualization to anchor the color scale. Acceptable values are `"top"`, `"bottom"`, `"left"`, and `"right"`. If no value is passed, the current legend position will be returned.
+
+**Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
+
+| Param | Type | Default |
+| --- | --- | --- |
+| [*value*] | <code>String</code> | <code>&quot;bottom&quot;</code> | 
 
 <a name="Viz.controls"></a>
 
@@ -548,4 +600,4 @@ Loads data from a filepath or URL, converts it to a valid JSON object, and retur
 
 
 
-###### <sub>Documentation generated on Tue, 28 Feb 2017 21:42:15 GMT</sub>
+###### <sub>Documentation generated on Fri, 10 Mar 2017 23:09:28 GMT</sub>
