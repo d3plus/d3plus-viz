@@ -14,12 +14,13 @@ import {date} from "d3plus-axis";
 import {colorAssign} from "d3plus-color";
 import {accessor, assign, BaseClass, constant, merge} from "d3plus-common";
 import {Select} from "d3plus-form";
-import {Legend} from "d3plus-legend";
+import {ColorScale, Legend} from "d3plus-legend";
 import {TextBox} from "d3plus-text";
 import {Timeline} from "d3plus-timeline";
 import {Tooltip} from "d3plus-tooltip";
 
 import {default as drawBack} from "./_drawBack";
+import {default as drawColorScale} from "./_drawColorScale";
 import {default as drawControls} from "./_drawControls";
 import {default as drawLegend} from "./_drawLegend";
 import {default as drawTimeline} from "./_drawTimeline";
@@ -64,6 +65,10 @@ export default class Viz extends BaseClass {
       fontSize: 10,
       resize: false
     };
+    this._color = (d, i) => this._groupBy[0](d, i);
+    this._colorScaleClass = new ColorScale();
+    this._colorScaleConfig = {};
+    this._colorScalePosition = "bottom";
     const controlTest = new Select();
     this._controlCache = {};
     this._controlConfig = {
@@ -97,9 +102,17 @@ export default class Viz extends BaseClass {
     this._queue = [];
 
     this._shapeConfig = {
-      fill: (d, i) => colorAssign(this._groupBy[0](d, i)),
+      fill: (d, i) => {
+        if (this._colorScale) {
+          const c = this._colorScale(d, i);
+          if (c !== undefined && c !== null) return this._colorScaleClass._colorScale(c);
+        }
+        const c = this._color(d, i);
+        if (color(c)) return c;
+        return colorAssign(c);
+      },
       opacity: constant(1),
-      stroke: (d, i) => color(colorAssign(this._groupBy[0](d, i))).darker(),
+      stroke: (d, i) => color(this._shapeConfig.fill(d, i)).darker(),
       strokeWidth: constant(0)
     };
 
@@ -233,6 +246,7 @@ export default class Viz extends BaseClass {
     drawControls.bind(this)(flatData);
     drawTimeline.bind(this)(flatData);
     drawLegend.bind(this)(flatData);
+    drawColorScale.bind(this)(flatData);
     drawBack.bind(this)();
     drawTotal.bind(this)(flatData);
 
@@ -406,6 +420,46 @@ export default class Viz extends BaseClass {
   */
   backConfig(_) {
     return arguments.length ? (this._backConfig = assign(this._backConfig, _), this) : this._backConfig;
+  }
+
+  /**
+      @memberof Viz
+      @desc Defines the main color to be used for each data point in a visualization. Can be either an accessor function or a string key to reference in each data point. If a color value is returned, it will be used as is. If a string is returned, a unique color will be assigned based on the string.
+      @param {Function|String} [*value*]
+      @chainable
+  */
+  color(_) {
+    return arguments.length ? (this._color = typeof _ === "function" ? _ : accessor(_), this) : this._color;
+  }
+
+  /**
+      @memberof Viz
+      @desc Defines the value to be used for a color scale. Can be either an accessor function or a string key to reference in each data point.
+      @param {Function|String} [*value*]
+      @chainable
+  */
+  colorScale(_) {
+    return arguments.length ? (this._colorScale = typeof _ === "function" ? _ : accessor(_), this) : this._colorScale;
+  }
+
+  /**
+      @memberof Viz
+      @desc A pass-through to the config method of ColorScale.
+      @param {Object} [*value*]
+      @chainable
+  */
+  colorScaleConfig(_) {
+    return arguments.length ? (this._colorScaleConfig = assign(this._colorScaleConfig, _), this) : this._colorScaleConfig;
+  }
+
+  /**
+      @memberof Viz
+      @desc Defines which side of the visualization to anchor the color scale. Acceptable values are `"top"`, `"bottom"`, `"left"`, and `"right"`. If no value is passed, the current legend position will be returned.
+      @param {String} [*value* = "bottom"]
+      @chainable
+  */
+  colorScalePosition(_) {
+    return arguments.length ? (this._colorScalePosition = _, this) : this._colorScalePosition;
   }
 
   /**
