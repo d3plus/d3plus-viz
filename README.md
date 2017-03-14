@@ -175,14 +175,14 @@ A pass-through to the config method of ColorScale.
 <a name="Viz.colorScalePosition"></a>
 
 #### Viz.colorScalePosition([*value*]) ↩︎
-Defines which side of the visualization to anchor the color scale. Acceptable values are `"top"`, `"bottom"`, `"left"`, and `"right"`. If no value is passed, the current legend position will be returned.
+Defines which side of the visualization to anchor the color scale. Acceptable values are `"top"`, `"bottom"`, `"left"`, `"right"` and `false`. A `false` value will cause the color scale to not be displayed, but will still color shapes based on the scale. If no value is passed, the current legend position will be returned.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
 **Chainable**  
 
 | Param | Type | Default |
 | --- | --- | --- |
-| [*value*] | <code>String</code> | <code>&quot;bottom&quot;</code> | 
+| [*value*] | <code>String</code> &#124; <code>Boolean</code> | <code>&quot;bottom&quot;</code> | 
 
 <a name="Viz.controls"></a>
 
@@ -600,4 +600,4 @@ Loads data from a filepath or URL, converts it to a valid JSON object, and retur
 
 
 
-###### <sub>Documentation generated on Tue, 14 Mar 2017 18:22:20 GMT</sub>
+###### <sub>Documentation generated on Tue, 14 Mar 2017 19:13:30 GMT</sub>
