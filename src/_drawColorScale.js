@@ -35,6 +35,7 @@ export default function(data = []) {
       .height(this._height - this._margin.bottom - this._margin.top)
       .orient(position)
       .select(scaleGroup)
+      .value(this._colorScale)
       .width(this._width - this._margin.left - this._margin.right)
       .config(this._colorScaleConfig)
       .render();
