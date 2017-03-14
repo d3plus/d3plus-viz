@@ -8,7 +8,10 @@ import {elem} from "d3plus-common";
 */
 export default function(data = []) {
 
-  const transform = {transform: `translate(${this._margin.left}, ${this._margin.top})`};
+  const transform = {
+    opacity: this._colorScalePosition ? 1 : 0,
+    transform: `translate(${this._margin.left}, ${this._margin.top})`
+  };
 
   const scaleGroup = elem("g.d3plus-viz-colorScale", {
     condition: this._colorScale,
@@ -25,7 +28,7 @@ export default function(data = []) {
       return c !== undefined && c !== null;
     });
 
-    const position = this._colorScalePosition;
+    const position = this._colorScalePosition || "bottom";
     const wide = ["top", "bottom"].includes(position);
 
     this._colorScaleClass
@@ -41,7 +44,7 @@ export default function(data = []) {
       .render();
 
     const scaleBounds = this._colorScaleClass.outerBounds();
-    if (scaleBounds.height) {
+    if (this._colorScalePosition && scaleBounds.height) {
       if (wide) this._margin[position] += scaleBounds.height + this._legendClass.padding() * 2;
       else this._margin[position] += scaleBounds.width + this._legendClass.padding() * 2;
     }
