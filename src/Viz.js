@@ -211,7 +211,7 @@ export default class Viz extends BaseClass {
       .map(g => g(d.__d3plus__ ? d.data : d, d.__d3plus__ ? d.i : i))
       .filter(g => g !== void 0 && g !== null && g.constructor !== Array);
     this._drawLabel = this._label || function(d, i) {
-      const l = that._ids(d, i).slice(0, that._drawDepth + 1).filter(d => d && d.constructor !== Array);
+      const l = that._ids(d, i).slice(0, that._drawDepth + 1).filter(d => d !== undefined && d !== null && d.constructor !== Array);
       return l[l.length - 1];
     };
 
