@@ -143,7 +143,10 @@ export default class Viz extends BaseClass {
     this._tooltipClass = new Tooltip();
     this._tooltipConfig = {
       duration: 50,
-      pointerEvents: "none"
+      pointerEvents: "none",
+      titleStyle: {
+        "max-width": "200px"
+      }
     };
 
     this._totalClass = new TextBox();
