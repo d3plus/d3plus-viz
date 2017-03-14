@@ -1,8 +1,6 @@
 import {nest} from "d3-collection";
 import {elem, merge} from "d3plus-common";
 
-import {default as colorNest} from "./_colorNest";
-
 /**
     @function _drawLegend
     @desc Renders the legend if this._legend is not falsy.
@@ -23,29 +21,27 @@ export default function(data = []) {
 
   if (this._legend) {
 
-    const legendData = [];
-    if (data.length) {
-
-      const dataNest = nest();
-      for (let i = 0; i <= this._drawDepth; i++) dataNest.key(this._groupBy[i]);
-      dataNest
-        .rollup(leaves => legendData.push(merge(leaves, this._aggs)))
-        .entries(this._colorScale ? data.filter((d, i) => this._colorScale(d, i) === undefined) : data);
-
-    }
-
     const position = this._legendPosition;
     const wide = ["top", "bottom"].includes(position);
-    const legend = colorNest.bind(this)(legendData);
+
+    const legendData = [];
+    const fill = (d, i) => `${this._shapeConfig.fill(d, i)}_${this._shapeConfig.opacity(d, i)}`;
+    nest()
+      .key(fill)
+      .rollup(leaves => legendData.push(merge(leaves, this._aggs)))
+      .entries(this._colorScale ? data.filter((d, i) => this._colorScale(d, i) === undefined) : data);
 
     this._legendClass
-      .id(legend.id)
+      .id(fill)
       .align(wide ? "center" : position)
       .direction(wide ? "row" : "column")
       .duration(this._duration)
-      .data(legend.data.length > 1 || this._colorScale ? legend.data : [])
+      .data(legendData.length > 1 || this._colorScale ? legendData : [])
       .height(this._height - this._margin.bottom - this._margin.top)
-      .label(this._label || legend.id)
+      .label((d, i) => {
+        const l = this._drawLabel(d, i);
+        return l instanceof Array ? l.join(", ") : l;
+      })
       .select(legendGroup)
       .verticalAlign(!wide ? "middle" : position)
       .width(this._width - this._margin.left - this._margin.right)
