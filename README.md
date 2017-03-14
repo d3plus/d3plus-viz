@@ -600,4 +600,4 @@ Loads data from a filepath or URL, converts it to a valid JSON object, and retur
 
 
 
-###### <sub>Documentation generated on Fri, 10 Mar 2017 23:09:28 GMT</sub>
+###### <sub>Documentation generated on Tue, 14 Mar 2017 18:22:20 GMT</sub>
