@@ -245,13 +245,13 @@ export default class Viz extends BaseClass {
 
     }
 
-    drawTitle.bind(this)(flatData);
-    drawControls.bind(this)(flatData);
-    drawTimeline.bind(this)(flatData);
-    drawLegend.bind(this)(flatData);
-    drawColorScale.bind(this)(flatData);
+    drawTitle.bind(this)(this._filteredData);
+    drawControls.bind(this)(this._filteredData);
+    drawTimeline.bind(this)(this._filteredData);
+    drawLegend.bind(this)(this._filteredData);
+    drawColorScale.bind(this)(this._filteredData);
     drawBack.bind(this)();
-    drawTotal.bind(this)(flatData);
+    drawTotal.bind(this)(this._filteredData);
 
     this._shapes = [];
 
