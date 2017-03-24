@@ -77,6 +77,9 @@ export default class Viz extends BaseClass {
     this._data = [];
     this._detectResize = true;
     this._detectVisible = true;
+    this._downloadButton = false;
+    this._downloadConfig = {type: "png"};
+    this._downloadPosition = "top";
     this._duration = 600;
     this._history = [];
     this._groupBy = [accessor("id")];
@@ -548,6 +551,36 @@ If no value is specified, the method will return the current *Boolean* value.
   */
   discrete(_) {
     return arguments.length ? (this._discrete = _, this) : this._discrete;
+  }
+
+  /**
+      @memberof Viz
+      @desc Shows a button that allows for downloading the current visualization.
+      @param {Boolean} [*value* = false]
+      @chainable
+  */
+  downloadButton(_) {
+    return arguments.length ? (this._downloadButton = _, this) : this._downloadButton;
+  }
+
+  /**
+      @memberof Viz
+      @desc Sets specific options of the saveElement function used when downloading the visualization.
+      @param {Object} [*value* = {type: "png"}]
+      @chainable
+  */
+  downloadConfig(_) {
+    return arguments.length ? (this._downloadConfig = _, this) : this._downloadConfig;
+  }
+
+  /**
+      @memberof Viz
+      @desc Defines which control group to add the download button into.
+      @param {String} [*value* = "top"]
+      @chainable
+  */
+  downloadPosition(_) {
+    return arguments.length ? (this._downloadPosition = _, this) : this._downloadPosition;
   }
 
   /**

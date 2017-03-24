@@ -1,6 +1,7 @@
 import {elem} from "d3plus-common";
-import {Radio, Select} from "d3plus-form";
-const formTypes = {Radio, Select};
+import {saveElement} from "d3plus-export";
+import {Button, Radio, Select} from "d3plus-form";
+const formTypes = {Button, Radio, Select};
 
 /**
     @function _drawLegend
@@ -16,6 +17,21 @@ export default function() {
   for (let a = 0; a < areas.length; a++) {
     const area = areas[a];
     const controls = (this._controls || []).filter(c => !c.position && area === "bottom" || c.position === area);
+
+    if (this._downloadButton && this._downloadPosition === area) {
+      controls.push({
+        data: [{text: "Download", value: 1}],
+        label: "downloadButton",
+        on: {
+          click: () => {
+            saveElement(this._select.node(), Object.assign({
+              title: this._title || undefined
+            }, this._downloadConfig));
+          }
+        },
+        type: "Button"
+      });
+    }
 
     const transform = {
       height: this._height - this._margin.top - this._margin.bottom,
