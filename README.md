@@ -58,6 +58,9 @@ If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest releas
     * [.detectResize(*value*)](#Viz.detectResize) ↩︎
     * [.detectVisible(*value*)](#Viz.detectVisible) ↩︎
     * [.discrete([*value*])](#Viz.discrete) ↩︎
+    * [.downloadButton([*value*])](#Viz.downloadButton) ↩︎
+    * [.downloadConfig([*value*])](#Viz.downloadConfig) ↩︎
+    * [.downloadPosition([*value*])](#Viz.downloadPosition) ↩︎
     * [.duration([*ms*])](#Viz.duration) ↩︎
     * [.filter([*value*])](#Viz.filter) ↩︎
     * [.groupBy([*value*])](#Viz.groupBy) ↩︎
@@ -146,7 +149,7 @@ Defines the main color to be used for each data point in a visualization. Can be
 
 | Param | Type |
 | --- | --- |
-| [*value*] | <code>function</code> &#124; <code>String</code> | 
+| [*value*] | <code>function</code> \| <code>String</code> | 
 
 <a name="Viz.colorScale"></a>
 
@@ -158,7 +161,7 @@ Defines the value to be used for a color scale. Can be either an accessor functi
 
 | Param | Type |
 | --- | --- |
-| [*value*] | <code>function</code> &#124; <code>String</code> | 
+| [*value*] | <code>function</code> \| <code>String</code> | 
 
 <a name="Viz.colorScaleConfig"></a>
 
@@ -182,7 +185,7 @@ Defines which side of the visualization to anchor the color scale. Acceptable va
 
 | Param | Type | Default |
 | --- | --- | --- |
-| [*value*] | <code>String</code> &#124; <code>Boolean</code> | <code>&quot;bottom&quot;</code> | 
+| [*value*] | <code>String</code> \| <code>Boolean</code> | <code>&quot;bottom&quot;</code> | 
 
 <a name="Viz.controls"></a>
 
@@ -222,7 +225,7 @@ If *data* is not specified, this method returns the current primary data array, 
 
 | Param | Type | Description |
 | --- | --- | --- |
-| *data* | <code>Array</code> &#124; <code>String</code> | = [] |
+| *data* | <code>Array</code> \| <code>String</code> | = [] |
 | [*formatter*] | <code>function</code> |  |
 
 <a name="Viz.depth"></a>
@@ -277,6 +280,42 @@ If *value* is specified, sets the discrete accessor to the specified method name
 | --- | --- |
 | [*value*] | <code>String</code> | 
 
+<a name="Viz.downloadButton"></a>
+
+#### Viz.downloadButton([*value*]) ↩︎
+Shows a button that allows for downloading the current visualization.
+
+**Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
+
+| Param | Type | Default |
+| --- | --- | --- |
+| [*value*] | <code>Boolean</code> | <code>false</code> | 
+
+<a name="Viz.downloadConfig"></a>
+
+#### Viz.downloadConfig([*value*]) ↩︎
+Sets specific options of the saveElement function used when downloading the visualization.
+
+**Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
+
+| Param | Type | Default |
+| --- | --- | --- |
+| [*value*] | <code>Object</code> | <code>{type: &quot;png&quot;}</code> | 
+
+<a name="Viz.downloadPosition"></a>
+
+#### Viz.downloadPosition([*value*]) ↩︎
+Defines which control group to add the download button into.
+
+**Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
+
+| Param | Type | Default |
+| --- | --- | --- |
+| [*value*] | <code>String</code> | <code>&quot;top&quot;</code> | 
+
 <a name="Viz.duration"></a>
 
 #### Viz.duration([*ms*]) ↩︎
@@ -311,7 +350,7 @@ If *value* is specified, sets the group accessor(s) to the specified string, fun
 
 | Param | Type |
 | --- | --- |
-| [*value*] | <code>String</code> &#124; <code>function</code> &#124; <code>Array</code> | 
+| [*value*] | <code>String</code> \| <code>function</code> \| <code>Array</code> | 
 
 **Example**  
 ```js
@@ -353,7 +392,7 @@ If *value* is specified, sets the label accessor to the specified function or st
 
 | Param | Type |
 | --- | --- |
-| [*value*] | <code>function</code> &#124; <code>String</code> | 
+| [*value*] | <code>function</code> \| <code>String</code> | 
 
 <a name="Viz.legend"></a>
 
@@ -413,7 +452,7 @@ If *selector* is specified, sets the SVG container element to the specified d3 s
 
 | Param | Type |
 | --- | --- |
-| [*selector*] | <code>String</code> &#124; <code>HTMLElement</code> | 
+| [*selector*] | <code>String</code> \| <code>HTMLElement</code> | 
 
 <a name="Viz.shape"></a>
 
@@ -425,7 +464,7 @@ If *value* is specified, sets the shape accessor to the specified function or nu
 
 | Param | Type |
 | --- | --- |
-| [*value*] | <code>function</code> &#124; <code>String</code> | 
+| [*value*] | <code>function</code> \| <code>String</code> | 
 
 <a name="Viz.shapeConfig"></a>
 
@@ -449,7 +488,7 @@ If *value* is specified, sets the time accessor to the specified function or str
 
 | Param | Type |
 | --- | --- |
-| [*value*] | <code>function</code> &#124; <code>String</code> | 
+| [*value*] | <code>function</code> \| <code>String</code> | 
 
 <a name="Viz.timeFilter"></a>
 
@@ -497,7 +536,7 @@ If *value* is specified, sets the title accessor to the specified function or st
 
 | Param | Type |
 | --- | --- |
-| [*value*] | <code>function</code> &#124; <code>String</code> | 
+| [*value*] | <code>function</code> \| <code>String</code> | 
 
 <a name="Viz.titleConfig"></a>
 
@@ -545,7 +584,7 @@ If *value* is specified, sets the total accessor to the specified function or st
 
 | Param | Type |
 | --- | --- |
-| [*value*] | <code>Boolean</code> &#124; <code>function</code> &#124; <code>String</code> | 
+| [*value*] | <code>Boolean</code> \| <code>function</code> \| <code>String</code> | 
 
 <a name="Viz.totalConfig"></a>
 
@@ -593,11 +632,11 @@ Loads data from a filepath or URL, converts it to a valid JSON object, and retur
 
 | Param | Type | Description |
 | --- | --- | --- |
-| path | <code>Array</code> &#124; <code>String</code> | The path to the file or url to be loaded. If an Array is passed, the xhr request logic is skipped. |
+| path | <code>Array</code> \| <code>String</code> | The path to the file or url to be loaded. If an Array is passed, the xhr request logic is skipped. |
 | [formatter] | <code>function</code> | An optional formatter function that is run on the loaded data. |
 | [key] | <code>String</code> | The key in the `this` context to save the resulting data to. |
 | [callback] | <code>function</code> | A function that is called when the final data is loaded. It is passed 2 variables, any error present and the data loaded. |
 
 
 
-###### <sub>Documentation generated on Thu, 16 Mar 2017 15:10:51 GMT</sub>
+###### <sub>Documentation generated on Fri, 24 Mar 2017 21:06:16 GMT</sub>
