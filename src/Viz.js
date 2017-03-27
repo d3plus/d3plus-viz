@@ -466,7 +466,7 @@ export default class Viz extends BaseClass {
 
   /**
       @memberof Viz
-      @desc Defines which side of the visualization to anchor the color scale. Acceptable values are `"top"`, `"bottom"`, `"left"`, `"right"` and `false`. A `false` value will cause the color scale to not be displayed, but will still color shapes based on the scale. If no value is passed, the current legend position will be returned.
+      @desc Defines which side of the visualization to anchor the color scale. Acceptable values are `"top"`, `"bottom"`, `"left"`, `"right"`, and `false`. A `false` value will cause the color scale to not be displayed, but will still color shapes based on the scale.
       @param {String|Boolean} [*value* = "bottom"]
       @chainable
   */
@@ -705,7 +705,7 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc Defines which side of the visualization to anchor the legend. Acceptable values are `"top"`, `"bottom"`, `"left"`, and `"right"`. If no value is passed, the current legend position will be returned.
+      @desc Defines which side of the visualization to anchor the legend. Expected values are `"top"`, `"bottom"`, `"left"`, and `"right"`.
       @param {String} [*value* = "bottom"]
       @chainable
   */

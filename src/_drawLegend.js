@@ -12,7 +12,7 @@ export default function(data = []) {
   const transform = {transform: `translate(${this._margin.left}, ${this._margin.top})`};
 
   const legendGroup = elem("g.d3plus-viz-legend", {
-    condition: this._legend,
+    condition: this._legend && !this._legendConfig.select,
     enter: transform,
     parent: this._select,
     transition: this._transition,
@@ -56,7 +56,7 @@ export default function(data = []) {
       .render();
 
     const legendBounds = this._legendClass.outerBounds();
-    if (legendBounds.height) {
+    if (!this._legendConfig.select && legendBounds.height) {
       if (wide) this._margin[position] += legendBounds.height + this._legendClass.padding() * 2;
       else this._margin[position] += legendBounds.width + this._legendClass.padding() * 2;
     }

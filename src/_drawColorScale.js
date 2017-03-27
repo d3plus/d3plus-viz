@@ -14,7 +14,7 @@ export default function(data = []) {
   };
 
   const scaleGroup = elem("g.d3plus-viz-colorScale", {
-    condition: this._colorScale,
+    condition: this._colorScale && !this._colorScaleConfig.select,
     enter: transform,
     parent: this._select,
     transition: this._transition,
@@ -44,7 +44,7 @@ export default function(data = []) {
       .render();
 
     const scaleBounds = this._colorScaleClass.outerBounds();
-    if (this._colorScalePosition && scaleBounds.height) {
+    if (this._colorScalePosition && !this._colorScaleConfig.select && scaleBounds.height) {
       if (wide) this._margin[position] += scaleBounds.height + this._legendClass.padding() * 2;
       else this._margin[position] += scaleBounds.width + this._legendClass.padding() * 2;
     }
