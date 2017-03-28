@@ -12,7 +12,7 @@ Abstract ES6 class that drives d3plus visualizations.
 If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest release](https://github.com/d3plus/d3plus-viz/releases/latest). The released bundle supports AMD, CommonJS, and vanilla environments. Create a [custom bundle using Rollup](https://github.com/rollup/rollup) or your preferred bundler. You can also load directly from [d3plus.org](https://d3plus.org):
 
 ```html
-<script src="https://d3plus.org/js/d3plus-viz.v0.7.full.min.js"></script>
+<script src="https://d3plus.org/js/d3plus-viz.v0.8.full.min.js"></script>
 ```
 
 
@@ -47,6 +47,7 @@ If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest releas
     * [.active([*value*])](#Viz.active) ↩︎
     * [.aggs([*value*])](#Viz.aggs) ↩︎
     * [.backConfig([*value*])](#Viz.backConfig) ↩︎
+    * [.cache([*value*])](#Viz.cache) ↩︎
     * [.color([*value*])](#Viz.color) ↩︎
     * [.colorScale([*value*])](#Viz.colorScale) ↩︎
     * [.colorScaleConfig([*value*])](#Viz.colorScaleConfig) ↩︎
@@ -139,6 +140,18 @@ If *value* is specified, sets the config method for the back button and returns 
 | --- | --- |
 | [*value*] | <code>Object</code> | 
 
+<a name="Viz.cache"></a>
+
+#### Viz.cache([*value*]) ↩︎
+Enables a lru cache that stores up to 5 previously loaded files/URLs. Helpful when constantly writing over the data array with a URL in the render function of a react component.
+
+**Kind**: static method of <code>[Viz](#Viz)</code>  
+**Chainable**  
+
+| Param | Type | Default |
+| --- | --- | --- |
+| [*value*] | <code>Boolean</code> | <code>false</code> | 
+
 <a name="Viz.color"></a>
 
 #### Viz.color([*value*]) ↩︎
@@ -178,7 +191,7 @@ A pass-through to the config method of ColorScale.
 <a name="Viz.colorScalePosition"></a>
 
 #### Viz.colorScalePosition([*value*]) ↩︎
-Defines which side of the visualization to anchor the color scale. Acceptable values are `"top"`, `"bottom"`, `"left"`, `"right"` and `false`. A `false` value will cause the color scale to not be displayed, but will still color shapes based on the scale. If no value is passed, the current legend position will be returned.
+Defines which side of the visualization to anchor the color scale. Acceptable values are `"top"`, `"bottom"`, `"left"`, `"right"`, and `false`. A `false` value will cause the color scale to not be displayed, but will still color shapes based on the scale.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
 **Chainable**  
@@ -421,7 +434,7 @@ If *value* is specified, the object is passed to the legend's config method. If 
 <a name="Viz.legendPosition"></a>
 
 #### Viz.legendPosition([*value*]) ↩︎
-Defines which side of the visualization to anchor the legend. Acceptable values are `"top"`, `"bottom"`, `"left"`, and `"right"`. If no value is passed, the current legend position will be returned.
+Defines which side of the visualization to anchor the legend. Expected values are `"top"`, `"bottom"`, `"left"`, and `"right"`.
 
 **Kind**: static method of <code>[Viz](#Viz)</code>  
 **Chainable**  
@@ -639,4 +652,4 @@ Loads data from a filepath or URL, converts it to a valid JSON object, and retur
 
 
 
-###### <sub>Documentation generated on Fri, 24 Mar 2017 21:06:16 GMT</sub>
+###### <sub>Documentation generated on Tue, 28 Mar 2017 00:44:03 GMT</sub>
