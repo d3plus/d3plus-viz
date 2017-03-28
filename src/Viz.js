@@ -215,8 +215,8 @@ export default class Viz extends BaseClass {
     this._drawDepth = this._depth !== void 0 ? this._depth : this._groupBy.length - 1;
     this._id = this._groupBy[this._drawDepth];
     this._ids = (d, i) => this._groupBy
-      .map(g => g(d.__d3plus__ ? d.data : d, d.__d3plus__ ? d.i : i))
-      .filter(g => g !== void 0 && g !== null && g.constructor !== Array);
+      .map(g => !d || d.__d3plus__ && !d.data ? undefined : g(d.__d3plus__ ? d.data : d, d.__d3plus__ ? d.i : i))
+      .filter(g => g !== undefined && g !== null && g.constructor !== Array);
 
     this._drawLabel = (d, i) => {
       if (d.__d3plus__) {
