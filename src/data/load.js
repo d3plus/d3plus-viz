@@ -42,6 +42,7 @@ export default function(path, formatter, key, callback) {
       data = err ? [] : formatter ? formatter(data) : data;
       if (data && !(data instanceof Array) && data.data && data.headers) data = fold(data);
       if (key && `_${key}` in this) this[`_${key}`] = data;
+      if (this._cache) this._lrucache.set(path, data);
       if (callback) callback(err, data);
 
     });

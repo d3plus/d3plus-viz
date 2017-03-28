@@ -10,6 +10,8 @@ import {queue} from "d3-queue";
 import {select} from "d3-selection";
 import {transition} from "d3-transition";
 
+import lrucache from "lrucache";
+
 import {date} from "d3plus-axis";
 import {colorAssign} from "d3plus-color";
 import {accessor, assign, BaseClass, constant, merge} from "d3plus-common";
@@ -65,6 +67,7 @@ export default class Viz extends BaseClass {
       fontSize: 10,
       resize: false
     };
+    this._cache = false;
     this._color = (d, i) => this._groupBy[0](d, i);
     this._colorScaleClass = new ColorScale();
     this._colorScaleConfig = {};
@@ -92,6 +95,7 @@ export default class Viz extends BaseClass {
     this._legendClass = new Legend();
     this._legendPosition = "bottom";
     this._locale = "en-US";
+    this._lrucache = lrucache(5);
     this._on = {
       "click": click.bind(this),
       "click.legend": clickLegend.bind(this),
@@ -365,7 +369,10 @@ export default class Viz extends BaseClass {
     else {
 
       const q = queue();
-      this._queue.forEach(p => q.defer(...p));
+      this._queue.forEach(p => {
+        const cache = this._cache ? this._lrucache.get(p[1]) : undefined;
+        if (!cache) q.defer(...p);
+      });
       this._queue = [];
       q.awaitAll(() => {
         this._draw(callback);
@@ -432,6 +439,16 @@ export default class Viz extends BaseClass {
   */
   backConfig(_) {
     return arguments.length ? (this._backConfig = assign(this._backConfig, _), this) : this._backConfig;
+  }
+
+  /**
+      @memberof Viz
+      @desc Enables a lru cache that stores up to 5 previously loaded files/URLs. Helpful when constantly writing over the data array with a URL in the render function of a react component.
+      @param {Boolean} [*value* = false]
+      @chainable
+  */
+  cache(_) {
+    return arguments.length ? (this._cache = _, this) : this._cache;
   }
 
   /**
