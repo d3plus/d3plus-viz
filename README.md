@@ -652,4 +652,4 @@ Loads data from a filepath or URL, converts it to a valid JSON object, and retur
 
 
 
-###### <sub>Documentation generated on Wed, 29 Mar 2017 00:33:26 GMT</sub>
+###### <sub>Documentation generated on Thu, 30 Mar 2017 16:04:45 GMT</sub>
