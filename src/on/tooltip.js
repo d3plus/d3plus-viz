@@ -12,6 +12,7 @@ import {locale} from "d3plus-common";
 export default function(d, i, config = {}) {
 
   if (this._tooltip && d) {
+    if (d.__d3plus__ && d.data) d = d.data;
     this._select.style("cursor", "pointer");
     this._tooltipClass.data([d])
       .footer(this._drawDepth < this._groupBy.length - 1
