@@ -1,14 +1,10 @@
-import {test} from "tape";
+import zora from "zora";
 import {default as Viz} from "../src/Viz.js";
 
-test("Viz", assert => {
+export default zora()
+  .test("Viz", function *(assert) {
 
-  new Viz()
-    .render(() => {
+    yield cb => new Viz().render(cb);
+    assert.ok(true, "function success");
 
-      assert.true(true, "function success");
-      assert.end();
-
-    });
-
-});
+  });
