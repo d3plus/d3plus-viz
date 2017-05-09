@@ -62,7 +62,7 @@ export default function() {
 
       for (let i = 0; i < controls.length; i++) {
 
-        const control = controls[i];
+        const control = Object.assign({}, controls[i]);
 
         const on = {};
         if (control.on) {
@@ -80,15 +80,11 @@ export default function() {
         if (!this._controlCache[id]) {
           const type = control.type && formTypes[control.type] ? control.type : "Select";
           this._controlCache[id] = new formTypes[type]().container(container.node());
-          if (control.checked) {
-            this._controlCache[id].checked(control.checked);
-            delete control.checked;
-          }
-          if (control.selected) {
-            this._controlCache[id].selected(control.selected);
-            delete control.selected;
-          }
+          if (control.checked) this._controlCache[id].checked(control.checked);
+          if (control.selected) this._controlCache[id].selected(control.selected);
         }
+        delete control.checked;
+        delete control.selected;
 
         this._controlCache[id]
           .config(control)
