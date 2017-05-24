@@ -13,7 +13,7 @@ import {transition} from "d3-transition";
 import lrucache from "lrucache";
 
 import {date} from "d3plus-axis";
-import {colorAssign} from "d3plus-color";
+import {colorAssign, colorContrast} from "d3plus-color";
 import {accessor, assign, BaseClass, constant, merge} from "d3plus-common";
 import {Select} from "d3plus-form";
 import {ColorScale, Legend} from "d3plus-legend";
@@ -33,12 +33,9 @@ import {default as inViewport} from "./_inViewport";
 import {default as load} from "./data/load";
 
 import {default as click} from "./on/click";
-import {default as clickLegend} from "./on/click.legend";
-import {default as clickShape} from "./on/click.shape";
 import {default as mouseenter} from "./on/mouseenter";
 import {default as mouseleave} from "./on/mouseleave";
-import {default as mousemoveLegend} from "./on/mousemove.legend";
-import {default as mousemoveShape} from "./on/mousemove.shape";
+import {default as mousemove} from "./on/mousemove";
 
 /**
     @class Viz
@@ -88,8 +85,20 @@ export default class Viz extends BaseClass {
     this._groupBy = [accessor("id")];
     this._legend = true;
     this._legendConfig = {
+      label: (d, i) => {
+        const l = this._drawLabel(d, i);
+        return l instanceof Array ? l.join(", ") : l;
+      },
       shapeConfig: {
-        fontResize: false
+        fill: (d, i) => {
+          const c = this._color(d, i);
+          if (color(c)) return c;
+          return colorAssign(c);
+        },
+        labelConfig: {
+          fontColor: undefined,
+          fontResize: false
+        }
       }
     };
     this._legendClass = new Legend();
@@ -97,13 +106,10 @@ export default class Viz extends BaseClass {
     this._locale = "en-US";
     this._lrucache = lrucache(5);
     this._on = {
-      "click": click.bind(this),
-      "click.legend": clickLegend.bind(this),
-      "click.shape": clickShape.bind(this),
-      "mouseenter": mouseenter.bind(this),
-      "mousemove.legend": mousemoveLegend.bind(this),
-      "mousemove.shape": mousemoveShape.bind(this),
-      "mouseleave": mouseleave.bind(this)
+      click: click.bind(this),
+      mouseenter: mouseenter.bind(this),
+      mouseleave: mouseleave.bind(this),
+      mousemove: mousemove.bind(this)
     };
     this._padding = 5;
     this._queue = [];
@@ -117,6 +123,9 @@ export default class Viz extends BaseClass {
         const c = this._color(d, i);
         if (color(c)) return c;
         return colorAssign(c);
+      },
+      labelConfig: {
+        fontColor: (d, i) => colorContrast(this._shapeConfig.fill(d, i))
       },
       opacity: constant(1),
       stroke: (d, i) => color(this._shapeConfig.fill(d, i)).darker(),
@@ -175,19 +184,36 @@ export default class Viz extends BaseClass {
 
     let newConfig = {duration: this._duration};
 
-    for (const key in this._shapeConfig) {
+    const wrapFunction = func => (d, i, s) => {
+      while (d.__d3plus__ && d.data) {
+        d = d.data;
+        i = d.i;
+      }
+      return func(d, i, s);
+    };
 
-      if ({}.hasOwnProperty.call(this._shapeConfig, key)) {
+    const keyEval = (newObj, obj) => {
 
-        if (typeof this._shapeConfig[key] === "function") {
-          newConfig[key] = (d, i, s) =>
-            this._shapeConfig[key](d.__d3plus__ ? d.data : d, d.__d3plus__ ? d.i : i, s);
+      for (const key in obj) {
+
+        if ({}.hasOwnProperty.call(obj, key)) {
+
+          if (typeof obj[key] === "function") {
+            newObj[key] = wrapFunction(obj[key]);
+          }
+          else if (typeof obj[key] === "object" && !(obj instanceof Array)) {
+            newObj[key] = {};
+            keyEval(newObj[key], obj[key]);
+          }
+          else newObj[key] = obj[key];
+
         }
-        else newConfig[key] = this._shapeConfig[key];
 
       }
 
-    }
+    };
+
+    keyEval(newConfig, this._shapeConfig);
 
     newConfig.on = Object.keys(this._on)
       .filter(e => !e.includes(".") || e.includes(".shape"))
@@ -219,12 +245,13 @@ export default class Viz extends BaseClass {
       .filter(g => g !== undefined && g !== null && g.constructor !== Array);
 
     this._drawLabel = (d, i) => {
-      if (d.__d3plus__) {
+      if (!d) return "";
+      while (d.__d3plus__ && d.data) {
         d = d.data;
         i = d.i;
       }
       if (this._label) return this._label(d, i);
-      const l = that._ids(d, i).slice(0, that._drawDepth + 1).filter(d => d && d.constructor !== Array);
+      const l = that._ids(d, i).slice(0, this._drawDepth + 1);
       return l[l.length - 1];
     };
 

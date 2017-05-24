@@ -9,10 +9,9 @@ import {locale} from "d3plus-common";
     @param {Object} [*config*] Optional configuration methods for the Tooltip class.
     @private
 */
-export default function(d, i, config = {}) {
+export default function(d) {
 
   if (this._tooltip && d) {
-    if (d.__d3plus__ && d.data) d = d.data;
     this._select.style("cursor", "pointer");
     this._tooltipClass.data([d])
       .footer(this._drawDepth < this._groupBy.length - 1
@@ -20,7 +19,6 @@ export default function(d, i, config = {}) {
             : "")
       .title(this._drawLabel)
       .translate(mouse(select("html").node()))
-      .config(config)
       .config(this._tooltipConfig)
       .render();
   }

@@ -1,5 +1,5 @@
 import {nest} from "d3-collection";
-import {elem, merge} from "d3plus-common";
+import {configPrep, elem, merge} from "d3plus-common";
 
 /**
     @function _drawLegend
@@ -38,20 +38,10 @@ export default function(data = []) {
       .duration(this._duration)
       .data(legendData.length > 1 || this._colorScale ? legendData : [])
       .height(this._height - this._margin.bottom - this._margin.top)
-      .label((d, i) => {
-        const l = this._drawLabel(d, i);
-        return l instanceof Array ? l.join(", ") : l;
-      })
       .select(legendGroup)
       .verticalAlign(!wide ? "middle" : position)
       .width(this._width - this._margin.left - this._margin.right)
-      .shapeConfig(this._shapeConfig)
-      .shapeConfig({on: Object.keys(this._on)
-        .filter(e => !e.includes(".") || e.includes(".legend"))
-        .reduce((obj, e) => {
-          obj[e] = this._on[e];
-          return obj;
-        }, {})})
+      .shapeConfig(configPrep.bind(this)(this._shapeConfig, "legend"))
       .config(this._legendConfig)
       .render();
 
