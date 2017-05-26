@@ -171,60 +171,6 @@ export default class Viz extends BaseClass {
 
   /**
       @memberof Viz
-      @desc Preps a shapeConfig object for d3plus data, and optionally bubbles up a specific shape type.
-      @param {String} *shape* The shape key to bubble up to the parent config level.
-      @private
-  */
-  _shapeConfigPrep(shape = false) {
-
-    let newConfig = {duration: this._duration};
-
-    const wrapFunction = func => (d, i, s) => {
-      while (d.__d3plus__ && d.data) {
-        d = d.data;
-        i = d.i;
-      }
-      return func(d, i, s);
-    };
-
-    const keyEval = (newObj, obj) => {
-
-      for (const key in obj) {
-
-        if ({}.hasOwnProperty.call(obj, key)) {
-
-          if (typeof obj[key] === "function") {
-            newObj[key] = wrapFunction(obj[key]);
-          }
-          else if (typeof obj[key] === "object" && !(obj instanceof Array)) {
-            newObj[key] = {};
-            keyEval(newObj[key], obj[key]);
-          }
-          else newObj[key] = obj[key];
-
-        }
-
-      }
-
-    };
-
-    keyEval(newConfig, this._shapeConfig);
-
-    newConfig.on = Object.keys(this._on)
-      .filter(e => !e.includes(".") || e.includes(".shape"))
-      .reduce((obj, e) => {
-        obj[e] = (d, i) =>
-          this._on[e] ? this._on[e](d.__d3plus__ ? d.data : d, d.__d3plus__ ? d.i : i) : null;
-        return obj;
-      }, {});
-
-    if (shape && this._shapeConfig[shape]) newConfig = assign(newConfig, this._shapeConfig[shape]);
-    return newConfig;
-
-  }
-
-  /**
-      @memberof Viz
       @desc Called by render once all checks are passed.
       @private
   */
