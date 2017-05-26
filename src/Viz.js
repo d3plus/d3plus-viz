@@ -90,11 +90,6 @@ export default class Viz extends BaseClass {
         return l instanceof Array ? l.join(", ") : l;
       },
       shapeConfig: {
-        fill: (d, i) => {
-          const c = this._color(d, i);
-          if (color(c)) return c;
-          return colorAssign(c);
-        },
         labelConfig: {
           fontColor: undefined,
           fontResize: false
