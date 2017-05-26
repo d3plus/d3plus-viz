@@ -556,7 +556,7 @@ If no value is specified, the method will return the current *Boolean* value.
       @chainable
   */
   downloadConfig(_) {
-    return arguments.length ? (this._downloadConfig = _, this) : this._downloadConfig;
+    return arguments.length ? (this._downloadConfig = assign(this._downloadConfig, _), this) : this._downloadConfig;
   }
 
   /**
@@ -686,7 +686,7 @@ function value(d) {
       @chainable
   */
   legendConfig(_) {
-    return arguments.length ? (this._legendConfig = _, this) : this._legendConfig;
+    return arguments.length ? (this._legendConfig = assign(this._legendConfig, _), this) : this._legendConfig;
   }
 
   /**
