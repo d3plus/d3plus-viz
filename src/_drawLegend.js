@@ -25,7 +25,24 @@ export default function(data = []) {
     const wide = ["top", "bottom"].includes(position);
 
     const legendData = [];
-    const fill = (d, i) => `${this._shapeConfig.fill(d, i)}_${this._shapeConfig.opacity(d, i)}`;
+
+    const color = (d, i) => {
+      const shape = this._shape(d, i);
+      const attr = shape === "Line" ? "stroke" : "fill";
+      const value = this._shapeConfig[shape] && this._shapeConfig[shape][attr]
+                  ? this._shapeConfig[shape][attr] : this._shapeConfig[attr];
+      return typeof value === "function" ? value(d, i) : value;
+    };
+
+    const opacity = (d, i) => {
+      const shape = this._shape(d, i);
+      const value = this._shapeConfig[shape] && this._shapeConfig[shape].opacity
+                    ? this._shapeConfig[shape].opacity : this._shapeConfig.opacity;
+      return typeof value === "function" ? value(d, i) : value;
+    };
+
+    const fill = (d, i) => `${ color(d, i) }_${ opacity(d, i) }`;
+
     nest()
       .key(fill)
       .rollup(leaves => legendData.push(merge(leaves, this._aggs)))
@@ -47,6 +64,7 @@ export default function(data = []) {
       .width(this._width - this._margin.left - this._margin.right)
       .shapeConfig(configPrep.bind(this)(this._shapeConfig, "legend"))
       .config(this._legendConfig)
+      .shapeConfig({fill: color, opacity})
       .render();
 
     const legendBounds = this._legendClass.outerBounds();

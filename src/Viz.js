@@ -112,6 +112,7 @@ export default class Viz extends BaseClass {
     this._padding = 5;
     this._queue = [];
 
+    this._shape = constant("Rect");
     this._shapeConfig = {
       fill: (d, i) => {
         if (this._colorScale) {
