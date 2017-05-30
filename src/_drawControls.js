@@ -24,9 +24,17 @@ export default function() {
         label: "downloadButton",
         on: {
           click: () => {
+            const resize = this._detectResize;
+            if (resize) this.detectResize(false).render();
             saveElement(this._select.node(), Object.assign({
               title: this._title || undefined
-            }, this._downloadConfig));
+            }, this._downloadConfig), {
+              callback: () => {
+                setTimeout(() => {
+                  if (resize) this.detectResize(resize).render();
+                }, 5000);
+              }
+            });
           }
         },
         type: "Button"
