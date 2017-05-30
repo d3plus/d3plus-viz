@@ -35,7 +35,8 @@ import {default as load} from "./data/load";
 import {default as click} from "./on/click";
 import {default as mouseenter} from "./on/mouseenter";
 import {default as mouseleave} from "./on/mouseleave";
-import {default as mousemove} from "./on/mousemove";
+import {default as mousemoveLegend} from "./on/mousemove.legend";
+import {default as mousemoveShape} from "./on/mousemove.shape";
 
 /**
     @class Viz
@@ -96,15 +97,17 @@ export default class Viz extends BaseClass {
         }
       }
     };
+    this._legendTooltip = {};
     this._legendClass = new Legend();
     this._legendPosition = "bottom";
     this._locale = "en-US";
     this._lrucache = lrucache(5);
     this._on = {
-      click: click.bind(this),
-      mouseenter: mouseenter.bind(this),
-      mouseleave: mouseleave.bind(this),
-      mousemove: mousemove.bind(this)
+      "click": click.bind(this),
+      "mouseenter": mouseenter.bind(this),
+      "mouseleave": mouseleave.bind(this),
+      "mousemove.shape": mousemoveShape.bind(this),
+      "mousemove.legend": mousemoveLegend.bind(this)
     };
     this._padding = 5;
     this._queue = [];
@@ -687,6 +690,16 @@ function value(d) {
   */
   legendConfig(_) {
     return arguments.length ? (this._legendConfig = assign(this._legendConfig, _), this) : this._legendConfig;
+  }
+
+  /**
+      @memberof Viz
+      @desc If *value* is specified, sets the config method for the legend tooltip and returns the current class instance. If *value* is not specified, returns the current legend tooltip configuration.
+      @param {Object} [*value* = {}]
+      @chainable
+  */
+  legendTooltip(_) {
+    return arguments.length ? (this._legendTooltip = assign(this._legendTooltip, _), this) : this._legendTooltip;
   }
 
   /**

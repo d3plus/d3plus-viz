@@ -38,6 +38,10 @@ export default function(data = []) {
       .duration(this._duration)
       .data(legendData.length > 1 || this._colorScale ? legendData : [])
       .height(this._height - this._margin.bottom - this._margin.top)
+      .label((d, i) => {
+        const l = this._drawLabel(d, i);
+        return l instanceof Array ? l.join(", ") : l;
+      })
       .select(legendGroup)
       .verticalAlign(!wide ? "middle" : position)
       .width(this._width - this._margin.left - this._margin.right)
