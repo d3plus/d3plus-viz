@@ -197,7 +197,6 @@ export default class Viz extends BaseClass {
       }
       if (this._label) return this._label(d, i);
       const l = that._ids(d, i).slice(0, this._drawDepth + 1);
-      if (!l.length && this._topojsonId) return this._topojsonId(d);
       return l[l.length - 1];
     };
 
