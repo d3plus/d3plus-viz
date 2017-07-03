@@ -6,6 +6,8 @@ import {select} from "d3-selection";
 */
 function _elementSize(element, s) {
 
+  if (!element) return undefined;
+
   if (element.tagName === undefined || ["BODY", "HTML"].indexOf(element.tagName) >= 0) {
 
     let val  = window[`inner${s.charAt(0).toUpperCase() + s.slice(1)}`];
