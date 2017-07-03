@@ -11,18 +11,11 @@ export default function(elem, buffer = 0) {
         pageY = window.pageYOffset !== undefined ? window.pageYOffset
               : (document.documentElement || document.body.parentNode || document.body).scrollTop;
 
-  let height = elem.offsetHeight,
-      left = elem.offsetLeft,
-      top = elem.offsetTop,
-      width = elem.offsetWidth;
-
-  if (height === void 0) {
-    const bounds = elem.getBoundingClientRect();
-    height = bounds.height;
-    left = bounds.left + pageX;
-    top = bounds.top + pageY;
-    width = bounds.width;
-  }
+  const bounds = elem.getBoundingClientRect();
+  const height = bounds.height,
+        left = bounds.left + pageX,
+        top = bounds.top + pageY,
+        width = bounds.width;
 
   return pageY + window.innerHeight > top + buffer && pageY + buffer < top + height &&
          pageX + window.innerWidth > left + buffer && pageX + buffer < left + width;
