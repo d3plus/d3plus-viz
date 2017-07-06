@@ -450,4 +450,4 @@ This is a global function.
 
 ---
 
-###### <sub>Documentation generated on Mon, 03 Jul 2017 18:33:15 GMT</sub>
+###### <sub>Documentation generated on Thu, 06 Jul 2017 15:21:54 GMT</sub>
