@@ -43,10 +43,11 @@ export default function() {
 
     const transform = {
       height: this._height - this._margin.top - this._margin.bottom,
-      width: this._width - this._margin.left - this._margin.right,
-      x: this._margin.left,
-      y: this._margin.top
+      width: this._width - this._margin.left - this._margin.right
     };
+
+    transform.x = this._margin.left + (area === "right" ? transform.width : 0);
+    transform.y = this._margin.top + (area === "bottom" ? transform.height : 0);
 
     const foreign = elem(`foreignObject.d3plus-viz-controls-${area}`, {
       condition: controls.length,
@@ -54,7 +55,7 @@ export default function() {
       exit: Object.assign({opacity: 0}, transform),
       parent: this._select,
       transition: this._transition,
-      update: Object.assign({opacity: 1}, transform)
+      update: {height: transform.height, opacity: 1, width: transform.width}
     });
 
     let container = foreign.selectAll("div.d3plus-viz-controls-container")
@@ -62,8 +63,6 @@ export default function() {
 
     container = container.enter().append("xhtml:div")
         .attr("class", "d3plus-viz-controls-container")
-        .style("margin-top", area === "bottom" ? `${transform.height}px` : 0)
-        .style("margin-left", area === "right" ? `${transform.width}px` : 0)
       .merge(container);
 
     if (controls.length) {
@@ -108,10 +107,15 @@ export default function() {
 
       const bounds = container.node().getBoundingClientRect();
 
-      container
-        .transition(this._transition)
-          .style("margin-top", area === "bottom" ? `${transform.height - bounds.height}px` : 0)
-          .style("margin-left", area === "right" ? `${transform.width - bounds.width}px` : 0);
+      if (area === "bottom") {
+        console.log(this._margin);
+        console.log(transform);
+        console.log(bounds);
+      }
+
+      foreign.transition(this._transition)
+        .attr("x", transform.x - (area === "right" ? bounds.width : 0))
+        .attr("y", transform.y - (area === "bottom" ? bounds.height : 0));
 
       this._margin[area] += ["top", "bottom"].includes(area) ? bounds.height : bounds.width;
 
