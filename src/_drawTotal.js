@@ -11,7 +11,7 @@ import {elem, locale} from "d3plus-common";
 export default function(data = []) {
 
   const total = typeof this._total === "function" ? sum(data.map(this._total))
-              : this._total === true && this._size ? sum(data.map(this._size)) : false;
+    : this._total === true && this._size ? sum(data.map(this._size)) : false;
 
   const group = elem("g.d3plus-viz-total", {
     enter: {transform: `translate(${this._margin.left}, ${this._margin.top})`},

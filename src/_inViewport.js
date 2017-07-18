@@ -7,9 +7,9 @@
 export default function(elem, buffer = 0) {
 
   const pageX = window.pageXOffset !== undefined ? window.pageXOffset
-              : (document.documentElement || document.body.parentNode || document.body).scrollLeft,
+          : (document.documentElement || document.body.parentNode || document.body).scrollLeft,
         pageY = window.pageYOffset !== undefined ? window.pageYOffset
-              : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+          : (document.documentElement || document.body.parentNode || document.body).scrollTop;
 
   const bounds = elem.getBoundingClientRect();
   const height = bounds.height,

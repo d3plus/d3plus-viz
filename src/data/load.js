@@ -21,9 +21,9 @@ export default function(path, formatter, key, callback) {
   else {
 
     const parser = path.slice(path.length - 4) === ".csv" ? csv
-                 : path.slice(path.length - 4) === ".tsv" ? tsv
-                 : path.slice(path.length - 4) === ".txt" ? text
-                 : json;
+      : path.slice(path.length - 4) === ".tsv" ? tsv
+      : path.slice(path.length - 4) === ".txt" ? text
+      : json;
 
     parser(path, (err, data) => {
 

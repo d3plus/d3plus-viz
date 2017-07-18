@@ -15,8 +15,7 @@ export default function(d) {
     this._select.style("cursor", "pointer");
     this._tooltipClass.data([d])
       .footer(this._drawDepth < this._groupBy.length - 1
-            ? locale.t("Click to Expand", {lng: this._locale})
-            : "")
+        ? locale.t("Click to Expand", {lng: this._locale}) : "")
       .title(this._drawLabel)
       .translate(mouse(select("html").node()))
       .config(this._tooltipConfig)

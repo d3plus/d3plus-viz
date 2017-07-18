@@ -30,14 +30,14 @@ export default function(data = []) {
       const shape = this._shape(d, i);
       const attr = shape === "Line" ? "stroke" : "fill";
       const value = this._shapeConfig[shape] && this._shapeConfig[shape][attr]
-                  ? this._shapeConfig[shape][attr] : this._shapeConfig[attr];
+        ? this._shapeConfig[shape][attr] : this._shapeConfig[attr];
       return typeof value === "function" ? value(d, i) : value;
     };
 
     const opacity = (d, i) => {
       const shape = this._shape(d, i);
       const value = this._shapeConfig[shape] && this._shapeConfig[shape].opacity
-                    ? this._shapeConfig[shape].opacity : this._shapeConfig.opacity;
+        ? this._shapeConfig[shape].opacity : this._shapeConfig.opacity;
       return typeof value === "function" ? value(d, i) : value;
     };
 
