@@ -21,6 +21,8 @@ import {TextBox} from "d3plus-text";
 import {Timeline} from "d3plus-timeline";
 import {Tooltip} from "d3plus-tooltip";
 
+import Message from "./Message";
+
 import {default as drawBack} from "./_drawBack";
 import {default as drawColorScale} from "./_drawColorScale";
 import {default as drawControls} from "./_drawControls";
@@ -101,7 +103,25 @@ export default class Viz extends BaseClass {
     this._legendClass = new Legend();
     this._legendPosition = "bottom";
     this._locale = "en-US";
+
     this._lrucache = lrucache(5);
+
+    this._message = true;
+    this._messageClass = new Message();
+    this._messageHTML = constant(`
+    <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+      <strong>Loading Visualization</strong>
+      <sub style="display: block; margin-top: 5px;"><a href="https://d3plus.org" target="_blank">Powered by D3plus</a></sub>
+    </div>`);
+    this._messageMask = "rgba(0, 0, 0, 0.1)";
+    this._messageStyle = {
+      "left": "0px",
+      "position": "absolute",
+      "text-align": "center",
+      "top": "45%",
+      "width": "100%"
+    };
+
     this._on = {
       "click": click.bind(this),
       "mouseenter": mouseenter.bind(this),
@@ -341,6 +361,16 @@ export default class Viz extends BaseClass {
     else {
 
       const q = queue();
+
+      if (this._message) {
+        this._messageClass.render({
+          container: this._select.node().parentNode,
+          html: this._messageHTML(this),
+          mask: this._messageMask,
+          style: this._messageStyle
+        });
+      }
+
       this._queue.forEach(p => {
         const cache = this._cache ? this._lrucache.get(p[1]) : undefined;
         if (!cache) q.defer(...p);
@@ -348,7 +378,9 @@ export default class Viz extends BaseClass {
       });
       this._queue = [];
       q.awaitAll(() => {
+
         this._draw(callback);
+        if (this._message) this._messageClass.hide();
 
         if (this._detectResize && (this._autoWidth || this._autoHeight)) {
           select(window).on(`resize.${this._uuid}`, () => {
@@ -381,7 +413,7 @@ export default class Viz extends BaseClass {
 
   /**
       @memberof Viz
-      @desc If *value* is specified, sets the active method to the specified function and returns the current class instance. If *value* is not specified, returns the current active method.
+      @desc If *value* is specified, sets the active method to the specified function and returns the current class instance.
       @param {Function} [*value*]
       @chainable
   */
@@ -396,7 +428,7 @@ export default class Viz extends BaseClass {
 
   /**
       @memberof Viz
-      @desc If *value* is specified, sets the aggregation method for each key in the object and returns the current class instance. If *value* is not specified, returns the current defined aggregation methods.
+      @desc If *value* is specified, sets the aggregation method for each key in the object and returns the current class instance.
       @param {Object} [*value*]
       @chainable
   */
@@ -406,7 +438,7 @@ export default class Viz extends BaseClass {
 
   /**
       @memberof Viz
-      @desc If *value* is specified, sets the config method for the back button and returns the current class instance. If *value* is not specified, returns the current back button configuration.
+      @desc If *value* is specified, sets the config method for the back button and returns the current class instance.
       @param {Object} [*value*]
       @chainable
   */
@@ -476,7 +508,7 @@ export default class Viz extends BaseClass {
 
   /**
       @memberof Viz
-      @desc If *value* is specified, sets the config method for the controls and returns the current class instance. If *value* is not specified, returns the current control configuration.
+      @desc If *value* is specified, sets the config method for the controls and returns the current class instance.
       @param {Object} [*value*]
       @chainable
   */
@@ -501,7 +533,7 @@ If *data* is not specified, this method returns the current primary data array, 
 
   /**
       @memberof Viz
-      @desc If *value* is specified, sets the depth to the specified number and returns the current class instance. The *value* should correspond with an index in the [groupBy](#groupBy) array. If *value* is not specified, returns the current depth.
+      @desc If *value* is specified, sets the depth to the specified number and returns the current class instance. The *value* should correspond with an index in the [groupBy](#groupBy) array.
       @param {Number} [*value*]
       @chainable
   */
@@ -535,7 +567,7 @@ If no value is specified, the method will return the current *Boolean* value.
 
   /**
       @memberof Viz
-      @desc If *value* is specified, sets the discrete accessor to the specified method name (usually an axis) and returns the current class instance. If *value* is not specified, returns the current discrete method.
+      @desc If *value* is specified, sets the discrete accessor to the specified method name (usually an axis) and returns the current class instance.
       @param {String} [*value*]
       @chainable
   */
@@ -585,7 +617,7 @@ If no value is specified, the method will return the current *Boolean* value.
 
   /**
       @memberof Viz
-      @desc If *value* is specified, sets the filter to the specified function and returns the current class instance. If *value* is not specified, returns the current filter.
+      @desc If *value* is specified, sets the filter to the specified function and returns the current class instance.
       @param {Function} [*value*]
       @chainable
   */
@@ -595,7 +627,7 @@ If no value is specified, the method will return the current *Boolean* value.
 
   /**
       @memberof Viz
-      @desc If *value* is specified, sets the group accessor(s) to the specified string, function, or array of values and returns the current class instance. If *value* is not specified, returns the current group accessor.
+      @desc If *value* is specified, sets the group accessor(s) to the specified string, function, or array of values and returns the current class instance.
       @param {String|Function|Array} [*value*]
       @chainable
       @example
@@ -622,7 +654,7 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc If *value* is specified, sets the overall height to the specified number and returns the current class instance. If *value* is not specified, returns the current overall height.
+      @desc If *value* is specified, sets the overall height to the specified number and returns the current class instance.
       @param {Number} [*value* = window.innerHeight]
       @chainable
   */
@@ -632,7 +664,7 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc If *value* is specified, sets the hover method to the specified function and returns the current class instance. If *value* is not specified, returns the current hover method.
+      @desc If *value* is specified, sets the hover method to the specified function and returns the current class instance.
       @param {Function} [*value*]
       @chainable
   */
@@ -665,7 +697,7 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc If *value* is specified, sets the label accessor to the specified function or string and returns the current class instance. If *value* is not specified, returns the current text accessor, which is `undefined` by default.
+      @desc If *value* is specified, sets the label accessor to the specified function or string and returns the current class instance.
       @param {Function|String} [*value*]
       @chainable
   */
@@ -675,7 +707,7 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc If *value* is specified, toggles the legend based on the specified boolean and returns the current class instance. If *value* is not specified, returns the current value.
+      @desc If *value* is specified, toggles the legend based on the specified boolean and returns the current class instance.
       @param {Boolean} [*value* = true]
       @chainable
   */
@@ -685,7 +717,7 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc If *value* is specified, the object is passed to the legend's config method. If *value* is not specified, returns the current legend config.
+      @desc If *value* is specified, the object is passed to the legend's config method.
       @param {Object} [*value*]
       @chainable
   */
@@ -695,7 +727,7 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc If *value* is specified, sets the config method for the legend tooltip and returns the current class instance. If *value* is not specified, returns the current legend tooltip configuration.
+      @desc If *value* is specified, sets the config method for the legend tooltip and returns the current class instance.
       @param {Object} [*value* = {}]
       @chainable
   */
@@ -715,12 +747,52 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc If *value* is specified, sets the locale to the specified string and returns the current class instance. If *value* is not specified, returns the current locale.
+      @desc If *value* is specified, sets the locale to the specified string and returns the current class instance.
       @param {String} [*value* = "en-US"]
       @chainable
   */
   locale(_) {
     return arguments.length ? (this._locale = _, this) : this._locale;
+  }
+
+  /**
+      @memberof Viz
+      @desc Toggles the visibility of the status message that is displayed when loading AJAX requests and displaying errors.
+      @param {Boolean} [*value* = true]
+      @chainable
+  */
+  message(_) {
+    return arguments.length ? (this._message = _, this) : this._message;
+  }
+
+  /**
+      @memberof Viz
+      @desc Sets the inner HTML of the status message that is displayed when loading AJAX requests and displaying errors. Must be a valid HTML string or a function that, when passed this Viz instance, returns a valid HTML string.
+      @param {Function|String} [*value*]
+      @chainable
+  */
+  messageHTML(_) {
+    return arguments.length ? (this._messageHTML = typeof _ === "function" ? _ : constant(_), this) : this._messageHTML;
+  }
+
+  /**
+      @memberof Viz
+      @desc Sets the color of the mask used underneath the status message that is displayed when loading AJAX requests and displaying errors. Additionally, `false` will turn off the mask completely.
+      @param {Boolean|String} [*value* = "rgba(0, 0, 0, 0.1)"]
+      @chainable
+  */
+  messageMask(_) {
+    return arguments.length ? (this._messageMask = _, this) : this._messageMask;
+  }
+
+  /**
+      @memberof Viz
+      @desc Defines the CSS style properties for the status message that is displayed when loading AJAX requests and displaying errors.
+      @param {Object} [*value*]
+      @chainable
+  */
+  messageStyle(_) {
+    return arguments.length ? (this._messageStyle = assign(this._messageStyle, _), this) : this._messageStyle;
   }
 
   /**
@@ -735,7 +807,7 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc If *value* is specified, sets the shape accessor to the specified function or number and returns the current class instance. If *value* is not specified, returns the current shape accessor.
+      @desc If *value* is specified, sets the shape accessor to the specified function or number and returns the current class instance.
       @param {Function|String} [*value*]
       @chainable
   */
@@ -745,7 +817,7 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc If *value* is specified, sets the config method for each shape and returns the current class instance. If *value* is not specified, returns the current shape configuration.
+      @desc If *value* is specified, sets the config method for each shape and returns the current class instance.
       @param {Object} [*value*]
       @chainable
   */
@@ -755,7 +827,7 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc If *value* is specified, sets the time accessor to the specified function or string and returns the current class instance. If *value* is not specified, returns the current time accessor. The time values that are returned should be valid Date objects, 4-digit year values, or strings that can be parsed into javascript Date objects (click [here](http://dygraphs.com/date-formats.html) for valid string formats).
+      @desc If *value* is specified, sets the time accessor to the specified function or string and returns the current class instance.
       @param {Function|String} [*value*]
       @chainable
   */
@@ -780,7 +852,7 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc If *value* is specified, sets the time filter to the specified function and returns the current class instance. If *value* is not specified, returns the current time filter.
+      @desc If *value* is specified, sets the time filter to the specified function and returns the current class instance.
       @param {Function} [*value*]
       @chainable
   */
@@ -790,7 +862,7 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc If *value* is specified, toggles the timeline based on the specified boolean and returns the current class instance. If *value* is not specified, returns the current timeline visibility.
+      @desc If *value* is specified, toggles the timeline based on the specified boolean and returns the current class instance.
       @param {Boolean} [*value* = true]
       @chainable
   */
@@ -800,7 +872,7 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc If *value* is specified, sets the config method for the timeline and returns the current class instance. If *value* is not specified, returns the current timeline configuration.
+      @desc If *value* is specified, sets the config method for the timeline and returns the current class instance.
       @param {Object} [*value*]
       @chainable
   */
@@ -810,7 +882,7 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc If *value* is specified, sets the title accessor to the specified function or string and returns the current class instance. If *value* is not specified, returns the current title accessor.
+      @desc If *value* is specified, sets the title accessor to the specified function or string and returns the current class instance.
       @param {Function|String} [*value*]
       @chainable
   */
@@ -820,7 +892,7 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc If *value* is specified, sets the config method for the title and returns the current class instance. If *value* is not specified, returns the current title configuration.
+      @desc If *value* is specified, sets the config method for the title and returns the current class instance.
       @param {Object} [*value*]
       @chainable
   */
@@ -830,7 +902,7 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc If *value* is specified, toggles the tooltip based on the specified boolean and returns the current class instance. If *value* is not specified, returns the current tooltip visibility.
+      @desc If *value* is specified, toggles the tooltip based on the specified boolean and returns the current class instance.
       @param {Boolean} [*value* = true]
       @chainable
   */
@@ -840,7 +912,7 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc If *value* is specified, sets the config method for the tooltip and returns the current class instance. If *value* is not specified, returns the current tooltip configuration.
+      @desc If *value* is specified, sets the config method for the tooltip and returns the current class instance.
       @param {Object} [*value*]
       @chainable
   */
@@ -850,7 +922,7 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc If *value* is specified, sets the total accessor to the specified function or string and returns the current class instance. If *value* is not specified, returns the current total accessor.
+      @desc If *value* is specified, sets the total accessor to the specified function or string and returns the current class instance.
       @param {Boolean|Function|String} [*value*]
       @chainable
   */
@@ -860,7 +932,7 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc If *value* is specified, sets the config method for the total and returns the current class instance. If *value* is not specified, returns the current total configuration.
+      @desc If *value* is specified, sets the config method for the total and returns the current class instance.
       @param {Object} [*value*]
       @chainable
   */
@@ -870,7 +942,7 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc If *value* is specified, sets the overallwidth to the specified number and returns the current class instance. If *value* is not specified, returns the current overall width.
+      @desc If *value* is specified, sets the overallwidth to the specified number and returns the current class instance.
       @param {Number} [*value* = window.innerWidth]
       @chainable
   */
