@@ -13,15 +13,17 @@ export default function(data = []) {
     transform: `translate(${this._margin.left}, ${this._margin.top})`
   };
 
+  const showColorScale = this._colorScale && data && data.length > 1;
+
   const scaleGroup = elem("g.d3plus-viz-colorScale", {
-    condition: this._colorScale && !this._colorScaleConfig.select,
+    condition: showColorScale && !this._colorScaleConfig.select,
     enter: transform,
     parent: this._select,
     transition: this._transition,
     update: transform
   }).node();
 
-  if (this._colorScale) {
+  if (showColorScale) {
 
     const scaleData = data.filter((d, i) => {
       const c = this._colorScale(d, i);
