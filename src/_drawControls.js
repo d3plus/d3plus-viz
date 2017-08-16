@@ -107,12 +107,6 @@ export default function() {
 
       const bounds = container.node().getBoundingClientRect();
 
-      if (area === "bottom") {
-        console.log(this._margin);
-        console.log(transform);
-        console.log(bounds);
-      }
-
       foreign.transition(this._transition)
         .attr("x", transform.x - (area === "right" ? bounds.width : 0))
         .attr("y", transform.y - (area === "bottom" ? bounds.height : 0));
