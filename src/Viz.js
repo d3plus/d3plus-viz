@@ -79,6 +79,7 @@ export default class Viz extends BaseClass {
     };
     this._data = [];
     this._detectResize = true;
+    this._detectResizeDelay = 400;
     this._detectVisible = true;
     this._downloadButton = false;
     this._downloadConfig = {type: "png"};
@@ -398,7 +399,7 @@ export default class Viz extends BaseClass {
               if (this._autoWidth) this.width(w);
               if (this._autoHeight) this.height(h);
               this.render(callback);
-            }, 200);
+            }, this._detectResizeDelay);
           });
         }
 
@@ -544,8 +545,6 @@ If *data* is not specified, this method returns the current primary data array, 
   /**
       @memberof Viz
       @desc If the width and/or height of a Viz is not user-defined, it is determined by the size of it's parent element. When this method is set to `true`, the Viz will listen for the `window.onresize` event and adjust it's dimensions accordingly.
-
-If no value is specified, the method will return the current *Boolean* value.
       @param {Boolean} *value* = true
       @chainable
   */
@@ -555,9 +554,17 @@ If no value is specified, the method will return the current *Boolean* value.
 
   /**
       @memberof Viz
-      @desc Toggles whether or not the Viz should try to detect if it visible in the current viewport. When this method is set to `true`, the Viz will only be rendered when it has entered the viewport either through scrolling or if it's display or visibility is changed.
+      @desc When resizing the browser window, this is the millisecond delay to trigger the resize event.
+      @param {Number} *value* = 400
+      @chainable
+  */
+  detectResizeDelay(_) {
+    return arguments.length ? (this._detectResizeDelay = _, this) : this._detectResizeDelay;
+  }
 
-If no value is specified, the method will return the current *Boolean* value.
+  /**
+      @memberof Viz
+      @desc Toggles whether or not the Viz should try to detect if it visible in the current viewport. When this method is set to `true`, the Viz will only be rendered when it has entered the viewport either through scrolling or if it's display or visibility is changed.
       @param {Boolean} *value* = true
       @chainable
   */
