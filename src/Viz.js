@@ -81,6 +81,7 @@ export default class Viz extends BaseClass {
     this._detectResize = true;
     this._detectResizeDelay = 400;
     this._detectVisible = true;
+    this._detectVisibleInterval = 1000;
     this._downloadButton = false;
     this._downloadConfig = {type: "png"};
     this._downloadPosition = "top";
@@ -336,7 +337,7 @@ export default class Viz extends BaseClass {
           clearInterval(this._visiblePoll);
           this.render(callback);
         }
-      }, 1000);
+      }, this._detectVisibleInterval);
 
     }
     else if (this._detectVisible && this._select.style("display") === "none") {
@@ -346,7 +347,7 @@ export default class Viz extends BaseClass {
           clearInterval(this._visiblePoll);
           this.render(callback);
         }
-      }, 1000);
+      }, this._detectVisibleInterval);
 
     }
     else if (this._detectVisible && !inViewport(this._select.node())) {
@@ -570,6 +571,16 @@ If *data* is not specified, this method returns the current primary data array, 
   */
   detectVisible(_) {
     return arguments.length ? (this._detectVisible = _, this) : this._detectVisible;
+  }
+
+  /**
+      @memberof Viz
+      @desc The interval, in milliseconds, for checking if the visualization is visible on the page.
+      @param {Number} *value* = 1000
+      @chainable
+  */
+  detectVisibleInterval(_) {
+    return arguments.length ? (this._detectVisibleInterval = _, this) : this._detectVisibleInterval;
   }
 
   /**
