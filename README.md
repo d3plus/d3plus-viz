@@ -548,4 +548,4 @@ This is a global function.
 
 
 
-###### <sub>Documentation generated on Sun, 20 Aug 2017 04:34:01 GMT</sub>
+###### <sub>Documentation generated on Wed, 30 Aug 2017 21:38:23 GMT</sub>
