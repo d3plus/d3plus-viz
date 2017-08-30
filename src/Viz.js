@@ -111,7 +111,7 @@ export default class Viz extends BaseClass {
     this._message = true;
     this._messageClass = new Message();
     this._messageHTML = constant(`
-    <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+    <div style="font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
       <strong>Loading Visualization</strong>
       <sub style="display: block; margin-top: 5px;"><a href="https://d3plus.org" target="_blank">Powered by D3plus</a></sub>
     </div>`);
