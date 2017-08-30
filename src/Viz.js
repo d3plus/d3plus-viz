@@ -223,7 +223,7 @@ export default class Viz extends BaseClass {
     };
 
     // set the default timeFilter if it has not been specified
-    if (this._time && this._timeFilter === void 0) {
+    if (this._time && this._timeFilter === void 0 && this._data.length) {
 
       const dates = this._data.map(this._time).map(date);
       const d = this._data[0], i = 0;
