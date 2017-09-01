@@ -301,8 +301,6 @@ export default class Viz extends BaseClass {
     //     .attr("x", this._margin.left)
     //     .attr("y", this._margin.top);
 
-    zoomControls.bind(this)();
-
   }
 
   /**
@@ -411,6 +409,7 @@ export default class Viz extends BaseClass {
       q.awaitAll(() => {
 
         this._draw(callback);
+        zoomControls.bind(this)();
         if (this._message) this._messageClass.hide();
 
         if (this._detectResize && (this._autoWidth || this._autoHeight)) {
