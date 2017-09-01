@@ -9,6 +9,7 @@ import {nest} from "d3-collection";
 import {queue} from "d3-queue";
 import {select} from "d3-selection";
 import {transition} from "d3-transition";
+import {zoom} from "d3-zoom";
 
 import lrucache from "lrucache";
 
@@ -39,6 +40,8 @@ import mouseenter from "./on/mouseenter";
 import mouseleave from "./on/mouseleave";
 import mousemoveLegend from "./on/mousemove.legend";
 import mousemoveShape from "./on/mousemove.shape";
+
+import zoomControls from "./_zoomControls";
 
 /**
     @class Viz
@@ -193,6 +196,30 @@ export default class Viz extends BaseClass {
       textAnchor: "middle"
     };
 
+    this._zoom = false;
+    this._zoomBehavior = zoom();
+    this._zoomBrush = false;
+    this._zoomControlStyle = {
+      "background": "rgba(255, 255, 255, 0.75)",
+      "border": "1px solid rgba(0, 0, 0, 0.75)",
+      "color": "rgba(0, 0, 0, 0.75)",
+      "display": "block",
+      "font": "900 15px/21px 'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+      "height": "20px",
+      "margin": "5px",
+      "opacity": 0.75,
+      "padding": 0,
+      "text-align": "center",
+      "width": "20px"
+    };
+    this._zoomControlStyleHover = {
+      cursor: "pointer",
+      opacity: 1
+    };
+    this._zoomFactor = 2;
+    this._zoomPan = true;
+    this._zoomScroll = true;
+
   }
 
   /**
@@ -262,7 +289,7 @@ export default class Viz extends BaseClass {
 
     this._shapes = [];
 
-    // Draws a rectangle showing the available space for a visualization.
+    // // Draws a rectangle showing the available space for a visualization.
     // const tester = this._select.selectAll(".tester").data([0]);
     // console.log(this._margin);
     // tester.enter().append("rect")
@@ -273,6 +300,8 @@ export default class Viz extends BaseClass {
     //     .attr("height", this._height - this._margin.top - this._margin.bottom)
     //     .attr("x", this._margin.left)
     //     .attr("y", this._margin.top);
+
+    zoomControls.bind(this)();
 
   }
 
@@ -966,6 +995,46 @@ function value(d) {
   */
   width(_) {
     return arguments.length ? (this._width = _, this) : this._width;
+  }
+
+  /**
+      @memberof Viz
+      @desc Toggles the ability to zoom/pan the visualization. Certain parameters for zooming are required to be hooked up on a visualization by visualization basis.
+      @param {Boolean} *value* = false
+      @chainable
+  */
+  zoom(_) {
+    return arguments.length ? (this._zoom = _, this) : this._zoom;
+  }
+
+  /**
+      @memberof Viz
+      @desc An object containing CSS key/value pairs that is used to style each zoom control button (`.zoom-in`, `.zoom-out`, and `.zoom-reset`). Passing `false` will remove all default styling.
+      @param {Object|Boolean} *value*
+      @chainable
+  */
+  zoomControlStyle(_) {
+    return arguments.length ? (this._zoomControlStyle = _, this) : this._zoomControlStyle;
+  }
+
+  /**
+      @memberof Viz
+      @desc An object containing CSS key/value pairs that is used to style each zoom control button on hover (`.zoom-in`, `.zoom-out`, and `.zoom-reset`). Passing `false` will remove all default styling.
+      @param {Object|Boolean} *value*
+      @chainable
+  */
+  zoomControlStyleHover(_) {
+    return arguments.length ? (this._zoomControlStyleHover = _, this) : this._zoomControlStyleHover;
+  }
+
+  /**
+      @memberof Viz
+      @desc The multiplier that is used in with the control buttons when zooming in and out.
+      @param {Number} *value* = 2
+      @chainable
+  */
+  zoomFactor(_) {
+    return arguments.length ? (this._zoomFactor = _, this) : this._zoomFactor;
   }
 
 }
