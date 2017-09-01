@@ -23,22 +23,22 @@ import {Tooltip} from "d3plus-tooltip";
 
 import Message from "./Message";
 
-import {default as drawBack} from "./_drawBack";
-import {default as drawColorScale} from "./_drawColorScale";
-import {default as drawControls} from "./_drawControls";
-import {default as drawLegend} from "./_drawLegend";
-import {default as drawTimeline} from "./_drawTimeline";
-import {default as drawTitle} from "./_drawTitle";
-import {default as drawTotal} from "./_drawTotal";
-import {default as getSize} from "./_getSize";
-import {default as inViewport} from "./_inViewport";
-import {default as load} from "./data/load";
+import drawBack from "./_drawBack";
+import drawColorScale from "./_drawColorScale";
+import drawControls from "./_drawControls";
+import drawLegend from "./_drawLegend";
+import drawTimeline from "./_drawTimeline";
+import drawTitle from "./_drawTitle";
+import drawTotal from "./_drawTotal";
+import getSize from "./_getSize";
+import inViewport from "./_inViewport";
+import load from "./data/load";
 
-import {default as click} from "./on/click";
-import {default as mouseenter} from "./on/mouseenter";
-import {default as mouseleave} from "./on/mouseleave";
-import {default as mousemoveLegend} from "./on/mousemove.legend";
-import {default as mousemoveShape} from "./on/mousemove.shape";
+import click from "./on/click";
+import mouseenter from "./on/mouseenter";
+import mouseleave from "./on/mouseleave";
+import mousemoveLegend from "./on/mousemove.legend";
+import mousemoveShape from "./on/mousemove.shape";
 
 /**
     @class Viz
