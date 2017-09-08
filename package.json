@@ -54,6 +54,6 @@
   },
   "devDependencies": {
     "d3plus-dev": "^0.4.19",
-    "d3plus-shape": "^0.13.6"
+    "d3plus-shape": "^0.13.7"
   }
 }
