@@ -19,6 +19,7 @@ import {colorAssign, colorContrast} from "d3plus-color";
 import {accessor, assign, BaseClass, constant, merge} from "d3plus-common";
 import {Select} from "d3plus-form";
 import {ColorScale, Legend} from "d3plus-legend";
+// import {Rect} from "d3plus-shape";
 import {TextBox} from "d3plus-text";
 import {Timeline} from "d3plus-timeline";
 import {Tooltip} from "d3plus-tooltip";
@@ -321,12 +322,18 @@ export default class Viz extends BaseClass {
     // const enter = this._zoomGroup.enter().append("g").attr("class", "d3plus-viz-zoomGroup")
     //   .merge(this._zoomGroup);
     //
-    // enter.append("image")
-    //   .attr("xlink:href", "http://d3plus.org/assets/img/d3plus-icon.png")
-    //   .attr("width", this._width - this._margin.left - this._margin.right)
-    //   .attr("height", this._height - this._margin.top - this._margin.bottom);
-    //
     // this._zoomGroup = enter.merge(this._zoomGroup);
+    //
+    // this._shapes.push(new Rect()
+    //   .config(this._shapeConfig)
+    //   .data([
+    //     {id: 1, text: "My Label", x: 100, y: 100, width: 100, height: 100},
+    //     {id: 2, text: "My Label", x: 300, y: 100, width: 100, height: 100}
+    //   ])
+    //   .label(d => d.text)
+    //   .select(this._zoomGroup.node())
+    //   .on(this._on)
+    //   .render());
 
   }
 
