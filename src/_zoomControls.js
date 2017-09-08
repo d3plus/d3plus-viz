@@ -83,7 +83,7 @@ export default function() {
     .call(this._zoomBrush);
 
   zoomEvents.bind(this)();
-  if (this._renderTiles) this._renderTiles(zoomTransform(this._container.node()));
+  if (this._renderTiles) this._renderTiles(zoomTransform(this._container.node()), 0);
 
 }
 
@@ -133,7 +133,7 @@ function zoomed(transform = false, duration = 0) {
     else this._zoomGroup.transition().duration(duration).attr("transform", transform || event.transform);
   }
 
-  if (this._renderTiles) this._renderTiles(zoomTransform(this._container.node()));
+  if (this._renderTiles) this._renderTiles(zoomTransform(this._container.node()), duration);
 
 }
 
