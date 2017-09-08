@@ -29,7 +29,7 @@ import Message from "./Message";
 import drawBack from "./_drawBack";
 import drawColorScale from "./_drawColorScale";
 import drawControls from "./_drawControls";
-import drawLegend from "./_drawLegend";
+import {default as drawLegend, legendLabel} from "./_drawLegend";
 import drawTimeline from "./_drawTimeline";
 import drawTitle from "./_drawTitle";
 import drawTotal from "./_drawTotal";
@@ -95,10 +95,7 @@ export default class Viz extends BaseClass {
     this._groupBy = [accessor("id")];
     this._legend = true;
     this._legendConfig = {
-      label: (d, i) => {
-        const l = this._drawLabel(d, i);
-        return l instanceof Array ? l.join(", ") : l;
-      },
+      label: legendLabel.bind(this),
       shapeConfig: {
         labelConfig: {
           fontColor: undefined,

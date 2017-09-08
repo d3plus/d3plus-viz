@@ -2,6 +2,8 @@ import {mouse, select} from "d3-selection";
 
 import {locale} from "d3plus-common";
 
+import {legendLabel} from "../_drawLegend";
+
 /**
     @desc Tooltip logic for a specified data point.
     @param {Object} *d* The data object being interacted with.
@@ -16,7 +18,7 @@ export default function(d) {
     this._tooltipClass.data([d])
       .footer(this._drawDepth < this._groupBy.length - 1
         ? locale.t("Click to Expand", {lng: this._locale}) : "")
-      .title(this._legendClass.label())
+      .title(this._legendConfig.label ? this._legendClass.label() : legendLabel.bind(this))
       .translate(mouse(select("html").node()))
       .config(this._tooltipConfig)
       .config(this._legendTooltip)

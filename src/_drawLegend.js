@@ -2,6 +2,16 @@ import {nest} from "d3-collection";
 import {configPrep, elem, merge} from "d3plus-common";
 
 /**
+    @function legendLabel
+    @desc Default label function for the legend.
+    @private
+*/
+export function legendLabel(d, i) {
+  const l = this._drawLabel(d, i);
+  return l instanceof Array ? l.join(", ") : l;
+}
+
+/**
     @function _drawLegend
     @desc Renders the legend if this._legend is not falsy.
     @param {Array} data The filtered data array to be displayed.
@@ -55,10 +65,6 @@ export default function(data = []) {
       .duration(this._duration)
       .data(legendData.length > 1 || this._colorScale ? legendData : [])
       .height(this._height - this._margin.bottom - this._margin.top)
-      .label((d, i) => {
-        const l = this._drawLabel(d, i);
-        return l instanceof Array ? l.join(", ") : l;
-      })
       .select(legendGroup)
       .verticalAlign(!wide ? "middle" : position)
       .width(this._width - this._margin.left - this._margin.right)
