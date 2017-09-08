@@ -4,6 +4,7 @@
 */
 
 import {max, merge as arrayMerge} from "d3-array";
+import {brush} from "d3-brush";
 import {color} from "d3-color";
 import {nest} from "d3-collection";
 import {queue} from "d3-queue";
@@ -198,7 +199,15 @@ export default class Viz extends BaseClass {
 
     this._zoom = false;
     this._zoomBehavior = zoom();
-    this._zoomBrush = false;
+    this._zoomBrush = brush();
+    this._zoomBrushHandleSize = 1;
+    this._zoomBrushHandleStyle = {
+      fill: "#444"
+    };
+    this._zoomBrushSelectionStyle = {
+      "fill": "#777",
+      "stroke-width": 0
+    };
     this._zoomControlStyle = {
       "background": "rgba(255, 255, 255, 0.75)",
       "border": "1px solid rgba(0, 0, 0, 0.75)",
@@ -212,11 +221,18 @@ export default class Viz extends BaseClass {
       "text-align": "center",
       "width": "20px"
     };
+    this._zoomControlStyleActive = {
+      background: "rgba(0, 0, 0, 0.75)",
+      color: "rgba(255, 255, 255, 0.75)",
+      opacity: 1
+    };
     this._zoomControlStyleHover = {
       cursor: "pointer",
       opacity: 1
     };
     this._zoomFactor = 2;
+    this._zoomMax = 16;
+    this._zoomPadding = 20;
     this._zoomPan = true;
     this._zoomScroll = true;
 
@@ -289,17 +305,28 @@ export default class Viz extends BaseClass {
 
     this._shapes = [];
 
-    // // Draws a rectangle showing the available space for a visualization.
-    // const tester = this._select.selectAll(".tester").data([0]);
-    // console.log(this._margin);
-    // tester.enter().append("rect")
-    //     .attr("class", "tester")
-    //     .attr("fill", "#ccc")
-    //   .merge(tester)
+    // Draws a container and zoomGroup to test functionality.
+    // this._container = this._select.selectAll("svg.d3plus-viz").data([0]);
+    //
+    // this._container = this._container.enter().append("svg")
+    //     .attr("class", "d3plus-viz")
     //     .attr("width", this._width - this._margin.left - this._margin.right)
     //     .attr("height", this._height - this._margin.top - this._margin.bottom)
     //     .attr("x", this._margin.left)
-    //     .attr("y", this._margin.top);
+    //     .attr("y", this._margin.top)
+    //     .style("background-color", "transparent")
+    //   .merge(this._container);
+    //
+    // this._zoomGroup = this._container.selectAll("g.d3plus-viz-zoomGroup").data([0]);
+    // const enter = this._zoomGroup.enter().append("g").attr("class", "d3plus-viz-zoomGroup")
+    //   .merge(this._zoomGroup);
+    //
+    // enter.append("image")
+    //   .attr("xlink:href", "http://d3plus.org/assets/img/d3plus-icon.png")
+    //   .attr("width", this._width - this._margin.left - this._margin.right)
+    //   .attr("height", this._height - this._margin.top - this._margin.bottom);
+    //
+    // this._zoomGroup = enter.merge(this._zoomGroup);
 
   }
 
@@ -1008,7 +1035,37 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc An object containing CSS key/value pairs that is used to style each zoom control button (`.zoom-in`, `.zoom-out`, and `.zoom-reset`). Passing `false` will remove all default styling.
+      @desc The pixel stroke-width of the zoom brush area.
+      @param {Number} *value* = 1
+      @chainable
+  */
+  zoomBrushHandleSize(_) {
+    return arguments.length ? (this._zoomBrushHandleSize = _, this) : this._zoomBrushHandleSize;
+  }
+
+  /**
+      @memberof Viz
+      @desc An object containing CSS key/value pairs that is used to style the outer handle area of the zoom brush. Passing `false` will remove all default styling.
+      @param {Object|Boolean} *value*
+      @chainable
+  */
+  zoomBrushHandleStyle(_) {
+    return arguments.length ? (this._zoomBrushHandleStyle = _, this) : this._zoomBrushHandleStyle;
+  }
+
+  /**
+      @memberof Viz
+      @desc An object containing CSS key/value pairs that is used to style the inner selection area of the zoom brush. Passing `false` will remove all default styling.
+      @param {Object|Boolean} *value*
+      @chainable
+  */
+  zoomBrushSelectionStyle(_) {
+    return arguments.length ? (this._zoomBrushSelectionStyle = _, this) : this._zoomBrushSelectionStyle;
+  }
+
+  /**
+      @memberof Viz
+      @desc An object containing CSS key/value pairs that is used to style each zoom control button (`.zoom-in`, `.zoom-out`, `.zoom-reset`, and `.zoom-brush`). Passing `false` will remove all default styling.
       @param {Object|Boolean} *value*
       @chainable
   */
@@ -1018,7 +1075,17 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc An object containing CSS key/value pairs that is used to style each zoom control button on hover (`.zoom-in`, `.zoom-out`, and `.zoom-reset`). Passing `false` will remove all default styling.
+      @desc An object containing CSS key/value pairs that is used to style each zoom control button when active (`.zoom-in`, `.zoom-out`, `.zoom-reset`, and `.zoom-brush`). Passing `false` will remove all default styling.
+      @param {Object|Boolean} *value*
+      @chainable
+  */
+  zoomControlStyleActive(_) {
+    return arguments.length ? (this._zoomControlStyleActive = _, this) : this._zoomControlStyleActive;
+  }
+
+  /**
+      @memberof Viz
+      @desc An object containing CSS key/value pairs that is used to style each zoom control button on hover (`.zoom-in`, `.zoom-out`, `.zoom-reset`, and `.zoom-brush`). Passing `false` will remove all default styling.
       @param {Object|Boolean} *value*
       @chainable
   */
@@ -1034,6 +1101,46 @@ function value(d) {
   */
   zoomFactor(_) {
     return arguments.length ? (this._zoomFactor = _, this) : this._zoomFactor;
+  }
+
+  /**
+      @memberof Viz
+      @desc If *value* is specified, sets the max zoom scale to the specified number and returns the current class instance. If *value* is not specified, returns the current max zoom scale.
+      @param {Number} *value* = 16
+      @chainable
+  */
+  zoomMax(_) {
+    return arguments.length ? (this._zoomMax = _, this) : this._zoomMax;
+  }
+
+  /**
+      @memberof Viz
+      @desc If *value* is specified, toggles panning to the specified boolean and returns the current class instance. If *value* is not specified, returns the current panning value.
+      @param {Boolean} *value* = true
+      @chainable
+  */
+  zoomPan(_) {
+    return arguments.length ? (this._zoomPan = _, this) : this._zoomPan;
+  }
+
+  /**
+      @memberof Viz
+      @desc A pixel value to be used to pad all sides of a zoomed area.
+      @param {Number} *value* = 20
+      @chainable
+  */
+  zoomPadding(_) {
+    return arguments.length ? (this._zoomPadding = _, this) : this._zoomPadding;
+  }
+
+  /**
+      @memberof Viz
+      @desc If *value* is specified, toggles scroll zooming to the specified boolean and returns the current class instance. If *value* is not specified, returns the current scroll zooming value.
+      @param {Boolean} [*value* = true]
+      @chainable
+  */
+  zoomScroll(_) {
+    return arguments.length ? (this._zoomScroll = _, this) : this._zoomScroll;
   }
 
 }

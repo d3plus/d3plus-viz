@@ -1,6 +1,9 @@
 import {event, select} from "d3-selection";
 import {zoomTransform} from "d3-zoom";
-import {stylize} from "d3plus-common";
+
+import {attrize, stylize} from "d3plus-common";
+
+let brushing = false;
 
 /**
     @name zoomControls
@@ -9,8 +12,19 @@ import {stylize} from "d3plus-common";
 */
 export default function() {
 
-  const that = this;
-  this._zoomBehavior.on("zoom", zoomed.bind(this));
+  if (!this._container || !this._zoomGroup) return;
+
+  const height = this._zoomHeight || this._height - this._margin.top - this._margin.bottom,
+        that = this,
+        width = this._zoomWidth || this._width - this._margin.left - this._margin.right;
+
+  this._zoomBehavior
+    .extent([[0, 0], [width, height]])
+    .scaleExtent([1, this._zoomMax])
+    .translateExtent([[0, 0], [width, height]])
+    .on("zoom", zoomed.bind(this));
+
+  this._zoomToBounds = zoomToBounds.bind(this);
 
   let control = select(this._select.node().parentNode).selectAll("div.d3plus-geomap-control").data(this._zoom ? [0] : []);
   const controlEnter = control.enter().append("div").attr("class", "d3plus-geomap-control");
@@ -35,59 +49,38 @@ export default function() {
     .on("click", zoomMath.bind(this, 0))
     .html("&#8634");
 
+  controlEnter.append("div").attr("class", "zoom-control zoom-brush");
+  control.select(".zoom-brush")
+    .on("click", function() {
+      select(this)
+        .classed("active", !brushing)
+        .call(stylize, brushing ? that._zoomControlStyle || {} : that._zoomControlStyleActive || {});
+      zoomEvents.bind(that)(!brushing);
+    })
+    .html("&#10696");
+
   control.selectAll(".zoom-control")
-    .call(stylize, that._zoomControlStyle || {})
+    .call(stylize, that._zoomControlStyle)
     .on("mouseenter", function() {
       select(this).call(stylize, that._zoomControlStyleHover || {});
     })
     .on("mouseleave", function() {
-      select(this).call(stylize, that._zoomControlStyle || {});
+      select(this).call(stylize, select(this).classed("active") ? that._zoomControlStyleActive || {} : that._zoomControlStyle || {});
     });
 
-  // TODO: Brush to Zoom
-  // const brushGroup = this._select.selectAll("g.brush").data([0]);
-  // brushGroup.enter().append("g").attr("class", "brush");
-  //
-  // var xBrush = d3.scale.identity().domain([0, width]),
-  //     yBrush = d3.scale.identity().domain([0, height]);
-  //
-  // function brushended(e) {
-  //
-  //   if (!event.sourceEvent) return;
-  //
-  //   const extent = brush.extent();
-  //   brushGroup.call(brush.clear());
-  //
-  //   const zs = this._zoomBehavior.scale(), zt = this._zoomBehavior.translate();
-  //
-  //   const pos1 = extent[0].map((p, i) => (p - zt[i]) / (zs / this._polyZoom));
-  //   const pos2 = extent[1].map((p, i) => (p - zt[i]) / (zs / this._polyZoom));
-  //
-  //   zoomToBounds([pos1, pos2]);
-  //
-  // }
-  //
-  // var brush = d3.svg.brush()
-  //   .x(xBrush)
-  //   .y(yBrush)
-  //   .on("brushend", brushended);
-  //
-  // if (this._zoom) brushGroup.call(brush);
+  this._zoomBrush
+    .extent([[0, 0], [width, height]])
+    .filter(() => !event.button && event.detail < 2)
+    .handleSize(this._zoomBrushHandleSize)
+    .on("start", brushStart.bind(this))
+    .on("brush", brushBrush.bind(this))
+    .on("end", brushEnd.bind(this));
 
-  // TODO: Detect zoom brushing
-  // select("body")
-  //   .on(`keydown.d3plus-geomap-${this._uuid}`, function() {
-  //     if (event.keyCode === 16) {
-  //       this._zoomBrush = true;
-  //       zoomEvents();
-  //     }
-  //   })
-  //   .on(`keyup.d3plus-geomap-${this._uuid}`, function() {
-  //     if (event.keyCode === 16) {
-  //       this._zoomBrush = false;
-  //       zoomEvents();
-  //     }
-  //   });
+  const brushGroup = this._container.selectAll("g.brush").data([0]);
+  this._brushGroup = brushGroup.enter().append("g")
+      .attr("class", "brush")
+    .merge(brushGroup)
+    .call(this._zoomBrush);
 
   zoomEvents.bind(this)();
   if (this._renderTiles) this._renderTiles(zoomTransform(this._container.node()));
@@ -99,16 +92,14 @@ export default function() {
     @desc Handles adding/removing zoom event listeners.
     @private
 */
-function zoomEvents() {
+function zoomEvents(brush = false) {
 
-  if (!this._container || !this._zoomGroup) return;
+  brushing = brush;
 
-  if (this._zoomBrush) {
-    // brushGroup.style("display", "inline");
-    this._container.on(".zoom", null);
-  }
-  else if (this._zoom) {
-    // brushGroup.style("display", "none");
+  if (brushing) this._brushGroup.style("display", "inline");
+  else this._brushGroup.style("display", "none");
+
+  if (!brushing && this._zoom) {
     this._container.call(this._zoomBehavior);
     if (!this._zoomScroll) {
       this._container
@@ -134,6 +125,8 @@ function zoomEvents() {
     @private
 */
 function zoomed(transform = false, duration = 0) {
+
+  // console.log(transform || event.transform);
 
   if (this._zoomGroup) {
     if (!duration) this._zoomGroup.attr("transform", transform || event.transform);
@@ -165,35 +158,116 @@ function zoomMath(factor = 0) {
   }
   else {
     const translate0 = [(center[0] - t.x) / t.k, (center[1] - t.y) / t.k];
-    t.k *= factor;
+    t.k = Math.min(scaleExtent[1], t.k * factor);
     if (t.k <= scaleExtent[0]) {
       t.k = scaleExtent[0];
       t.x = 0;
       t.y = 0;
     }
     else {
-      if (t.k > scaleExtent[1]) t.k = scaleExtent[1];
-
       t.x += center[0] - (translate0[0] * t.k + t.x);
       t.y += center[1] - (translate0[1] * t.k + t.y);
     }
 
   }
-  zoomed.bind(this)(t);
+
+  zoomed.bind(this)(t, this._duration);
 
 }
 
-// TODO: Zooming to Bounds
-// function zoomToBounds(b, mod = 250) {
-//
-//   const w = width - mod;
-//
-//   let ns = this._scale / Math.max((b[1][0] - b[0][0]) / w, (b[1][1] - b[0][1]) / height);
-//   const nt = [(w - ns * (b[1][0] + b[0][0])) / 2, (height - ns * (b[1][1] + b[0][1])) / 2];
-//
-//   ns = ns / Math.PI / 2 * this._polyZoom;
-//
-//   this._zoomBehavior.scale(ns * 2 * Math.PI).translate(nt);
-//   zoomed();
-//
-// }
+/**
+    @name zoomToBounds
+    @desc Zooms to given bounds.
+    @param {Array} *bounds*
+    @param {Number} [*duration* = 0]
+    @private
+*/
+function zoomToBounds(bounds, duration = this._duration) {
+
+  const scaleExtent = this._zoomBehavior.scaleExtent(),
+        t = zoomTransform(this._container.node());
+
+  if (bounds) {
+
+    const [width, height] = this._zoomBehavior.translateExtent()[1],
+          dx = bounds[1][0] - bounds[0][0],
+          dy = bounds[1][1] - bounds[0][1];
+
+    let k = Math.min(scaleExtent[1], 1 / Math.max(dx / width, dy / height));
+
+    let xMod, yMod;
+    if (dx / dy < width / height) {
+      k *= (height - this._zoomPadding * 2) / height;
+      xMod = (width - dx * k) / 2 / k;
+      yMod = this._zoomPadding / k;
+    }
+    else {
+      k *= (width - this._zoomPadding * 2) / width;
+      yMod = (height - dy * k) / 2 / k;
+      xMod = this._zoomPadding / k;
+    }
+
+    t.x = (t.x - bounds[0][0] + xMod) * (t.k * k / t.k);
+    t.y = (t.y - bounds[0][1] + yMod) * (t.k * k / t.k);
+    t.k *= k;
+
+    if (t.x > 0) t.x = 0;
+    else if (t.x < width * -t.k + width) t.x = width * -t.k + width;
+    if (t.y > 0) t.y = 0;
+    else if (t.y < height * -t.k + height) t.y = height * -t.k + height;
+
+  }
+  else {
+
+    t.k = scaleExtent[0];
+    t.x = 0;
+    t.y = 0;
+
+  }
+
+  zoomed.bind(this)(t, duration);
+
+}
+
+/**
+    @desc Triggered on brush "brush".
+    @private
+*/
+function brushBrush() {
+  brushStyle.bind(this)();
+}
+
+/**
+    @desc Triggered on brush "end".
+    @private
+*/
+function brushEnd() {
+
+  if (!event.selection) return; // Only transition after input.
+
+  this._brushGroup.call(this._zoomBrush.move, null);
+  zoomToBounds.bind(this)(event.selection);
+
+}
+
+/**
+    @desc Triggered on brush "start".
+    @private
+*/
+function brushStart() {
+  brushStyle.bind(this)();
+}
+
+/**
+    @desc Overrides the default brush styles.
+    @private
+*/
+function brushStyle() {
+
+  this._brushGroup.selectAll(".selection")
+    .call(attrize, this._zoomBrushSelectionStyle || {});
+
+  this._brushGroup.selectAll(".handle")
+    .call(attrize, this._zoomBrushHandleStyle || {});
+
+}
