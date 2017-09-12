@@ -323,13 +323,15 @@ export default class Viz extends BaseClass {
     //
     // this._shapes.push(new Rect()
     //   .config(this._shapeConfig)
-    //   .data([
-    //     {id: 1, text: "My Label", x: 100, y: 100, width: 100, height: 100},
-    //     {id: 2, text: "My Label", x: 300, y: 100, width: 100, height: 100}
-    //   ])
-    //   .label(d => d.text)
+    //   .data(this._filteredData)
+    //   .label("Test Label")
     //   .select(this._zoomGroup.node())
     //   .on(this._on)
+    //   .id(d => d.group)
+    //   .x(d => d.value * 10 + 200)
+    //   .y(d => d.value * 10 + 200)
+    //   .width(100)
+    //   .height(100)
     //   .render());
 
   }
