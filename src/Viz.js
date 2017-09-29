@@ -139,9 +139,17 @@ export default class Viz extends BaseClass {
     this._shape = constant("Rect");
     this._shapeConfig = {
       fill: (d, i) => {
+        while (d.__d3plus__ && d.data) {
+          d = d.data;
+          i = d.i;
+        }
         if (this._colorScale) {
           const c = this._colorScale(d, i);
-          if (c !== undefined && c !== null) return this._colorScaleClass._colorScale(c);
+          if (c !== undefined && c !== null) {
+            const scale = this._colorScaleClass._colorScale;
+            if (!scale.domain().length) return scale.range()[scale.range().length - 1];
+            return scale(c);
+          }
         }
         const c = this._color(d, i);
         if (color(c)) return c;
