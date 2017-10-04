@@ -656,4 +656,4 @@ This is a global function.
 
 
 
-###### <sub>Documentation generated on Fri, 29 Sep 2017 21:08:33 GMT</sub>
+###### <sub>Documentation generated on Wed, 04 Oct 2017 20:02:26 GMT</sub>
