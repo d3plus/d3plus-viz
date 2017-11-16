@@ -1,4 +1,4 @@
-import {elem, locale} from "d3plus-common";
+import {elem} from "d3plus-common";
 
 /**
     @function _drawBack
@@ -16,7 +16,7 @@ export default function() {
   }).node();
 
   this._backClass
-    .data(visible ? [{text: locale.t("Back", {lng: this._locale}), x: this._padding * 2, y: 0}] : [])
+    .data(visible ? [{text: "Back", x: this._padding * 2, y: 0}] : [])
     .select(backGroup)
     .config(this._backConfig)
     .render();

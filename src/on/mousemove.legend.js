@@ -1,7 +1,5 @@
 import {mouse, select} from "d3-selection";
 
-import {locale} from "d3plus-common";
-
 import {legendLabel} from "../_drawLegend";
 
 /**
@@ -16,8 +14,7 @@ export default function(d) {
   if (this._tooltip && d) {
     this._select.style("cursor", "pointer");
     this._tooltipClass.data([d])
-      .footer(this._drawDepth < this._groupBy.length - 1
-        ? locale.t("Click to Expand", {lng: this._locale}) : "")
+      .footer(this._drawDepth < this._groupBy.length - 1 ? "Click to Expand" : "")
       .title(this._legendConfig.label ? this._legendClass.label() : legendLabel.bind(this))
       .translate(mouse(select("html").node()))
       .config(this._tooltipConfig)

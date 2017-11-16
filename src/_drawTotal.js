@@ -1,6 +1,6 @@
 import {sum} from "d3-array";
 
-import {elem, locale} from "d3plus-common";
+import {elem} from "d3plus-common";
 
 /**
     @function _drawTotal
@@ -23,7 +23,7 @@ export default function(data = []) {
   const visible = typeof total === "number";
 
   this._totalClass
-    .data(visible ? [{text: `${locale.t("Total", {lng: this._locale})}: ${total}`}] : [])
+    .data(visible ? [{text: `Total: ${total}`}] : [])
     .select(group)
     .width(this._width - this._margin.left - this._margin.right)
     .config(this._totalConfig)

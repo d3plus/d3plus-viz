@@ -34,11 +34,11 @@
     "d3-zoom": "^1.6.0",
     "d3plus-axis": "^0.3.38",
     "d3plus-color": "^0.6.0",
-    "d3plus-common": "^0.6.23",
+    "d3plus-common": "^0.6.24",
     "d3plus-export": "^0.3.2",
     "d3plus-form": "^0.2.5",
     "d3plus-legend": "^0.8.13",
-    "d3plus-text": "^0.9.22",
+    "d3plus-text": "^0.9.23",
     "d3plus-timeline": "^0.3.5",
     "d3plus-tooltip": "^0.2.6",
     "lrucache": "^1.0.3"
