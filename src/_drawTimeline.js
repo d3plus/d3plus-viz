@@ -4,9 +4,27 @@ import {date} from "d3plus-axis";
 import {elem} from "d3plus-common";
 
 /**
+    @function setTimeFilter
+    @desc Determines whether or not to update the timeFilter method of the Viz.
+    @param {Array|Date} The timeline selection given from the d3 brush.
+    @private
+*/
+function setTimeFilter(s) {
+  if (JSON.stringify(s) !== JSON.stringify(this._timelineSelection)) {
+    this._timelineSelection = s;
+    if (!(s instanceof Array)) s = [s, s];
+    s = s.map(Number);
+    this.timeFilter(d => {
+      const ms = date(this._time(d)).getTime();
+      return ms >= s[0] && ms <= s[1];
+    }).render();
+  }
+}
+
+/**
     @function _drawTimeline
     @desc Renders the timeline if this._time and this._timeline are not falsy and there are more than 1 tick available.
-    @param {Array} dara The filtered data array to be displayed.
+    @param {Array} data The filtered data array to be displayed.
     @private
 */
 export default function(data = []) {
@@ -39,8 +57,18 @@ export default function(data = []) {
 
     }
 
+    const config = this._timelineConfig;
+
     timeline
-      .config(this._timelineConfig)
+      .config(config)
+      .on("brush", s => {
+        setTimeFilter.bind(this)(s);
+        if (config.on && config.on.brush) config.on.brush(s);
+      })
+      .on("end", s => {
+        setTimeFilter.bind(this)(s);
+        if (config.on && config.on.end) config.on.end(s);
+      })
       .render();
 
     this._margin.bottom += timeline.outerBounds().height + timeline.padding() * 2;

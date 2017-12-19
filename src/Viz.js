@@ -164,19 +164,7 @@ export default class Viz extends BaseClass {
     };
 
     this._timeline = true;
-    this._timelineClass = new Timeline()
-      .align("end")
-      .on("brush", s => {
-        if (JSON.stringify(s) !== JSON.stringify(this._timelineSelection)) {
-          this._timelineSelection = s;
-          if (!(s instanceof Array)) s = [s, s];
-          s = s.map(Number);
-          this.timeFilter(d => {
-            const ms = date(this._time(d)).getTime();
-            return ms >= s[0] && ms <= s[1];
-          }).render();
-        }
-      });
+    this._timelineClass = new Timeline().align("end");
     this._timelineConfig = {};
 
     this._titleClass = new TextBox();
