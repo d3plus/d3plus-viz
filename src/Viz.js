@@ -137,6 +137,7 @@ export default class Viz extends BaseClass {
     this._queue = [];
 
     this._shape = constant("Rect");
+    this._shapes = [];
     this._shapeConfig = {
       fill: (d, i) => {
         while (d.__d3plus__ && d.data) {
@@ -156,10 +157,16 @@ export default class Viz extends BaseClass {
         return colorAssign(c);
       },
       labelConfig: {
-        fontColor: (d, i) => colorContrast(this._shapeConfig.fill(d, i))
+        fontColor: (d, i) => {
+          const c = typeof this._shapeConfig.fill === "function" ? this._shapeConfig.fill(d, i) : this._shapeConfig.fill;
+          return colorContrast(c);
+        }
       },
       opacity: constant(1),
-      stroke: (d, i) => color(this._shapeConfig.fill(d, i)).darker(),
+      stroke: (d, i) => {
+        const c = typeof this._shapeConfig.fill === "function" ? this._shapeConfig.fill(d, i) : this._shapeConfig.fill;
+        return color(c).darker();
+      },
       strokeWidth: constant(0)
     };
 
