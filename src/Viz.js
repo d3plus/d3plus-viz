@@ -486,8 +486,11 @@ export default class Viz extends BaseClass {
   active(_) {
 
     this._active = _;
-    this._shapes.forEach(s => s.active(_));
-    if (this._legend) this._legendClass.active(_);
+
+    if (this._shapeConfig.activeOpacity !== 1) {
+      this._shapes.forEach(s => s.active(_));
+      if (this._legend) this._legendClass.active(_);
+    }
 
     return this;
   }
@@ -753,26 +756,31 @@ function value(d) {
   hover(_) {
 
     let hoverFunction = this._hover = _;
-    if (typeof _ === "function") {
 
-      let shapeData = arrayMerge(this._shapes.map(s => s.data()));
-      shapeData = shapeData.concat(this._legendClass.data());
-      const activeData = _ ? shapeData.filter(_) : [];
+    if (this._shapeConfig.hoverOpacity !== 1) {
 
-      let activeIds = [];
-      activeData.map(this._ids).forEach(ids => {
-        for (let x = 1; x <= ids.length; x++) {
-          activeIds.push(JSON.stringify(ids.slice(0, x)));
-        }
-      });
-      activeIds = activeIds.filter((id, i) => activeIds.indexOf(id) === i);
+      if (typeof _ === "function") {
 
-      if (activeIds.length) hoverFunction = (d, i) => activeIds.includes(JSON.stringify(this._ids(d, i)));
+        let shapeData = arrayMerge(this._shapes.map(s => s.data()));
+        shapeData = shapeData.concat(this._legendClass.data());
+        const activeData = _ ? shapeData.filter(_) : [];
+
+        let activeIds = [];
+        activeData.map(this._ids).forEach(ids => {
+          for (let x = 1; x <= ids.length; x++) {
+            activeIds.push(JSON.stringify(ids.slice(0, x)));
+          }
+        });
+        activeIds = activeIds.filter((id, i) => activeIds.indexOf(id) === i);
+
+        if (activeIds.length) hoverFunction = (d, i) => activeIds.includes(JSON.stringify(this._ids(d, i)));
+
+      }
+
+      this._shapes.forEach(s => s.hover(hoverFunction));
+      if (this._legend) this._legendClass.hover(hoverFunction);
 
     }
-
-    this._shapes.forEach(s => s.hover(hoverFunction));
-    if (this._legend) this._legendClass.hover(hoverFunction);
 
     return this;
   }
