@@ -72,7 +72,7 @@ export default class Viz extends BaseClass {
       fontSize: 10,
       resize: false
     };
-    this._cache = false;
+    this._cache = true;
     this._color = (d, i) => this._groupBy[0](d, i);
     this._colorScaleClass = new ColorScale();
     this._colorScaleConfig = {};
@@ -108,7 +108,7 @@ export default class Viz extends BaseClass {
     this._legendPosition = "bottom";
     this._locale = "en-US";
 
-    this._lrucache = lrucache(5);
+    this._lrucache = lrucache(10);
 
     this._message = true;
     this._messageClass = new Message();
