@@ -292,6 +292,7 @@ export default class Viz extends BaseClass {
       const dataNest = nest();
       for (let i = 0; i <= this._drawDepth; i++) dataNest.key(this._groupBy[i]);
       if (this._discrete && `_${this._discrete}` in this) dataNest.key(this[`_${this._discrete}`]);
+      if (this._discrete && `_${this._discrete}2` in this) dataNest.key(this[`_${this._discrete}2`]);
       dataNest.rollup(leaves => this._filteredData.push(merge(leaves, this._aggs))).entries(flatData);
 
     }
