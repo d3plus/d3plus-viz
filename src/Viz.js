@@ -83,6 +83,7 @@ export default class Viz extends BaseClass {
       selectStyle: Object.assign({margin: "5px"}, controlTest.selectStyle())
     };
     this._data = [];
+    this._dataRequired = true;
     this._detectResize = true;
     this._detectResizeDelay = 400;
     this._detectVisible = true;
@@ -125,6 +126,12 @@ export default class Viz extends BaseClass {
       "top": "45%",
       "width": "100%"
     };
+
+    this._noData = false;
+    this._noDataMessageHTML = constant(`
+    <div style="font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+      <strong>No Data Available</strong>
+    </div>`);
 
     this._on = {
       "click": click.bind(this),
@@ -296,6 +303,16 @@ export default class Viz extends BaseClass {
       dataNest.rollup(leaves => this._filteredData.push(merge(leaves, this._aggs))).entries(flatData);
 
     }
+    else if (this._dataRequired) {
+      this._messageClass.render({
+        container: this._select.node().parentNode,
+        html: this._noDataMessageHTML(this),
+        mask: this._messageMask,
+        style: this._messageStyle
+      });
+
+      this._noData = true;
+    }
 
     drawTitle.bind(this)(this._filteredData);
     drawControls.bind(this)(this._filteredData);
@@ -447,7 +464,8 @@ export default class Viz extends BaseClass {
 
         this._draw(callback);
         zoomControls.bind(this)();
-        if (this._message) this._messageClass.hide();
+
+        if (this._message && !this._noData) this._messageClass.hide();
 
         if (this._detectResize && (this._autoWidth || this._autoHeight)) {
           select(window).on(`resize.${this._uuid}`, () => {
@@ -599,6 +617,16 @@ If *data* is not specified, this method returns the current primary data array, 
   */
   data(_, f) {
     return arguments.length ? (this._queue.push([load.bind(this), _, f, "data"]), this) : this._data;
+  }
+
+  /**
+      @memberof Viz
+      @desc If *value* is specified, sets whether the visualization requires data. When *value* is set to `true`, the visualization will display a "No Data Available" message when no data is available. Otherwise, the visualization will render with no data.
+      @param {Boolean} [*value* = true]
+      @chainable
+   */
+  dataRequired(_) {
+    return arguments.length ? (this._dataRequired = _, this) : this._dataRequired;
   }
 
   /**
