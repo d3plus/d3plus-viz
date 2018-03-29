@@ -19,7 +19,6 @@ import {colorAssign, colorContrast} from "d3plus-color";
 import {accessor, assign, BaseClass, constant, merge} from "d3plus-common";
 import {Select} from "d3plus-form";
 import {ColorScale, Legend} from "d3plus-legend";
-// import {Rect} from "d3plus-shape";
 import {TextBox} from "d3plus-text";
 import {Timeline} from "d3plus-timeline";
 import {Tooltip} from "d3plus-tooltip";
@@ -83,7 +82,6 @@ export default class Viz extends BaseClass {
       selectStyle: Object.assign({margin: "5px"}, controlTest.selectStyle())
     };
     this._data = [];
-    this._dataRequired = true;
     this._detectResize = true;
     this._detectResizeDelay = 400;
     this._detectVisible = true;
@@ -107,17 +105,17 @@ export default class Viz extends BaseClass {
     this._legendTooltip = {};
     this._legendClass = new Legend();
     this._legendPosition = "bottom";
-    this._locale = "en-US";
 
-    this._lrucache = lrucache(10);
-
-    this._message = true;
-    this._messageClass = new Message();
-    this._messageHTML = constant(`
+    this._loadingHTML = constant(`
     <div style="font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
       <strong>Loading Visualization</strong>
       <sub style="display: block; margin-top: 5px;"><a href="https://d3plus.org" target="_blank">Powered by D3plus</a></sub>
     </div>`);
+
+    this._loadingMessage = true;
+    this._locale = "en-US";
+    this._lrucache = lrucache(10);
+    this._messageClass = new Message();
     this._messageMask = "rgba(0, 0, 0, 0.1)";
     this._messageStyle = {
       "left": "0px",
@@ -126,13 +124,14 @@ export default class Viz extends BaseClass {
       "top": "45%",
       "width": "100%"
     };
-
     this._noData = false;
-    this._noDataMessageHTML = constant(`
+
+    this._noDataHTML = constant(`
     <div style="font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
       <strong>No Data Available</strong>
     </div>`);
 
+    this._noDataMessage = true;
     this._on = {
       "click": click.bind(this),
       "mouseenter": mouseenter.bind(this),
@@ -142,7 +141,6 @@ export default class Viz extends BaseClass {
     };
     this._padding = 5;
     this._queue = [];
-
     this._shape = constant("Rect");
     this._shapes = [];
     this._shapeConfig = {
@@ -303,10 +301,10 @@ export default class Viz extends BaseClass {
       dataNest.rollup(leaves => this._filteredData.push(merge(leaves, this._aggs))).entries(flatData);
 
     }
-    else if (this._dataRequired) {
+    else if (this._noDataMessage) {
       this._messageClass.render({
         container: this._select.node().parentNode,
-        html: this._noDataMessageHTML(this),
+        html: this._noDataHTML(this),
         mask: this._messageMask,
         style: this._messageStyle
       });
@@ -445,10 +443,10 @@ export default class Viz extends BaseClass {
 
       const q = queue();
 
-      if (this._message) {
+      if (this._loadingMessage) {
         this._messageClass.render({
           container: this._select.node().parentNode,
-          html: this._messageHTML(this),
+          html: this._loadingHTML(this),
           mask: this._messageMask,
           style: this._messageStyle
         });
@@ -465,7 +463,7 @@ export default class Viz extends BaseClass {
         this._draw(callback);
         zoomControls.bind(this)();
 
-        if (this._message && !this._noData) this._messageClass.hide();
+        if (this._messageClass._isVisible && !this._noData) this._messageClass.hide();
 
         if (this._detectResize && (this._autoWidth || this._autoHeight)) {
           select(window).on(`resize.${this._uuid}`, () => {
@@ -856,12 +854,12 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc If *value* is specified, sets the locale to the specified string and returns the current class instance.
-      @param {String} [*value* = "en-US"]
+      @desc Sets the inner HTML of the status message that is displayed when loading AJAX requests and displaying errors. Must be a valid HTML string or a function that, when passed this Viz instance, returns a valid HTML string.
+      @param {Function|String} [*value*]
       @chainable
   */
-  locale(_) {
-    return arguments.length ? (this._locale = _, this) : this._locale;
+  loadingHTML(_) {
+    return arguments.length ? (this._loadingHTML = typeof _ === "function" ? _ : constant(_), this) : this._loadingHTML;
   }
 
   /**
@@ -870,18 +868,18 @@ function value(d) {
       @param {Boolean} [*value* = true]
       @chainable
   */
-  message(_) {
-    return arguments.length ? (this._message = _, this) : this._message;
+  loadingMessage(_) {
+    return arguments.length ? (this._loadingMessage = _, this) : this._loadingMessage;
   }
 
   /**
       @memberof Viz
-      @desc Sets the inner HTML of the status message that is displayed when loading AJAX requests and displaying errors. Must be a valid HTML string or a function that, when passed this Viz instance, returns a valid HTML string.
-      @param {Function|String} [*value*]
+      @desc If *value* is specified, sets the locale to the specified string and returns the current class instance.
+      @param {String} [*value* = "en-US"]
       @chainable
   */
-  messageHTML(_) {
-    return arguments.length ? (this._messageHTML = typeof _ === "function" ? _ : constant(_), this) : this._messageHTML;
+  locale(_) {
+    return arguments.length ? (this._locale = _, this) : this._locale;
   }
 
   /**
@@ -902,6 +900,16 @@ function value(d) {
   */
   messageStyle(_) {
     return arguments.length ? (this._messageStyle = assign(this._messageStyle, _), this) : this._messageStyle;
+  }
+
+  /**
+      @memberof Viz
+      @desc Sets the inner HTML of the status message that is displayed when no data is supplied to the visualization. Must be a valid HTML string or a function that, when passed this Viz instance, returns a valid HTML string.
+      @param {Function|String} [*value*]
+      @chainable
+  */
+  noDataHTML(_) {
+    return arguments.length ? (this._noDataHTML = typeof _ === "function" ? _ : constant(_), this) : this._noDataHTML;
   }
 
   /**
