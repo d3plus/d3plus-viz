@@ -11,6 +11,15 @@ export default class Message {
 
   /**
       @memberof Message
+      @desc Invoked when creating a new class instance, and sets any default parameters.
+      @private
+  */
+  constructor() {
+    this._isVisible = false;
+  }
+
+  /**
+      @memberof Message
       @desc Removes the message from the page.
       @chainable
   */
@@ -19,6 +28,8 @@ export default class Message {
     elem
       .transition().duration(duration).style("opacity", 0)
       .transition().remove();
+
+    this._isVisible = false;
 
   }
 
@@ -33,6 +44,8 @@ export default class Message {
     this.elem.call(this.exit, duration);
 
     if (callback) setTimeout(callback, duration + 100);
+
+    this._isVisible = false;
 
     return this;
 
@@ -85,6 +98,8 @@ export default class Message {
     stylize(this.elem, style);
 
     if (callback) setTimeout(callback, 100);
+
+    this._isVisible = true;
 
     return this;
 
