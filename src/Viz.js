@@ -621,16 +621,6 @@ If *data* is not specified, this method returns the current primary data array, 
 
   /**
       @memberof Viz
-      @desc If *value* is specified, sets whether the visualization requires data. When *value* is set to `true`, the visualization will display a "No Data Available" message when no data is available. Otherwise, the visualization will render with no data.
-      @param {Boolean} [*value* = true]
-      @chainable
-   */
-  dataRequired(_) {
-    return arguments.length ? (this._dataRequired = _, this) : this._dataRequired;
-  }
-
-  /**
-      @memberof Viz
       @desc If *value* is specified, sets the depth to the specified number and returns the current class instance. The *value* should correspond with an index in the [groupBy](#groupBy) array.
       @param {Number} [*value*]
       @chainable
