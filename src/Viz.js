@@ -124,7 +124,6 @@ export default class Viz extends BaseClass {
       "top": "45%",
       "width": "100%"
     };
-    this._noData = false;
 
     this._noDataHTML = constant(`
     <div style="font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
@@ -301,15 +300,13 @@ export default class Viz extends BaseClass {
       dataNest.rollup(leaves => this._filteredData.push(merge(leaves, this._aggs))).entries(flatData);
 
     }
-    else if (this._noDataMessage) {
+    if (this._noDataMessage && !this._filteredData.length) {
       this._messageClass.render({
         container: this._select.node().parentNode,
         html: this._noDataHTML(this),
         mask: this._messageMask,
         style: this._messageStyle
       });
-
-      this._noData = true;
     }
 
     drawTitle.bind(this)(this._filteredData);
@@ -463,7 +460,7 @@ export default class Viz extends BaseClass {
         this._draw(callback);
         zoomControls.bind(this)();
 
-        if (this._messageClass._isVisible && !this._noData) this._messageClass.hide();
+        if (this._messageClass._isVisible && this._filteredData.length) this._messageClass.hide();
 
         if (this._detectResize && (this._autoWidth || this._autoHeight)) {
           select(window).on(`resize.${this._uuid}`, () => {
