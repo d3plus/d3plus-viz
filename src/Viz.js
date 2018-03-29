@@ -913,6 +913,16 @@ function value(d) {
   }
 
   /**
+     @memberof Viz
+     @desc Toggles the visibility of the status message that is displayed when no data is supplied to the visualization.
+     @param {Boolean} [*value* = true]
+     @chainable
+  */
+  noDataMessage(_) {
+    return arguments.length ? (this._noDataMessage = _, this) : this._noDataMessage;
+  }
+
+  /**
       @memberof Viz
       @desc If *selector* is specified, sets the SVG container element to the specified d3 selector or DOM element and returns the current class instance. If *selector* is not specified, returns the current SVG container element, which is `undefined` by default.
       @param {String|HTMLElement} [*selector*]
