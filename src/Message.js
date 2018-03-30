@@ -40,8 +40,8 @@ export default class Message {
   */
   hide({duration = 600, callback} = {}) {
 
-    this.mask.call(this.exit, duration);
-    this.elem.call(this.exit, duration);
+    this.mask.call(this.exit.bind(this), duration);
+    this.elem.call(this.exit.bind(this), duration);
 
     if (callback) setTimeout(callback, duration + 100);
 
@@ -76,7 +76,7 @@ export default class Message {
       .style("opacity", 1)
       .merge(this.mask);
 
-    this.mask.exit().call(this.exit, duration);
+    this.mask.exit().call(this.exit.bind(this), duration);
 
     stylize(this.mask, {
       "background-color": String,
