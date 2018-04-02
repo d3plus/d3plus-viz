@@ -460,7 +460,7 @@ export default class Viz extends BaseClass {
         this._draw(callback);
         zoomControls.bind(this)();
 
-        if (this._messageClass._isVisible && this._filteredData.length) this._messageClass.hide();
+        if (this._messageClass._isVisible && (!this._noDataMessage || this._filteredData.length)) this._messageClass.hide();
 
         if (this._detectResize && (this._autoWidth || this._autoHeight)) {
           select(window).on(`resize.${this._uuid}`, () => {
