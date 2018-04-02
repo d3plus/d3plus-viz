@@ -611,7 +611,14 @@ If *data* is not specified, this method returns the current primary data array, 
       @chainable
   */
   data(_, f) {
-    return arguments.length ? (this._queue.push([load.bind(this), _, f, "data"]), this) : this._data;
+    if (arguments.length) {
+      const prev = this._queue.find(q => q[3] === "data");
+      const d = [load.bind(this), _, f, "data"];
+      if (prev) this._queue[this._queue.indexOf(prev)] = d;
+      else this._queue.push(d);
+      return this;
+    }
+    return this._data;
   }
 
   /**
