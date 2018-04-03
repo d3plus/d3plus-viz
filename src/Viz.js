@@ -250,106 +250,110 @@ export default class Viz extends BaseClass {
       @private
   */
   _draw() {
-
     const that = this;
 
-    // based on the groupBy, determine the draw depth and current depth id
-    this._drawDepth = this._depth !== void 0 ? this._depth : this._groupBy.length - 1;
-    this._id = this._groupBy[this._drawDepth];
-    this._ids = (d, i) => this._groupBy
-      .map(g => !d || d.__d3plus__ && !d.data ? undefined : g(d.__d3plus__ ? d.data : d, d.__d3plus__ ? d.i : i))
-      .filter(g => g !== undefined && g !== null && g.constructor !== Array);
-
-    this._drawLabel = (d, i) => {
-      if (!d) return "";
-      while (d.__d3plus__ && d.data) {
-        d = d.data;
-        i = d.i;
-      }
-      if (this._label) return this._label(d, i);
-      const l = that._ids(d, i).slice(0, this._drawDepth + 1);
-      return l[l.length - 1];
-    };
-
-    // set the default timeFilter if it has not been specified
-    if (this._time && this._timeFilter === void 0 && this._data.length) {
-
-      const dates = this._data.map(this._time).map(date);
-      const d = this._data[0], i = 0;
-
-      if (this._discrete && `_${this._discrete}` in this && this[`_${this._discrete}`](d, i) === this._time(d, i)) {
-        this._timeFilter = () => true;
-      }
-      else {
-        const latestTime = +max(dates);
-        this._timeFilter = (d, i) => +date(this._time(d, i)) === latestTime;
-      }
-
+    if (this._redrawLegend) {
+      drawLegend.bind(this)(this._filteredData);
     }
+    else {
+      // based on the groupBy, determine the draw depth and current depth id
+      this._drawDepth = this._depth !== void 0 ? this._depth : this._groupBy.length - 1;
+      this._id = this._groupBy[this._drawDepth];
+      this._ids = (d, i) => this._groupBy
+        .map(g => !d || d.__d3plus__ && !d.data ? undefined : g(d.__d3plus__ ? d.data : d, d.__d3plus__ ? d.i : i))
+        .filter(g => g !== undefined && g !== null && g.constructor !== Array);
 
-    this._filteredData = [];
-    let flatData = [];
-    if (this._data.length) {
+      this._drawLabel = (d, i) => {
+        if (!d) return "";
+        while (d.__d3plus__ && d.data) {
+          d = d.data;
+          i = d.i;
+        }
+        if (this._label) return this._label(d, i);
+        const l = that._ids(d, i).slice(0, this._drawDepth + 1);
+        return l[l.length - 1];
+      };
 
-      flatData = this._timeFilter ? this._data.filter(this._timeFilter) : this._data;
-      if (this._filter) flatData = flatData.filter(this._filter);
+      // set the default timeFilter if it has not been specified
+      if (this._time && this._timeFilter === void 0 && this._data.length) {
 
-      const dataNest = nest();
-      for (let i = 0; i <= this._drawDepth; i++) dataNest.key(this._groupBy[i]);
-      if (this._discrete && `_${this._discrete}` in this) dataNest.key(this[`_${this._discrete}`]);
-      if (this._discrete && `_${this._discrete}2` in this) dataNest.key(this[`_${this._discrete}2`]);
-      dataNest.rollup(leaves => this._filteredData.push(merge(leaves, this._aggs))).entries(flatData);
+        const dates = this._data.map(this._time).map(date);
+        const d = this._data[0], i = 0;
 
+        if (this._discrete && `_${this._discrete}` in this && this[`_${this._discrete}`](d, i) === this._time(d, i)) {
+          this._timeFilter = () => true;
+        }
+        else {
+          const latestTime = +max(dates);
+          this._timeFilter = (d, i) => +date(this._time(d, i)) === latestTime;
+        }
+
+      }
+
+      this._filteredData = [];
+      let flatData = [];
+      if (this._data.length) {
+
+        flatData = this._timeFilter ? this._data.filter(this._timeFilter) : this._data;
+        if (this._filter) flatData = flatData.filter(this._filter);
+
+        const dataNest = nest();
+        for (let i = 0; i <= this._drawDepth; i++) dataNest.key(this._groupBy[i]);
+        if (this._discrete && `_${this._discrete}` in this) dataNest.key(this[`_${this._discrete}`]);
+        if (this._discrete && `_${this._discrete}2` in this) dataNest.key(this[`_${this._discrete}2`]);
+        dataNest.rollup(leaves => this._filteredData.push(merge(leaves, this._aggs))).entries(flatData);
+
+      }
+      if (this._noDataMessage && !this._filteredData.length) {
+        this._messageClass.render({
+          container: this._select.node().parentNode,
+          html: this._noDataHTML(this),
+          mask: this._messageMask,
+          style: this._messageStyle
+        });
+      }
+
+      drawTitle.bind(this)(this._filteredData);
+      drawControls.bind(this)(this._filteredData);
+      drawTimeline.bind(this)(this._filteredData);
+      drawLegend.bind(this)(this._filteredData);
+      drawColorScale.bind(this)(this._filteredData);
+      drawBack.bind(this)();
+      drawTotal.bind(this)(this._filteredData);
+
+      this._shapes = [];
+
+      // Draws a container and zoomGroup to test functionality.
+      // this._container = this._select.selectAll("svg.d3plus-viz").data([0]);
+      //
+      // this._container = this._container.enter().append("svg")
+      //     .attr("class", "d3plus-viz")
+      //     .attr("width", this._width - this._margin.left - this._margin.right)
+      //     .attr("height", this._height - this._margin.top - this._margin.bottom)
+      //     .attr("x", this._margin.left)
+      //     .attr("y", this._margin.top)
+      //     .style("background-color", "transparent")
+      //   .merge(this._container);
+      //
+      // this._zoomGroup = this._container.selectAll("g.d3plus-viz-zoomGroup").data([0]);
+      // const enter = this._zoomGroup.enter().append("g").attr("class", "d3plus-viz-zoomGroup")
+      //   .merge(this._zoomGroup);
+      //
+      // this._zoomGroup = enter.merge(this._zoomGroup);
+      //
+      // this._shapes.push(new Rect()
+      //   .config(this._shapeConfig)
+      //   .data(this._filteredData)
+      //   .label("Test Label")
+      //   .select(this._zoomGroup.node())
+      //   .on(this._on)
+      //   .id(d => d.group)
+      //   .x(d => d.value * 10 + 200)
+      //   .y(d => d.value * 10 + 200)
+      //   .width(100)
+      //   .height(100)
+      //   .render());
     }
-    if (this._noDataMessage && !this._filteredData.length) {
-      this._messageClass.render({
-        container: this._select.node().parentNode,
-        html: this._noDataHTML(this),
-        mask: this._messageMask,
-        style: this._messageStyle
-      });
-    }
-
-    drawTitle.bind(this)(this._filteredData);
-    drawControls.bind(this)(this._filteredData);
-    drawTimeline.bind(this)(this._filteredData);
-    drawLegend.bind(this)(this._filteredData);
-    drawColorScale.bind(this)(this._filteredData);
-    drawBack.bind(this)();
-    drawTotal.bind(this)(this._filteredData);
-
-    this._shapes = [];
-
-    // Draws a container and zoomGroup to test functionality.
-    // this._container = this._select.selectAll("svg.d3plus-viz").data([0]);
-    //
-    // this._container = this._container.enter().append("svg")
-    //     .attr("class", "d3plus-viz")
-    //     .attr("width", this._width - this._margin.left - this._margin.right)
-    //     .attr("height", this._height - this._margin.top - this._margin.bottom)
-    //     .attr("x", this._margin.left)
-    //     .attr("y", this._margin.top)
-    //     .style("background-color", "transparent")
-    //   .merge(this._container);
-    //
-    // this._zoomGroup = this._container.selectAll("g.d3plus-viz-zoomGroup").data([0]);
-    // const enter = this._zoomGroup.enter().append("g").attr("class", "d3plus-viz-zoomGroup")
-    //   .merge(this._zoomGroup);
-    //
-    // this._zoomGroup = enter.merge(this._zoomGroup);
-    //
-    // this._shapes.push(new Rect()
-    //   .config(this._shapeConfig)
-    //   .data(this._filteredData)
-    //   .label("Test Label")
-    //   .select(this._zoomGroup.node())
-    //   .on(this._on)
-    //   .id(d => d.group)
-    //   .x(d => d.value * 10 + 200)
-    //   .y(d => d.value * 10 + 200)
-    //   .width(100)
-    //   .height(100)
-    //   .render());
 
   }
 
@@ -363,6 +367,7 @@ export default class Viz extends BaseClass {
 
     // Resets margins
     this._margin = {bottom: 0, left: 0, right: 0, top: 0};
+    this._legendMargin = {bottom: 0, left: 0, right: 0, top: 0};
     this._transition = transition().duration(this._duration);
 
     // Appends a fullscreen SVG to the BODY if a container has not been provided through .select().
