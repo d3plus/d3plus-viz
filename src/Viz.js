@@ -316,10 +316,14 @@ export default class Viz extends BaseClass {
       });
     }
 
-    drawTitle.bind(this)(this._filteredData);
+    const drawLegendBeforeTitle = this._legend && (this.legendPosition() === "left" || this.legendPosition() === "right");
+    const drawFirst = () => drawLegendBeforeTitle ? drawLegend.bind(this)(this._filteredData) : drawTitle.bind(this)(this._filteredData);
+    const drawSecond = () => drawLegendBeforeTitle ? drawTitle.bind(this)(this._filteredData) : drawLegend.bind(this)(this._filteredData);
+
+    drawFirst();
+    drawSecond();
     drawControls.bind(this)(this._filteredData);
     drawTimeline.bind(this)(this._filteredData);
-    drawLegend.bind(this)(this._filteredData);
     drawColorScale.bind(this)(this._filteredData);
     drawBack.bind(this)();
     drawTotal.bind(this)(this._filteredData);
