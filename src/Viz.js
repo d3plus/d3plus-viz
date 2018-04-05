@@ -308,9 +308,6 @@ export default class Viz extends BaseClass {
       @private
   */
   _draw() {
-
-    this._preDraw();
-
     if (this._noDataMessage && !this._filteredData.length) {
       this._messageClass.render({
         container: this._select.node().parentNode,
@@ -469,6 +466,7 @@ export default class Viz extends BaseClass {
       this._queue = [];
       q.awaitAll(() => {
 
+        this._preDraw();
         this._draw(callback);
         zoomControls.bind(this)();
 
