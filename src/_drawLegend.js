@@ -30,7 +30,7 @@ export default function(data = []) {
       else this._margin[position] -= legendBounds.width + this._legendClass.padding() * 2;
     }
 
-    const transform = {transform: `translate(${this._margin.left + wide ? this._legendMargin.left : 0}, ${this._margin.top + wide ? 0 : this._legendMargin.top})`};
+    const transform = {transform: `translate(${wide ? this._margin.left + this._legendMargin.left : this._margin.left}, ${wide ? this._margin.top : this._margin.top + this._legendMargin.top})`};
 
     const legendGroup = elem("g.d3plus-viz-legend", {
       condition: this._legend && !this._legendConfig.select,
@@ -84,5 +84,4 @@ export default function(data = []) {
       else this._margin[position] += legendBounds.width + this._legendClass.padding() * 2;
     }
   }
-  this._redrawLegend = false;
 }
