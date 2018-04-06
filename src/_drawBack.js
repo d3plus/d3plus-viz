@@ -1,4 +1,4 @@
-import {elem} from "d3plus-common";
+import {constant, elem} from "d3plus-common";
 
 /**
     @function _drawBack
@@ -18,7 +18,7 @@ export default function() {
   this._backClass
     .data(visible ? [{text: "Back", x: 0, y: 0}] : [])
     .select(backGroup)
-    .config(this._backConfig)
+    .config(Object.assign({padding: constant(5)}, this._backConfig))
     .render();
 
   this._margin.top += visible ? this._backClass.fontSize()() : 0;
