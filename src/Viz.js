@@ -98,7 +98,8 @@ export default class Viz extends BaseClass {
       shapeConfig: {
         labelConfig: {
           fontColor: undefined,
-          fontResize: false
+          fontResize: false,
+          padding: 0
         }
       }
     };
