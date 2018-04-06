@@ -1,4 +1,4 @@
-import {constant, elem} from "d3plus-common";
+import {elem} from "d3plus-common";
 
 /**
     @function _drawTitle
@@ -23,7 +23,7 @@ export default function(data = []) {
     .data(text ? [{text}] : [])
     .select(group)
     .width(this._width - (this._margin.left + this._margin.right + this._padding.left + this._padding.right))
-    .config(Object.assign({padding: constant(5)}, this._titleConfig))
+    .config(this._titleConfig)
     .render();
 
   this._margin.top += text ? group.getBBox().height : 0;
