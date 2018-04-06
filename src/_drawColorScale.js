@@ -8,40 +8,40 @@ import {elem} from "d3plus-common";
 */
 export default function(data = []) {
 
-  const transform = {
-    opacity: this._colorScalePosition ? 1 : 0,
-    transform: `translate(${this._margin.left}, ${this._margin.top})`
-  };
-
-  const showColorScale = this._colorScale && data && data.length > 1;
-
-  const scaleGroup = elem("g.d3plus-viz-colorScale", {
-    condition: showColorScale && !this._colorScaleConfig.select,
-    enter: transform,
-    parent: this._select,
-    transition: this._transition,
-    update: transform
-  }).node();
-
   if (this._colorScale && data) {
+
+    const position = this._colorScalePosition || "bottom";
+    const wide = ["top", "bottom"].includes(position);
+
+    const transform = {
+      opacity: this._colorScalePosition ? 1 : 0,
+      transform: `translate(${wide ? this._margin.left + this._padding.left : this._margin.left}, ${wide ? this._margin.top : this._margin.top + this._padding.top})`
+    };
+
+    const showColorScale = this._colorScale && data && data.length > 1;
+
+    const scaleGroup = elem("g.d3plus-viz-colorScale", {
+      condition: showColorScale && !this._colorScaleConfig.select,
+      enter: transform,
+      parent: this._select,
+      transition: this._transition,
+      update: transform
+    }).node();
 
     const scaleData = data.filter((d, i) => {
       const c = this._colorScale(d, i);
       return c !== undefined && c !== null;
     });
 
-    const position = this._colorScalePosition || "bottom";
-    const wide = ["top", "bottom"].includes(position);
-
     this._colorScaleClass
       .align({bottom: "end", left: "start", right: "end", top: "start"}[position])
       .duration(this._duration)
       .data(scaleData)
-      .height(this._height - this._margin.bottom - this._margin.top)
+      .height(wide ? this._height - (this._margin.bottom + this._margin.top) : this._height - (this._margin.bottom + this._margin.top + this._padding.bottom + this._padding.top))
       .orient(position)
       .select(scaleGroup)
       .value(this._colorScale)
-      .width(this._width - this._margin.left - this._margin.right)
+      .width(wide ? this._width - (this._margin.left + this._margin.right + this._padding.left + this._padding.right) : this._width - (this._margin.left + this._margin.right))
       .config(this._colorScaleConfig)
       .render();
 
