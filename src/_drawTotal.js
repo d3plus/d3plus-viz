@@ -29,6 +29,6 @@ export default function(data = []) {
     .config(this._totalConfig)
     .render();
 
-  this._margin.top += visible ? group.getBBox().height + this._padding : 0;
+  this._margin.top += visible ? group.getBBox().height : 0;
 
 }
