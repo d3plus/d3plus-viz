@@ -69,6 +69,7 @@ export default class Viz extends BaseClass {
       .on("mousemove", () => this._backClass.select().style("cursor", "pointer"));
     this._backConfig = {
       fontSize: 10,
+      padding: 5,
       resize: false
     };
     this._cache = true;
@@ -180,6 +181,7 @@ export default class Viz extends BaseClass {
     this._titleClass = new TextBox();
     this._titleConfig = {
       fontSize: 12,
+      padding: 5,
       resize: false,
       textAnchor: "middle"
     };
@@ -197,6 +199,7 @@ export default class Viz extends BaseClass {
     this._totalClass = new TextBox();
     this._totalConfig = {
       fontSize: 10,
+      padding: 5,
       resize: false,
       textAnchor: "middle"
     };
