@@ -139,7 +139,6 @@ export default class Viz extends BaseClass {
       "mousemove.shape": mousemoveShape.bind(this),
       "mousemove.legend": mousemoveLegend.bind(this)
     };
-    this._padding = 5;
     this._queue = [];
     this._shape = constant("Rect");
     this._shapes = [];
@@ -372,9 +371,9 @@ export default class Viz extends BaseClass {
   */
   render(callback) {
 
-    // Resets margins
+    // Resets margins and padding
     this._margin = {bottom: 0, left: 0, right: 0, top: 0};
-    this._legendMargin = {bottom: 0, left: 0, right: 0, top: 0};
+    this._padding = {bottom: 0, left: 0, right: 0, top: 0};
     this._transition = transition().duration(this._duration);
 
     // Appends a fullscreen SVG to the BODY if a container has not been provided through .select().

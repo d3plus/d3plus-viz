@@ -24,6 +24,6 @@ export default function(data = []) {
     .config(this._titleConfig)
     .render();
 
-  this._margin.top += text ? group.getBBox().height + this._padding : 0;
+  this._margin.top += text ? group.getBBox().height : 0;
 
 }

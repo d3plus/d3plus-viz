@@ -25,12 +25,7 @@ export default function(data = []) {
     const position = this._legendPosition;
     const wide = ["top", "bottom"].includes(position);
 
-    if (this._redrawLegend && !this._legendConfig.select && legendBounds.height) {
-      if (wide) this._margin[position] -= legendBounds.height + this._legendClass.padding() * 2;
-      else this._margin[position] -= legendBounds.width + this._legendClass.padding() * 2;
-    }
-
-    const transform = {transform: `translate(${wide ? this._margin.left + this._legendMargin.left : this._margin.left}, ${wide ? this._margin.top : this._margin.top + this._legendMargin.top})`};
+    const transform = {transform: `translate(${wide ? this._margin.left + this._padding.left : this._margin.left}, ${wide ? this._margin.top : this._margin.top + this._padding.top})`};
 
     const legendGroup = elem("g.d3plus-viz-legend", {
       condition: this._legend && !this._legendConfig.select,
@@ -70,10 +65,10 @@ export default function(data = []) {
       .direction(wide ? "row" : "column")
       .duration(this._duration)
       .data(legendData.length > 1 || this._colorScale ? legendData : [])
-      .height(wide ? this._height - (this._margin.bottom + this._margin.top) : this._height - (this._margin.bottom + this._margin.top + this._legendMargin.bottom + this._legendMargin.top))
+      .height(wide ? this._height - (this._margin.bottom + this._margin.top) : this._height - (this._margin.bottom + this._margin.top + this._padding.bottom + this._padding.top))
       .select(legendGroup)
       .verticalAlign(!wide ? "middle" : position)
-      .width(wide ? this._width - (this._margin.left + this._margin.right + this._legendMargin.left + this._legendMargin.right) : this._width - (this._margin.left + this._margin.right))
+      .width(wide ? this._width - (this._margin.left + this._margin.right + this._padding.left + this._padding.right) : this._width - (this._margin.left + this._margin.right))
       .shapeConfig(configPrep.bind(this)(this._shapeConfig, "legend"))
       .config(this._legendConfig)
       .shapeConfig({fill: color, opacity})
