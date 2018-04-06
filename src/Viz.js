@@ -315,17 +315,17 @@ export default class Viz extends BaseClass {
       });
     }
 
-    const drawLegendBeforeTitle = this._legend && (this.legendPosition() === "left" || this.legendPosition() === "right");
-    const drawFirst = () => drawLegendBeforeTitle ? drawLegend.bind(this)(this._filteredData) : drawTitle.bind(this)(this._filteredData);
-    const drawSecond = () => drawLegendBeforeTitle ? drawTitle.bind(this)(this._filteredData) : drawLegend.bind(this)(this._filteredData);
+    if (this.legendPosition() === "left" || this.legendPosition() === "right") drawLegend.bind(this)(this._filteredData);
+    if (this.colorScalePosition() === "left" || this.legendPosition() === "right") drawColorScale.bind(this)(this._filteredData);
 
-    drawFirst();
-    drawSecond();
-    drawControls.bind(this)(this._filteredData);
-    drawTimeline.bind(this)(this._filteredData);
-    drawColorScale.bind(this)(this._filteredData);
     drawBack.bind(this)();
+    drawTitle.bind(this)(this._filteredData);
     drawTotal.bind(this)(this._filteredData);
+    drawTimeline.bind(this)(this._filteredData);
+    drawControls.bind(this)(this._filteredData);
+
+    if (this.legendPosition() === "top" || this.legendPosition() === "bottom") drawLegend.bind(this)(this._filteredData);
+    if (this.colorScalePosition() === "top" || this.legendPosition() === "bottom") drawColorScale.bind(this)(this._filteredData);
 
     this._shapes = [];
 
