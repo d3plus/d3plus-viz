@@ -1,6 +1,6 @@
 import {sum} from "d3-array";
 
-import {elem} from "d3plus-common";
+import {constant, elem} from "d3plus-common";
 
 /**
     @function _drawTotal
@@ -28,7 +28,7 @@ export default function(data = []) {
     .data(visible ? [{text: `Total: ${total}`}] : [])
     .select(group)
     .width(this._width - (this._margin.left + this._margin.right + this._padding.left + this._padding.right))
-    .config(this._totalConfig)
+    .config(Object.assign({padding: constant(5)}, this._totalConfig))
     .render();
 
   this._margin.top += visible ? group.getBBox().height : 0;
