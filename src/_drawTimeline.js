@@ -33,10 +33,14 @@ export default function(data = []) {
   const ticks = timelinePossible ? Array.from(new Set(this._data.map(this._time))).map(date) : [];
   timelinePossible = timelinePossible && ticks.length > 1;
 
+  const transform = {transform: `translate(${this._margin.left + this._padding.left}, 0)`};
+
   const timelineGroup = elem("g.d3plus-viz-timeline", {
     condition: timelinePossible,
+    enter: transform,
     parent: this._select,
-    transition: this._transition
+    transition: this._transition,
+    update: transform
   }).node();
 
   if (timelinePossible) {
@@ -47,7 +51,7 @@ export default function(data = []) {
       .height(this._height - this._margin.bottom)
       .select(timelineGroup)
       .ticks(ticks.sort((a, b) => +a - +b))
-      .width(this._width);
+      .width(this._width - (this._margin.left + this._margin.right + this._padding.left + this._padding.right));
 
     if (this._timelineSelection === void 0) {
 

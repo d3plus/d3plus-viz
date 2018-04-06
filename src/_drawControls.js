@@ -41,13 +41,15 @@ export default function() {
       });
     }
 
+    const wide = area === "top" || area === "bottom";
+
     const transform = {
-      height: this._height - this._margin.top - this._margin.bottom,
-      width: this._width - this._margin.left - this._margin.right
+      height: wide ? this._height - (this._margin.top + this._margin.bottom) : this._height - (this._margin.top + this._margin.bottom + this._padding.top + this._padding.bottom),
+      width: wide ? this._width - (this._margin.left + this._margin.right + this._padding.left + this._padding.right) : this._width - (this._margin.left + this._margin.right)
     };
 
-    transform.x = this._margin.left + (area === "right" ? transform.width : 0);
-    transform.y = this._margin.top + (area === "bottom" ? transform.height : 0);
+    transform.x = (wide ? this._margin.left + this._padding.left : this._margin.left) + (area === "right" ? transform.width : 0);
+    transform.y = (wide ? this._margin.top : this._margin.top + this._padding.top)  + (area === "bottom" ? transform.height : 0);
 
     const foreign = elem(`foreignObject.d3plus-viz-controls-${area}`, {
       condition: controls.length,
