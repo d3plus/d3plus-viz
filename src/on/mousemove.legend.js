@@ -16,7 +16,7 @@ export default function(d) {
     this._tooltipClass.data([d])
       .footer(this._drawDepth < this._groupBy.length - 1 ? "Click to Expand" : "")
       .title(this._legendConfig.label ? this._legendClass.label() : legendLabel.bind(this))
-      .translate(mouse(select("html").node()))
+      .position(mouse(select("html").node()))
       .config(this._tooltipConfig)
       .config(this._legendTooltip)
       .render();
