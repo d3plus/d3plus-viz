@@ -141,6 +141,7 @@ export default class Viz extends BaseClass {
       "mousemove.legend": mousemoveLegend.bind(this)
     };
     this._queue = [];
+    this._scrollContainer = typeof window === undefined ? "" : window;
     this._shape = constant("Rect");
     this._shapes = [];
     this._shapeConfig = {
@@ -419,8 +420,8 @@ export default class Viz extends BaseClass {
 
     clearInterval(this._visiblePoll);
     clearTimeout(this._resizePoll);
-    select(window).on(`scroll.${this._uuid}`, null);
-    select(window).on(`resize.${this._uuid}`, null);
+    select(this._scrollContainer).on(`scroll.${this._uuid}`, null);
+    select(this._scrollContainer).on(`resize.${this._uuid}`, null);
     if (this._detectVisible && this._select.style("visibility") === "hidden") {
 
       this._visiblePoll = setInterval(() => {
@@ -443,9 +444,9 @@ export default class Viz extends BaseClass {
     }
     else if (this._detectVisible && !inViewport(this._select.node())) {
 
-      select(window).on(`scroll.${this._uuid}`, () => {
+      select(this._scrollContainer).on(`scroll.${this._uuid}`, () => {
         if (inViewport(this._select.node())) {
-          select(window).on(`scroll.${this._uuid}`, null);
+          select(this._scrollContainer).on(`scroll.${this._uuid}`, null);
           this.render(callback);
         }
       });
@@ -479,7 +480,7 @@ export default class Viz extends BaseClass {
         if (this._messageClass._isVisible && (!this._noDataMessage || this._filteredData.length)) this._messageClass.hide();
 
         if (this._detectResize && (this._autoWidth || this._autoHeight)) {
-          select(window).on(`resize.${this._uuid}`, () => {
+          select(this._scrollContainer).on(`resize.${this._uuid}`, () => {
             clearTimeout(this._resizePoll);
             this._resizePoll = setTimeout(() => {
               clearTimeout(this._resizePoll);
@@ -940,6 +941,16 @@ function value(d) {
   */
   noDataMessage(_) {
     return arguments.length ? (this._noDataMessage = _, this) : this._noDataMessage;
+  }
+
+  /**
+      @memberof Viz
+      @desc If using scroll or visibility detection, this method allow a custom override of the element to which the scroll detection function gets attached.
+      @param {String|HTMLElement} *selector*
+      @chainable
+  */
+  scrollContainer(_) {
+    return arguments.length ? (this._scrollContainer = _, this) : this._scrollContainer;
   }
 
   /**
