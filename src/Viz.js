@@ -321,7 +321,7 @@ export default class Viz extends BaseClass {
     }
 
     if (this.legendPosition() === "left" || this.legendPosition() === "right") drawLegend.bind(this)(this._filteredData);
-    if (this.colorScalePosition() === "left" || this.legendPosition() === "right") drawColorScale.bind(this)(this._filteredData);
+    if (this.colorScalePosition() === "left" || this.colorScalePosition() === "right") drawColorScale.bind(this)(this._filteredData);
 
     drawBack.bind(this)();
     drawTitle.bind(this)(this._filteredData);
@@ -330,7 +330,7 @@ export default class Viz extends BaseClass {
     drawControls.bind(this)(this._filteredData);
 
     if (this.legendPosition() === "top" || this.legendPosition() === "bottom") drawLegend.bind(this)(this._filteredData);
-    if (this.colorScalePosition() === "top" || this.legendPosition() === "bottom") drawColorScale.bind(this)(this._filteredData);
+    if (this.colorScalePosition() === "top" || this.colorScalePosition() === "bottom") drawColorScale.bind(this)(this._filteredData);
 
     this._shapes = [];
 
