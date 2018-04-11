@@ -1,4 +1,4 @@
-import {mouse, select} from "d3-selection";
+import {event} from "d3-selection";
 
 /**
     @desc Tooltip logic for a specified data point.
@@ -14,7 +14,7 @@ export default function(d) {
     this._tooltipClass.data([d])
       .footer(this._drawDepth < this._groupBy.length - 1 ? "Click to Expand" : "")
       .title(this._drawLabel)
-      .position(mouse(select("html").node()))
+      .position([event.clientX, event.clientY])
       .config(this._tooltipConfig)
       .render();
   }
