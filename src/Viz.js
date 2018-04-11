@@ -22,6 +22,7 @@ import {ColorScale, Legend} from "d3plus-legend";
 import {TextBox} from "d3plus-text";
 import {Timeline} from "d3plus-timeline";
 import {Tooltip} from "d3plus-tooltip";
+// import {Rect} from "d3plus-shape";
 
 import Message from "./Message";
 
@@ -342,7 +343,11 @@ export default class Viz extends BaseClass {
     //   .data(this._filteredData)
     //   .label("Test Label")
     //   .select(this._zoomGroup.node())
-    //   .on(this._on)
+    //   .on({
+    //     mouseenter: this._on.mouseenter,
+    //     mouseleave: this._on.mouseleave,
+    //     mousemove: this._on["mousemove.shape"]
+    //   })
     //   .id(d => d.group)
     //   .x(d => d.value * 10 + 200)
     //   .y(d => d.value * 10 + 200)
@@ -367,7 +372,7 @@ export default class Viz extends BaseClass {
     // Appends a fullscreen SVG to the BODY if a container has not been provided through .select().
     if (this._select === void 0 || this._select.node().tagName.toLowerCase() !== "svg") {
 
-      const parent = this._select === void 0 ? select("body") : this._select;
+      const parent = this._select === void 0 ? select("body").append("div") : this._select;
       let [w, h] = getSize(parent.node());
       const svg = parent.append("svg");
       w -= parseFloat(svg.style("border-left-width"), 10);
