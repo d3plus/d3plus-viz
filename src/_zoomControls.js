@@ -57,7 +57,7 @@ export default function() {
         .call(stylize, brushing ? that._zoomControlStyle || {} : that._zoomControlStyleActive || {});
       zoomEvents.bind(that)(!brushing);
     })
-    .html("&#10696");
+    .html("&#164");
 
   control.selectAll(".zoom-control")
     .call(stylize, that._zoomControlStyle)
