@@ -26,8 +26,8 @@ export default function() {
 
   this._zoomToBounds = zoomToBounds.bind(this);
 
-  let control = select(this._select.node().parentNode).selectAll("div.d3plus-geomap-control").data(this._zoom ? [0] : []);
-  const controlEnter = control.enter().append("div").attr("class", "d3plus-geomap-control");
+  let control = select(this._select.node().parentNode).selectAll("div.d3plus-zoom-control").data(this._zoom ? [0] : []);
+  const controlEnter = control.enter().append("div").attr("class", "d3plus-zoom-control");
   control.exit().remove();
   control = control.merge(controlEnter)
     .style("position", "absolute")
