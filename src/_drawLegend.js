@@ -19,20 +19,21 @@ export function legendLabel(d, i) {
 */
 export default function(data = []) {
 
-  const transform = {transform: `translate(${this._margin.left}, ${this._margin.top})`};
-
-  const legendGroup = elem("g.d3plus-viz-legend", {
-    condition: this._legend && !this._legendConfig.select,
-    enter: transform,
-    parent: this._select,
-    transition: this._transition,
-    update: transform
-  }).node();
-
   if (this._legend) {
 
+    const legendBounds = this._legendClass.outerBounds();
     const position = this._legendPosition;
     const wide = ["top", "bottom"].includes(position);
+
+    const transform = {transform: `translate(${wide ? this._margin.left + this._padding.left : this._margin.left}, ${wide ? this._margin.top : this._margin.top + this._padding.top})`};
+
+    const legendGroup = elem("g.d3plus-viz-legend", {
+      condition: this._legend && !this._legendConfig.select,
+      enter: transform,
+      parent: this._select,
+      transition: this._transition,
+      update: transform
+    }).node();
 
     const legendData = [];
 
@@ -57,28 +58,25 @@ export default function(data = []) {
       .key(fill)
       .rollup(leaves => legendData.push(merge(leaves, this._aggs)))
       .entries(this._colorScale ? data.filter((d, i) => this._colorScale(d, i) === undefined) : data);
-
+    
     this._legendClass
       .id(fill)
       .align(wide ? "center" : position)
       .direction(wide ? "row" : "column")
       .duration(this._duration)
       .data(legendData.length > 1 || this._colorScale ? legendData : [])
-      .height(this._height - this._margin.bottom - this._margin.top)
+      .height(wide ? this._height - (this._margin.bottom + this._margin.top) : this._height - (this._margin.bottom + this._margin.top + this._padding.bottom + this._padding.top))
       .select(legendGroup)
       .verticalAlign(!wide ? "middle" : position)
-      .width(this._width - this._margin.left - this._margin.right)
+      .width(wide ? this._width - (this._margin.left + this._margin.right + this._padding.left + this._padding.right) : this._width - (this._margin.left + this._margin.right))
       .shapeConfig(configPrep.bind(this)(this._shapeConfig, "legend"))
       .config(this._legendConfig)
       .shapeConfig({fill: color, opacity})
       .render();
 
-    const legendBounds = this._legendClass.outerBounds();
     if (!this._legendConfig.select && legendBounds.height) {
       if (wide) this._margin[position] += legendBounds.height + this._legendClass.padding() * 2;
       else this._margin[position] += legendBounds.width + this._legendClass.padding() * 2;
     }
-
   }
-
 }

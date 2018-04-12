@@ -70,6 +70,7 @@ export default class Viz extends BaseClass {
       .on("mousemove", () => this._backClass.select().style("cursor", "pointer"));
     this._backConfig = {
       fontSize: 10,
+      padding: 5,
       resize: false
     };
     this._cache = true;
@@ -99,7 +100,8 @@ export default class Viz extends BaseClass {
       shapeConfig: {
         labelConfig: {
           fontColor: undefined,
-          fontResize: false
+          fontResize: false,
+          padding: 0
         }
       }
     };
@@ -139,8 +141,8 @@ export default class Viz extends BaseClass {
       "mousemove.shape": mousemoveShape.bind(this),
       "mousemove.legend": mousemoveLegend.bind(this)
     };
-    this._padding = 5;
     this._queue = [];
+    this._scrollContainer = typeof window === undefined ? "" : window;
     this._shape = constant("Rect");
     this._shapes = [];
     this._shapeConfig = {
@@ -182,6 +184,7 @@ export default class Viz extends BaseClass {
     this._titleClass = new TextBox();
     this._titleConfig = {
       fontSize: 12,
+      padding: 5,
       resize: false,
       textAnchor: "middle"
     };
@@ -199,6 +202,7 @@ export default class Viz extends BaseClass {
     this._totalClass = new TextBox();
     this._totalConfig = {
       fontSize: 10,
+      padding: 5,
       resize: false,
       textAnchor: "middle"
     };
@@ -245,12 +249,11 @@ export default class Viz extends BaseClass {
   }
 
   /**
-      @memberof Viz
-      @desc Called by render once all checks are passed.
-      @private
-  */
-  _draw() {
-
+   @memberof Viz
+   @desc Called by draw before anything is drawn. Formats the data and performs preparations for draw.
+   @private
+   */
+  _preDraw() {
     const that = this;
 
     // based on the groupBy, determine the draw depth and current depth id
@@ -301,6 +304,14 @@ export default class Viz extends BaseClass {
       dataNest.rollup(leaves => this._filteredData.push(merge(leaves, this._aggs))).entries(flatData);
 
     }
+  }
+
+  /**
+      @memberof Viz
+      @desc Called by render once all checks are passed.
+      @private
+  */
+  _draw() {
     if (this._noDataMessage && !this._filteredData.length) {
       this._messageClass.render({
         container: this._select.node().parentNode,
@@ -310,13 +321,17 @@ export default class Viz extends BaseClass {
       });
     }
 
-    drawTitle.bind(this)(this._filteredData);
-    drawControls.bind(this)(this._filteredData);
-    drawTimeline.bind(this)(this._filteredData);
-    drawLegend.bind(this)(this._filteredData);
-    drawColorScale.bind(this)(this._filteredData);
+    if (this.legendPosition() === "left" || this.legendPosition() === "right") drawLegend.bind(this)(this._filteredData);
+    if (this.colorScalePosition() === "left" || this.legendPosition() === "right") drawColorScale.bind(this)(this._filteredData);
+
     drawBack.bind(this)();
+    drawTitle.bind(this)(this._filteredData);
     drawTotal.bind(this)(this._filteredData);
+    drawTimeline.bind(this)(this._filteredData);
+    drawControls.bind(this)(this._filteredData);
+
+    if (this.legendPosition() === "top" || this.legendPosition() === "bottom") drawLegend.bind(this)(this._filteredData);
+    if (this.colorScalePosition() === "top" || this.legendPosition() === "bottom") drawColorScale.bind(this)(this._filteredData);
 
     this._shapes = [];
 
@@ -365,8 +380,9 @@ export default class Viz extends BaseClass {
   */
   render(callback) {
 
-    // Resets margins
+    // Resets margins and padding
     this._margin = {bottom: 0, left: 0, right: 0, top: 0};
+    this._padding = {bottom: 0, left: 0, right: 0, top: 0};
     this._transition = transition().duration(this._duration);
 
     // Appends a fullscreen SVG to the BODY if a container has not been provided through .select().
@@ -409,8 +425,8 @@ export default class Viz extends BaseClass {
 
     clearInterval(this._visiblePoll);
     clearTimeout(this._resizePoll);
-    select(window).on(`scroll.${this._uuid}`, null);
-    select(window).on(`resize.${this._uuid}`, null);
+    select(this._scrollContainer).on(`scroll.${this._uuid}`, null);
+    select(this._scrollContainer).on(`resize.${this._uuid}`, null);
     if (this._detectVisible && this._select.style("visibility") === "hidden") {
 
       this._visiblePoll = setInterval(() => {
@@ -433,9 +449,9 @@ export default class Viz extends BaseClass {
     }
     else if (this._detectVisible && !inViewport(this._select.node())) {
 
-      select(window).on(`scroll.${this._uuid}`, () => {
+      select(this._scrollContainer).on(`scroll.${this._uuid}`, () => {
         if (inViewport(this._select.node())) {
-          select(window).on(`scroll.${this._uuid}`, null);
+          select(this._scrollContainer).on(`scroll.${this._uuid}`, null);
           this.render(callback);
         }
       });
@@ -462,13 +478,14 @@ export default class Viz extends BaseClass {
       this._queue = [];
       q.awaitAll(() => {
 
+        this._preDraw();
         this._draw(callback);
         zoomControls.bind(this)();
 
         if (this._messageClass._isVisible && (!this._noDataMessage || this._filteredData.length)) this._messageClass.hide();
 
         if (this._detectResize && (this._autoWidth || this._autoHeight)) {
-          select(window).on(`resize.${this._uuid}`, () => {
+          select(this._scrollContainer).on(`resize.${this._uuid}`, () => {
             clearTimeout(this._resizePoll);
             this._resizePoll = setTimeout(() => {
               clearTimeout(this._resizePoll);
@@ -929,6 +946,16 @@ function value(d) {
   */
   noDataMessage(_) {
     return arguments.length ? (this._noDataMessage = _, this) : this._noDataMessage;
+  }
+
+  /**
+      @memberof Viz
+      @desc If using scroll or visibility detection, this method allow a custom override of the element to which the scroll detection function gets attached.
+      @param {String|HTMLElement} *selector*
+      @chainable
+  */
+  scrollContainer(_) {
+    return arguments.length ? (this._scrollContainer = _, this) : this._scrollContainer;
   }
 
   /**
