@@ -41,8 +41,9 @@ import click from "./on/click";
 import clickAll from "./on/click.all";
 import mouseenter from "./on/mouseenter";
 import mouseleave from "./on/mouseleave";
-import mousemoveLegend from "./on/mousemove.legend";
-import mousemoveShape from "./on/mousemove.shape";
+import mousemoveTouchstartLegend from "./on/mousemoveTouchstart.legend";
+import mousemoveTouchstartShape from "./on/mousemoveTouchstart.shape";
+import touchstartBody from "./on/touchstart.body";
 
 import zoomControls from "./_zoomControls";
 
@@ -140,8 +141,10 @@ export default class Viz extends BaseClass {
       "click.all": clickAll.bind(this),
       "mouseenter": mouseenter.bind(this),
       "mouseleave": mouseleave.bind(this),
-      "mousemove.shape": mousemoveShape.bind(this),
-      "mousemove.legend": mousemoveLegend.bind(this)
+      "mousemove.shape": mousemoveTouchstartShape.bind(this),
+      "mousemove.legend": mousemoveTouchstartLegend.bind(this),
+      "touchstart.legend": mousemoveTouchstartLegend.bind(this),
+      "touchstart.shape": mousemoveTouchstartShape.bind(this)
     };
     this._queue = [];
     this._scrollContainer = typeof window === undefined ? "" : window;
@@ -510,6 +513,9 @@ export default class Viz extends BaseClass {
       });
 
     }
+
+    // Attaches touchstart event listener to the BODY to hide the tooltip when the user touches any element without data
+    select("body").on("touchstart", touchstartBody.bind(this));
 
     return this;
 
