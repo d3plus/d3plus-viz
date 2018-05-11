@@ -10,9 +10,6 @@ import {legendLabel} from "../_drawLegend";
     @private
 */
 export default function(d) {
-  event.preventDefault();
-  event.stopPropagation();
-
   const position = event.touches ? [event.touches[0].clientX, event.touches[0].clientY] : [event.clientX, event.clientY];
 
   if (this._tooltip && d) {
