@@ -38,7 +38,6 @@ import inViewport from "./_inViewport";
 import load from "./data/load";
 
 import click from "./on/click";
-import clickAll from "./on/click.all";
 import mouseenter from "./on/mouseenter";
 import mouseleave from "./on/mouseleave";
 import mousemoveLegend from "./on/mousemove.legend";
@@ -138,13 +137,10 @@ export default class Viz extends BaseClass {
     this._noDataMessage = true;
     this._on = {
       "click": click.bind(this),
-      "click.all": clickAll.bind(this),
       "mouseenter": mouseenter.bind(this),
       "mouseleave": mouseleave.bind(this),
       "mousemove.shape": mousemoveShape.bind(this),
-      "mousemove.legend": mousemoveLegend.bind(this),
-      "touchstart.legend": mousemoveLegend.bind(this),
-      "touchstart.shape": mousemoveShape.bind(this)
+      "mousemove.legend": mousemoveLegend.bind(this)
     };
     this._queue = [];
     this._scrollContainer = typeof window === undefined ? "" : window;
