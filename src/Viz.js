@@ -305,14 +305,7 @@ export default class Viz extends BaseClass {
       dataNest.rollup(leaves => this._filteredData.push(merge(leaves, this._aggs))).entries(flatData);
 
     }
-  }
 
-  /**
-      @memberof Viz
-      @desc Called by render once all checks are passed.
-      @private
-  */
-  _draw() {
     if (this._noDataMessage && !this._filteredData.length) {
       this._messageClass.render({
         container: this._select.node().parentNode,
@@ -322,6 +315,14 @@ export default class Viz extends BaseClass {
       });
     }
 
+  }
+
+  /**
+      @memberof Viz
+      @desc Called by render once all checks are passed.
+      @private
+  */
+  _draw() {
     if (this.legendPosition() === "left" || this.legendPosition() === "right") drawLegend.bind(this)(this._filteredData);
     if (this.colorScalePosition() === "left" || this.colorScalePosition() === "right") drawColorScale.bind(this)(this._filteredData);
 
