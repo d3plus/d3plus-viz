@@ -18,6 +18,7 @@ import {date} from "d3plus-axis";
 import {colorAssign, colorContrast} from "d3plus-color";
 import {accessor, assign, BaseClass, constant, merge} from "d3plus-common";
 import {Select} from "d3plus-form";
+import {formatAbbreviate} from "d3plus-format";
 import {ColorScale, Legend} from "d3plus-legend";
 import {TextBox} from "d3plus-text";
 import {Timeline} from "d3plus-timeline";
@@ -207,6 +208,7 @@ export default class Viz extends BaseClass {
       resize: false,
       textAnchor: "middle"
     };
+    this._totalFormat = formatAbbreviate;
 
     this._zoom = false;
     this._zoomBehavior = zoom();
@@ -1106,6 +1108,16 @@ function value(d) {
   */
   totalConfig(_) {
     return arguments.length ? (this._totalConfig = assign(this._totalConfig, _), this) : this._totalConfig;
+  }
+
+  /**
+      @memberof Viz
+      @desc Formatter function for the value in the total bar.
+      @param {Function} *value*
+      @chainable
+  */
+  totalFormat(_) {
+    return arguments.length ? (this._totalFormat = _, this) : this._totalFormat;
   }
 
   /**
