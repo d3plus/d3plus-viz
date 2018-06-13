@@ -429,6 +429,11 @@ export default class Viz extends BaseClass {
       .text(this._svgTitle)
       .attr("id", `${this._uuid}-title`);
 
+    this._svgDesc = this._desc || "";
+    this._select.append("svg:desc")
+      .text(this._svgDesc)
+      .attr("id", `${this._uuid}-desc`);
+
     clearInterval(this._visiblePoll);
     clearTimeout(this._resizePoll);
     select(this._scrollContainer).on(`scroll.${this._uuid}`, null);
@@ -659,6 +664,16 @@ If *data* is not specified, this method returns the current primary data array, 
   */
   depth(_) {
     return arguments.length ? (this._depth = _, this) : this._depth;
+  }
+
+  /**
+      @memberof Viz
+      @desc If *value* is specified, sets the description accessor to the specified function or string and returns the current class instance.
+      @param {Function|String} [*value*]
+      @chainable
+  */
+  desc(_) {
+    return arguments.length ? (this._desc = typeof _ === "function" ? _ : constant(_), this) : this._desc;
   }
 
   /**
