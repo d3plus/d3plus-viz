@@ -422,6 +422,8 @@ export default class Viz extends BaseClass {
 
     this._select
       .transition(this._transition)
+      .attr("aria-labelledby", `${this._uuid}-title ${this._uuid}-desc`)
+      .attr("role", "img")
       .style("width", `${this._width}px`)
       .style("height", `${this._height}px`);
 
