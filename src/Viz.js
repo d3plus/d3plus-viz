@@ -176,7 +176,7 @@ export default class Viz extends BaseClass {
         const c = typeof this._shapeConfig.fill === "function" ? this._shapeConfig.fill(d, i) : this._shapeConfig.fill;
         return color(c).darker();
       },
-      strokeWidth: constant(0)
+      strokeWidth: constant(0),
     };
 
     this._timeline = true;
@@ -337,11 +337,9 @@ export default class Viz extends BaseClass {
     if (this.legendPosition() === "top" || this.legendPosition() === "bottom") drawLegend.bind(this)(this._filteredData);
     if (this.colorScalePosition() === "top" || this.colorScalePosition() === "bottom") drawColorScale.bind(this)(this._filteredData);
 
-    this._shapes = [];
-
     // Draws a container and zoomGroup to test functionality.
     // this._container = this._select.selectAll("svg.d3plus-viz").data([0]);
-    //
+    
     // this._container = this._container.enter().append("svg")
     //     .attr("class", "d3plus-viz")
     //     .attr("width", this._width - this._margin.left - this._margin.right)
@@ -350,13 +348,13 @@ export default class Viz extends BaseClass {
     //     .attr("y", this._margin.top)
     //     .style("background-color", "transparent")
     //   .merge(this._container);
-    //
+    
     // this._zoomGroup = this._container.selectAll("g.d3plus-viz-zoomGroup").data([0]);
     // const enter = this._zoomGroup.enter().append("g").attr("class", "d3plus-viz-zoomGroup")
     //   .merge(this._zoomGroup);
-    //
+    
     // this._zoomGroup = enter.merge(this._zoomGroup);
-    //
+    
     // this._shapes.push(new Rect()
     //   .config(this._shapeConfig)
     //   .data(this._filteredData)
@@ -373,7 +371,6 @@ export default class Viz extends BaseClass {
     //   .width(100)
     //   .height(100)
     //   .render());
-
   }
 
   /**
@@ -413,7 +410,6 @@ export default class Viz extends BaseClass {
         .style("height", `${this._height}px`);
 
       this.select(svg.node());
-
     }
 
     // Calculates the width and/or height of the Viz based on the this._select, if either has not been defined.
@@ -423,9 +419,15 @@ export default class Viz extends BaseClass {
       if (!this._height) this.height(h);
     }
 
-    this._select.transition(this._transition)
+    this._select
+      .transition(this._transition)
       .style("width", `${this._width}px`)
       .style("height", `${this._height}px`);
+
+    this._svgTitle = this._title || "D3plus Visualization";
+    this._select.append("svg:title")
+      .text(this._svgTitle)
+      .attr("id", `${this._uuid}-title`);
 
     clearInterval(this._visiblePoll);
     clearTimeout(this._resizePoll);
@@ -462,7 +464,6 @@ export default class Viz extends BaseClass {
 
     }
     else {
-
       const q = queue();
 
       if (this._loadingMessage) {
