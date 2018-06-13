@@ -185,6 +185,7 @@ export default class Viz extends BaseClass {
 
     this._titleClass = new TextBox();
     this._titleConfig = {
+      ariaHidden: true,
       fontSize: 12,
       padding: 5,
       resize: false,
