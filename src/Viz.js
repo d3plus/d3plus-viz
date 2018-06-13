@@ -98,6 +98,7 @@ export default class Viz extends BaseClass {
     this._groupBy = [accessor("id")];
     this._legend = true;
     this._legendConfig = {
+      ariaLabel: legendLabel.bind(this),
       label: legendLabel.bind(this),
       shapeConfig: {
         labelConfig: {
