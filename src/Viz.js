@@ -432,12 +432,17 @@ export default class Viz extends BaseClass {
       .style("height", `${this._height}px`);
 
     const svgTitle = this._title || "D3plus Visualization";
-    this._select.append("svg:title")
+    this._select.selectAll("svg")
+      .data([0])
+      .enter()
+      .append("title")
       .text(svgTitle)
       .attr("id", `${this._uuid}-title`);
 
-    this._select
-      .exit().append("svg:desc")
+    this._select.selectAll("svg")
+      .data([0])
+      .enter()
+      .append("desc")
       .text(this._svgDesc)
       .attr("id", `${this._uuid}-desc`);
 
