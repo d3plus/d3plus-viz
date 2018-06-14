@@ -86,6 +86,7 @@ export default class Viz extends BaseClass {
       selectStyle: Object.assign({margin: "5px"}, controlTest.selectStyle())
     };
     this._data = [];
+    this._svgDesc = "";
     this._detectResize = true;
     this._detectResizeDelay = 400;
     this._detectVisible = true;
@@ -98,9 +99,9 @@ export default class Viz extends BaseClass {
     this._groupBy = [accessor("id")];
     this._legend = true;
     this._legendConfig = {
-      ariaLabel: legendLabel.bind(this),
       label: legendLabel.bind(this),
       shapeConfig: {
+        ariaLabel: legendLabel.bind(this),
         labelConfig: {
           fontColor: undefined,
           fontResize: false,
@@ -149,7 +150,7 @@ export default class Viz extends BaseClass {
     this._shape = constant("Rect");
     this._shapes = [];
     this._shapeConfig = {
-      ariaLabel: this._drawLabel,
+      ariaLabel: (d, i) => this._drawLabel(d, i),
       fill: (d, i) => {
         while (d.__d3plus__ && d.data) {
           d = d.data;
@@ -430,13 +431,13 @@ export default class Viz extends BaseClass {
       .style("width", `${this._width}px`)
       .style("height", `${this._height}px`);
 
-    this._svgTitle = this._title || "D3plus Visualization";
+    const svgTitle = this._title || "D3plus Visualization";
     this._select.append("svg:title")
-      .text(this._svgTitle)
+      .text(svgTitle)
       .attr("id", `${this._uuid}-title`);
 
-    this._svgDesc = this._desc || "";
-    this._select.append("svg:desc")
+    this._select
+      .exit().append("svg:desc")
       .text(this._svgDesc)
       .attr("id", `${this._uuid}-desc`);
 
@@ -670,16 +671,6 @@ If *data* is not specified, this method returns the current primary data array, 
   */
   depth(_) {
     return arguments.length ? (this._depth = _, this) : this._depth;
-  }
-
-  /**
-      @memberof Viz
-      @desc If *value* is specified, sets the description accessor to the specified function or string and returns the current class instance.
-      @param {Function|String} [*value*]
-      @chainable
-  */
-  desc(_) {
-    return arguments.length ? (this._desc = typeof _ === "function" ? _ : constant(_), this) : this._desc;
   }
 
   /**
