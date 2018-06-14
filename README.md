@@ -692,4 +692,4 @@ This is a global function.
 
 
 
-###### <sub>Documentation generated on Tue, 05 Jun 2018 17:36:11 GMT</sub>
+###### <sub>Documentation generated on Thu, 14 Jun 2018 16:02:28 GMT</sub>
