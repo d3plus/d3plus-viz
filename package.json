@@ -55,7 +55,7 @@
   },
   "devDependencies": {
     "d3plus-dev": "^0.6.7",
-    "d3plus-shape": "^0.14.8"
+    "d3plus-shape": "^0.14.11"
   },
   "module": "es/index",
   "files": [
