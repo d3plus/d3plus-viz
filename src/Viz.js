@@ -427,15 +427,16 @@ export default class Viz extends BaseClass {
       .style("width", `${this._width}px`)
       .style("height", `${this._height}px`);
 
-    clearInterval(this._visiblePoll);
-    clearTimeout(this._resizePoll);
+    this._visiblePoll = clearInterval(this._visiblePoll);
+    this._resizePoll = clearTimeout(this._resizePoll);
+    this._scrollPoll = clearTimeout(this._scrollPoll);
     select(this._scrollContainer).on(`scroll.${this._uuid}`, null);
     select(this._scrollContainer).on(`resize.${this._uuid}`, null);
     if (this._detectVisible && this._select.style("visibility") === "hidden") {
 
       this._visiblePoll = setInterval(() => {
         if (this._select.style("visibility") !== "hidden") {
-          clearInterval(this._visiblePoll);
+          this._visiblePoll = clearInterval(this._visiblePoll);
           this.render(callback);
         }
       }, this._detectVisibleInterval);
@@ -445,7 +446,7 @@ export default class Viz extends BaseClass {
 
       this._visiblePoll = setInterval(() => {
         if (this._select.style("display") !== "none") {
-          clearInterval(this._visiblePoll);
+          this._visiblePoll = clearInterval(this._visiblePoll);
           this.render(callback);
         }
       }, this._detectVisibleInterval);
@@ -454,9 +455,14 @@ export default class Viz extends BaseClass {
     else if (this._detectVisible && !inViewport(this._select.node())) {
 
       select(this._scrollContainer).on(`scroll.${this._uuid}`, () => {
-        if (inViewport(this._select.node())) {
-          select(this._scrollContainer).on(`scroll.${this._uuid}`, null);
-          this.render(callback);
+        if (!this._scrollPoll) {
+          this._scrollPoll = setTimeout(() => {
+            if (inViewport(this._select.node())) {
+              select(this._scrollContainer).on(`scroll.${this._uuid}`, null);
+              this.render(callback);
+            }
+            this._scrollPoll = clearTimeout(this._scrollPoll);
+          }, this._detectVisibleInterval);
         }
       });
 
@@ -490,9 +496,9 @@ export default class Viz extends BaseClass {
 
         if (this._detectResize && (this._autoWidth || this._autoHeight)) {
           select(this._scrollContainer).on(`resize.${this._uuid}`, () => {
-            clearTimeout(this._resizePoll);
+            this._resizePoll = clearTimeout(this._resizePoll);
             this._resizePoll = setTimeout(() => {
-              clearTimeout(this._resizePoll);
+              this._resizePoll = clearTimeout(this._resizePoll);
               const display = this._select.style("display");
               this._select.style("display", "none");
               let [w, h] = getSize(this._select.node().parentNode);
