@@ -431,20 +431,16 @@ export default class Viz extends BaseClass {
       .style("width", `${this._width}px`)
       .style("height", `${this._height}px`);
 
-    const svgTitle = this._title || "D3plus Visualization";
-    this._select.selectAll("svg")
-      .data([0])
-      .enter()
-      .append("title")
-      .text(svgTitle)
-      .attr("id", `${this._uuid}-title`);
+    // Updates the <title> tag if already exists else creates a new <title> tag on this.select.
+    const svgTitleText = this._title || "D3plus Visualization";
+    const svgTitle = this._select.selectAll("title").data([0]);
+    const svgTitleEnter = svgTitle.enter().append("title");
+    svgTitle.merge(svgTitleEnter).text(svgTitleText).attr("id", `${this._uuid}-title`);
 
-    this._select.selectAll("svg")
-      .data([0])
-      .enter()
-      .append("desc")
-      .text(this._svgDesc)
-      .attr("id", `${this._uuid}-desc`);
+    // Updates the <desc> tag if already exists else creates a new <desc> tag on this.select.
+    const svgDesc = this._select.selectAll("desc").data([0]);
+    const svgDescEnter = svgDesc.enter().append("desc");
+    svgDesc.merge(svgDescEnter).text(this._svgDesc).attr("id", `${this._uuid}-desc`);
 
     clearInterval(this._visiblePoll);
     clearTimeout(this._resizePoll);
@@ -676,6 +672,16 @@ If *data* is not specified, this method returns the current primary data array, 
   */
   depth(_) {
     return arguments.length ? (this._depth = _, this) : this._depth;
+  }
+
+  /**
+      @memberof Viz
+      @desc If *value* is specified, sets the description accessor to the specified string and returns the current class instance.
+      @param {String} [*value*]
+      @chainable
+  */
+  desc(_) {
+    return arguments.length ? (this._svgDesc =  _ ) : this._svgDesc;
   }
 
   /**
