@@ -180,7 +180,7 @@ export default class Viz extends BaseClass {
         return color(c).darker();
       },
       role: "presentation",
-      strokeWidth: constant(0),
+      strokeWidth: constant(0)
     };
 
     this._timeline = true;
@@ -434,13 +434,13 @@ export default class Viz extends BaseClass {
     // Updates the <title> tag if already exists else creates a new <title> tag on this.select.
     const svgTitleText = this._title || "D3plus Visualization";
     const svgTitle = this._select.selectAll("title").data([0]);
-    const svgTitleEnter = svgTitle.enter().append("title");
-    svgTitle.merge(svgTitleEnter).text(svgTitleText).attr("id", `${this._uuid}-title`);
+    const svgTitleEnter = svgTitle.enter().append("title").attr("id", `${this._uuid}-title`);
+    svgTitle.merge(svgTitleEnter).text(svgTitleText);
 
     // Updates the <desc> tag if already exists else creates a new <desc> tag on this.select.
     const svgDesc = this._select.selectAll("desc").data([0]);
-    const svgDescEnter = svgDesc.enter().append("desc");
-    svgDesc.merge(svgDescEnter).text(this._svgDesc).attr("id", `${this._uuid}-desc`);
+    const svgDescEnter = svgDesc.enter().append("desc").attr("id", `${this._uuid}-desc`);
+    svgDesc.merge(svgDescEnter).text(this._svgDesc);
 
     clearInterval(this._visiblePoll);
     clearTimeout(this._resizePoll);
@@ -681,7 +681,7 @@ If *data* is not specified, this method returns the current primary data array, 
       @chainable
   */
   desc(_) {
-    return arguments.length ? (this._svgDesc =  _ ) : this._svgDesc;
+    return arguments.length ? (this._svgDesc =  _, this) : this._svgDesc;
   }
 
   /**
