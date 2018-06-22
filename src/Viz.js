@@ -342,6 +342,8 @@ export default class Viz extends BaseClass {
     if (this.legendPosition() === "top" || this.legendPosition() === "bottom") drawLegend.bind(this)(this._filteredData);
     if (this.colorScalePosition() === "top" || this.colorScalePosition() === "bottom") drawColorScale.bind(this)(this._filteredData);
 
+    this._shapes = [];
+
     // Draws a container and zoomGroup to test functionality.
     // this._container = this._select.selectAll("svg.d3plus-viz").data([0]);
     
