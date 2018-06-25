@@ -427,9 +427,9 @@ export default class Viz extends BaseClass {
     }
 
     this._select
-      .transition(this._transition)
       .attr("aria-labelledby", `${this._uuid}-title ${this._uuid}-desc`)
       .attr("role", "img")
+      .transition(this._transition)
       .style("width", `${this._width}px`)
       .style("height", `${this._height}px`);
 
@@ -444,8 +444,6 @@ export default class Viz extends BaseClass {
     const svgDescEnter = svgDesc.enter().append("desc").attr("id", `${this._uuid}-desc`);
     svgDesc.merge(svgDescEnter).text(this._svgDesc);
 
-    clearInterval(this._visiblePoll);
-    clearTimeout(this._resizePoll);
     this._visiblePoll = clearInterval(this._visiblePoll);
     this._resizePoll = clearTimeout(this._resizePoll);
     this._scrollPoll = clearTimeout(this._scrollPoll);
