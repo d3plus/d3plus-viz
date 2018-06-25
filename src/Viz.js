@@ -86,6 +86,7 @@ export default class Viz extends BaseClass {
       selectStyle: Object.assign({margin: "5px"}, controlTest.selectStyle())
     };
     this._data = [];
+    this._svgDesc = "";
     this._detectResize = true;
     this._detectResizeDelay = 400;
     this._detectVisible = true;
@@ -100,6 +101,7 @@ export default class Viz extends BaseClass {
     this._legendConfig = {
       label: legendLabel.bind(this),
       shapeConfig: {
+        ariaLabel: legendLabel.bind(this),
         labelConfig: {
           fontColor: undefined,
           fontResize: false,
@@ -148,6 +150,7 @@ export default class Viz extends BaseClass {
     this._shape = constant("Rect");
     this._shapes = [];
     this._shapeConfig = {
+      ariaLabel: (d, i) => this._drawLabel(d, i),
       fill: (d, i) => {
         while (d.__d3plus__ && d.data) {
           d = d.data;
@@ -176,6 +179,7 @@ export default class Viz extends BaseClass {
         const c = typeof this._shapeConfig.fill === "function" ? this._shapeConfig.fill(d, i) : this._shapeConfig.fill;
         return color(c).darker();
       },
+      role: "presentation",
       strokeWidth: constant(0)
     };
 
@@ -185,6 +189,7 @@ export default class Viz extends BaseClass {
 
     this._titleClass = new TextBox();
     this._titleConfig = {
+      ariaHidden: true,
       fontSize: 12,
       padding: 5,
       resize: false,
@@ -341,7 +346,7 @@ export default class Viz extends BaseClass {
 
     // Draws a container and zoomGroup to test functionality.
     // this._container = this._select.selectAll("svg.d3plus-viz").data([0]);
-    //
+    
     // this._container = this._container.enter().append("svg")
     //     .attr("class", "d3plus-viz")
     //     .attr("width", this._width - this._margin.left - this._margin.right)
@@ -350,13 +355,13 @@ export default class Viz extends BaseClass {
     //     .attr("y", this._margin.top)
     //     .style("background-color", "transparent")
     //   .merge(this._container);
-    //
+    
     // this._zoomGroup = this._container.selectAll("g.d3plus-viz-zoomGroup").data([0]);
     // const enter = this._zoomGroup.enter().append("g").attr("class", "d3plus-viz-zoomGroup")
     //   .merge(this._zoomGroup);
-    //
+    
     // this._zoomGroup = enter.merge(this._zoomGroup);
-    //
+    
     // this._shapes.push(new Rect()
     //   .config(this._shapeConfig)
     //   .data(this._filteredData)
@@ -373,7 +378,6 @@ export default class Viz extends BaseClass {
     //   .width(100)
     //   .height(100)
     //   .render());
-
   }
 
   /**
@@ -413,7 +417,6 @@ export default class Viz extends BaseClass {
         .style("height", `${this._height}px`);
 
       this.select(svg.node());
-
     }
 
     // Calculates the width and/or height of the Viz based on the this._select, if either has not been defined.
@@ -423,9 +426,23 @@ export default class Viz extends BaseClass {
       if (!this._height) this.height(h);
     }
 
-    this._select.transition(this._transition)
+    this._select
+      .attr("aria-labelledby", `${this._uuid}-title ${this._uuid}-desc`)
+      .attr("role", "img")
+      .transition(this._transition)
       .style("width", `${this._width}px`)
       .style("height", `${this._height}px`);
+
+    // Updates the <title> tag if already exists else creates a new <title> tag on this.select.
+    const svgTitleText = this._title || "D3plus Visualization";
+    const svgTitle = this._select.selectAll("title").data([0]);
+    const svgTitleEnter = svgTitle.enter().append("title").attr("id", `${this._uuid}-title`);
+    svgTitle.merge(svgTitleEnter).text(svgTitleText);
+
+    // Updates the <desc> tag if already exists else creates a new <desc> tag on this.select.
+    const svgDesc = this._select.selectAll("desc").data([0]);
+    const svgDescEnter = svgDesc.enter().append("desc").attr("id", `${this._uuid}-desc`);
+    svgDesc.merge(svgDescEnter).text(this._svgDesc);
 
     this._visiblePoll = clearInterval(this._visiblePoll);
     this._resizePoll = clearTimeout(this._resizePoll);
@@ -468,7 +485,6 @@ export default class Viz extends BaseClass {
 
     }
     else {
-
       const q = queue();
 
       if (this._loadingMessage) {
@@ -664,6 +680,16 @@ If *data* is not specified, this method returns the current primary data array, 
   */
   depth(_) {
     return arguments.length ? (this._depth = _, this) : this._depth;
+  }
+
+  /**
+      @memberof Viz
+      @desc If *value* is specified, sets the description accessor to the specified string and returns the current class instance.
+      @param {String} [*value*]
+      @chainable
+  */
+  desc(_) {
+    return arguments.length ? (this._svgDesc =  _, this) : this._svgDesc;
   }
 
   /**
