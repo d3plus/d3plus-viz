@@ -33,7 +33,6 @@ export default function(data = []) {
     });
 
     if (showColorScale) {
-
       this._colorScaleClass
         .align({bottom: "end", left: "start", right: "end", top: "start"}[position])
         .duration(this._duration)
