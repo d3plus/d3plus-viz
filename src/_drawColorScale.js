@@ -7,7 +7,6 @@ import {elem} from "d3plus-common";
     @private
 */
 export default function(data = []) {
-
   if (this._colorScale && data) {
 
     const position = this._colorScalePosition || "bottom";
@@ -33,19 +32,19 @@ export default function(data = []) {
       return c !== undefined && c !== null;
     });
 
-    this._colorScaleClass
-      .align({bottom: "end", left: "start", right: "end", top: "start"}[position])
-      .duration(this._duration)
-      .data(scaleData)
-      .height(wide ? this._height - (this._margin.bottom + this._margin.top) : this._height - (this._margin.bottom + this._margin.top + this._padding.bottom + this._padding.top))
-      .orient(position)
-      .select(scaleGroup)
-      .value(this._colorScale)
-      .width(wide ? this._width - (this._margin.left + this._margin.right + this._padding.left + this._padding.right) : this._width - (this._margin.left + this._margin.right))
-      .config(this._colorScaleConfig)
-      .render();
-
     if (showColorScale) {
+
+      this._colorScaleClass
+        .align({bottom: "end", left: "start", right: "end", top: "start"}[position])
+        .duration(this._duration)
+        .data(scaleData)
+        .height(wide ? this._height - (this._margin.bottom + this._margin.top) : this._height - (this._margin.bottom + this._margin.top + this._padding.bottom + this._padding.top))
+        .orient(position)
+        .select(scaleGroup)
+        .value(this._colorScale)
+        .width(wide ? this._width - (this._margin.left + this._margin.right + this._padding.left + this._padding.right) : this._width - (this._margin.left + this._margin.right))
+        .config(this._colorScaleConfig)
+        .render();
 
       const scaleBounds = this._colorScaleClass.outerBounds();
       if (this._colorScalePosition && !this._colorScaleConfig.select && scaleBounds.height) {
