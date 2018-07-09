@@ -701,4 +701,4 @@ This is a global function.
 
 
 
-###### <sub>Documentation generated on Mon, 25 Jun 2018 19:26:55 GMT</sub>
+###### <sub>Documentation generated on Mon, 09 Jul 2018 20:44:13 GMT</sub>
