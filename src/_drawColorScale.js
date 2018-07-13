@@ -7,6 +7,7 @@ import {elem} from "d3plus-common";
     @private
 */
 export default function(data = []) {
+
   if (this._colorScale && data) {
 
     const position = this._colorScalePosition || "bottom";
@@ -34,7 +35,7 @@ export default function(data = []) {
 
     if (showColorScale) {
       this._colorScaleClass
-        .align({bottom: "end", left: "start", right: "end", top: "start"}[position])
+        .align({bottom: "end", left: "start", right: "end", top: "start"}[position] || "bottom")
         .duration(this._duration)
         .data(scaleData)
         .height(wide ? this._height - (this._margin.bottom + this._margin.top) : this._height - (this._margin.bottom + this._margin.top + this._padding.bottom + this._padding.top))

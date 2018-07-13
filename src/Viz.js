@@ -330,8 +330,9 @@ export default class Viz extends BaseClass {
       @private
   */
   _draw() {
-    if (this.legendPosition() === "left" || this.legendPosition() === "right") drawLegend.bind(this)(this._filteredData);
-    if (this.colorScalePosition() === "left" || this.colorScalePosition() === "right") drawColorScale.bind(this)(this._filteredData);
+
+    if (this._legendPosition === "left" || this._legendPosition === "right") drawLegend.bind(this)(this._filteredData);
+    if (this._colorScalePosition === "left" || this._colorScalePosition === "right" || this._colorScalePosition === false) drawColorScale.bind(this)(this._filteredData);
 
     drawBack.bind(this)();
     drawTitle.bind(this)(this._filteredData);
@@ -339,14 +340,14 @@ export default class Viz extends BaseClass {
     drawTimeline.bind(this)(this._filteredData);
     drawControls.bind(this)(this._filteredData);
 
-    if (this.legendPosition() === "top" || this.legendPosition() === "bottom") drawLegend.bind(this)(this._filteredData);
-    if (this.colorScalePosition() === "top" || this.colorScalePosition() === "bottom") drawColorScale.bind(this)(this._filteredData);
+    if (this._legendPosition === "top" || this._legendPosition === "bottom") drawLegend.bind(this)(this._filteredData);
+    if (this._colorScalePosition === "top" || this._colorScalePosition === "bottom") drawColorScale.bind(this)(this._filteredData);
 
     this._shapes = [];
 
     // Draws a container and zoomGroup to test functionality.
     // this._container = this._select.selectAll("svg.d3plus-viz").data([0]);
-    
+
     // this._container = this._container.enter().append("svg")
     //     .attr("class", "d3plus-viz")
     //     .attr("width", this._width - this._margin.left - this._margin.right)
@@ -355,13 +356,13 @@ export default class Viz extends BaseClass {
     //     .attr("y", this._margin.top)
     //     .style("background-color", "transparent")
     //   .merge(this._container);
-    
+
     // this._zoomGroup = this._container.selectAll("g.d3plus-viz-zoomGroup").data([0]);
     // const enter = this._zoomGroup.enter().append("g").attr("class", "d3plus-viz-zoomGroup")
     //   .merge(this._zoomGroup);
-    
+
     // this._zoomGroup = enter.merge(this._zoomGroup);
-    
+
     // this._shapes.push(new Rect()
     //   .config(this._shapeConfig)
     //   .data(this._filteredData)
