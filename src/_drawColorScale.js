@@ -53,6 +53,9 @@ export default function(data = []) {
       }
 
     }
+    else {
+      this._colorScaleClass.config(this._colorScaleConfig);
+    }
 
   }
 
