@@ -185,7 +185,9 @@ export default class Viz extends BaseClass {
 
     this._timeline = true;
     this._timelineClass = new Timeline().align("end");
-    this._timelineConfig = {};
+    this._timelineConfig = {
+      brushing: false
+    };
 
     this._titleClass = new TextBox();
     this._titleConfig = {
