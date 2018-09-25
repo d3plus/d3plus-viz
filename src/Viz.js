@@ -1050,6 +1050,7 @@ function value(d) {
           };
         }
       }
+      this._timeFilter = false;
       return this;
     }
     else return this._time;
