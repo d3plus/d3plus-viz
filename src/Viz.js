@@ -668,6 +668,7 @@ If *data* is not specified, this method returns the current primary data array, 
       const d = [load.bind(this), _, f, "data"];
       if (prev) this._queue[this._queue.indexOf(prev)] = d;
       else this._queue.push(d);
+      this._total = false;
       return this;
     }
     return this._data;
