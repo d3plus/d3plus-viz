@@ -1131,7 +1131,13 @@ function value(d) {
       @chainable
   */
   total(_) {
-    return arguments.length ? (this._total = typeof _ === "function" ? _ : accessor(_), this) : this._total;
+    if (arguments.length) {
+      if (typeof _ === "function") this._total = _;
+      else if (_) this._total = accessor(_);
+      else this._total = false;
+      return this;
+    }
+    else return this._total;
   }
 
   /**
