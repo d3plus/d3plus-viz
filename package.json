@@ -40,7 +40,7 @@
     "d3plus-format": "^0.1.2",
     "d3plus-legend": "^0.8.18",
     "d3plus-text": "^0.9.33",
-    "d3plus-timeline": "^0.4.5",
+    "d3plus-timeline": "^0.4.6",
     "d3plus-tooltip": "^0.3.0",
     "lrucache": "^1.0.3"
   },
