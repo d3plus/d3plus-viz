@@ -10,9 +10,9 @@ import {elem} from "d3plus-common";
     @private
 */
 function setTimeFilter(s) {
+  if (!(s instanceof Array)) s = [s, s];
   if (JSON.stringify(s) !== JSON.stringify(this._timelineSelection)) {
     this._timelineSelection = s;
-    if (!(s instanceof Array)) s = [s, s];
     s = s.map(Number);
     this.timeFilter(d => {
       const ms = date(this._time(d)).getTime();
@@ -53,22 +53,19 @@ export default function(data = []) {
       .ticks(ticks.sort((a, b) => +a - +b))
       .width(this._width - (this._margin.left + this._margin.right + this._padding.left + this._padding.right));
 
-    if (this._timelineSelection === void 0) {
-
-      const dates = extent(data.map(this._time).map(date));
-      this._timelineSelection = dates[0] === dates[1] ? dates[0] : dates;
+    if (timeline.selection() === undefined) {
+      this._timelineSelection = extent(data, this._time);
       timeline.selection(this._timelineSelection);
-
     }
 
     const config = this._timelineConfig;
 
     timeline
       .config(config)
-      .on("brush", s => {
-        setTimeFilter.bind(this)(s);
-        if (config.on && config.on.brush) config.on.brush(s);
-      })
+      // .on("brush", s => {
+      //   setTimeFilter.bind(this)(s);
+      //   if (config.on && config.on.brush) config.on.brush(s);
+      // })
       .on("end", s => {
         setTimeFilter.bind(this)(s);
         if (config.on && config.on.end) config.on.end(s);

@@ -186,7 +186,8 @@ export default class Viz extends BaseClass {
     this._timeline = true;
     this._timelineClass = new Timeline().align("end");
     this._timelineConfig = {
-      brushing: false
+      brushing: false,
+      padding: 0
     };
 
     this._titleClass = new TextBox();
@@ -285,7 +286,7 @@ export default class Viz extends BaseClass {
     };
 
     // set the default timeFilter if it has not been specified
-    if (this._time && this._timeFilter === void 0 && this._data.length) {
+    if (this._time && !this._timeFilter && this._data.length) {
 
       const dates = this._data.map(this._time).map(date);
       const d = this._data[0], i = 0;
