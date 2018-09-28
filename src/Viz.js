@@ -187,7 +187,7 @@ export default class Viz extends BaseClass {
     this._timelineClass = new Timeline().align("end");
     this._timelineConfig = {
       brushing: false,
-      padding: 0
+      padding: 5
     };
 
     this._titleClass = new TextBox();
