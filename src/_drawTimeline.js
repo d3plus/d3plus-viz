@@ -54,7 +54,7 @@ export default function(data = []) {
       .width(this._width - (this._margin.left + this._margin.right + this._padding.left + this._padding.right));
 
     if (timeline.selection() === undefined) {
-      this._timelineSelection = extent(data, this._time);
+      this._timelineSelection = extent(data, this._time).map(date);
       timeline.selection(this._timelineSelection);
     }
 
