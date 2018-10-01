@@ -86,7 +86,6 @@ export default class Viz extends BaseClass {
       selectStyle: Object.assign({margin: "5px"}, controlTest.selectStyle())
     };
     this._data = [];
-    this._svgDesc = "";
     this._detectResize = true;
     this._detectResizeDelay = 400;
     this._detectVisible = true;
@@ -182,6 +181,8 @@ export default class Viz extends BaseClass {
       role: "presentation",
       strokeWidth: constant(0)
     };
+    this._svgDesc = "";
+    this._svgTitle = "";
 
     this._timeline = true;
     this._timelineClass = new Timeline().align("end");
@@ -438,10 +439,9 @@ export default class Viz extends BaseClass {
       .style("height", `${this._height}px`);
 
     // Updates the <title> tag if already exists else creates a new <title> tag on this.select.
-    const svgTitleText = this._title || "D3plus Visualization";
     const svgTitle = this._select.selectAll("title").data([0]);
     const svgTitleEnter = svgTitle.enter().append("title").attr("id", `${this._uuid}-title`);
-    svgTitle.merge(svgTitleEnter).text(svgTitleText);
+    svgTitle.merge(svgTitleEnter).text(this._svgTitle);
 
     // Updates the <desc> tag if already exists else creates a new <desc> tag on this.select.
     const svgDesc = this._select.selectAll("desc").data([0]);
@@ -1029,6 +1029,16 @@ function value(d) {
   */
   svgDesc(_) {
     return arguments.length ? (this._svgDesc = _, this) : this._svgDesc;
+  }
+
+  /**
+      @memberof Viz
+      @desc If *value* is specified, sets the title accessor to the specified string and returns the current class instance.
+      @param {String} [*value*]
+      @chainable
+  */
+  svgTitle(_) {
+    return arguments.length ? (this._svgTitle = _, this) : this._svgTitle;
   }
 
   /**
