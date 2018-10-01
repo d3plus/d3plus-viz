@@ -688,16 +688,6 @@ If *data* is not specified, this method returns the current primary data array, 
 
   /**
       @memberof Viz
-      @desc If *value* is specified, sets the description accessor to the specified string and returns the current class instance.
-      @param {String} [*value*]
-      @chainable
-  */
-  desc(_) {
-    return arguments.length ? (this._svgDesc =  _, this) : this._svgDesc;
-  }
-
-  /**
-      @memberof Viz
       @desc If the width and/or height of a Viz is not user-defined, it is determined by the size of it's parent element. When this method is set to `true`, the Viz will listen for the `window.onresize` event and adjust it's dimensions accordingly.
       @param {Boolean} *value* = true
       @chainable
@@ -1029,6 +1019,16 @@ function value(d) {
   */
   shapeConfig(_) {
     return arguments.length ? (this._shapeConfig = assign(this._shapeConfig, _), this) : this._shapeConfig;
+  }
+
+  /**
+      @memberof Viz
+      @desc If *value* is specified, sets the description accessor to the specified string and returns the current class instance.
+      @param {String} [*value*]
+      @chainable
+  */
+  svgDesc(_) {
+    return arguments.length ? (this._svgDesc = _, this) : this._svgDesc;
   }
 
   /**
