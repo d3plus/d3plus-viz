@@ -1,6 +1,6 @@
 {
   "name": "d3plus-viz",
-  "version": "0.12.3",
+  "version": "0.12.4",
   "description": "Abstract ES6 class that drives d3plus visualizations.",
   "main": "build/d3plus-viz.js",
   "jsnext:main": "es/index",
