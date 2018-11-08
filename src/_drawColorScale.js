@@ -2,11 +2,12 @@ import {elem} from "d3plus-common";
 
 /**
     @function _drawColorScale
-    @desc Renders the color scale if this._colorScale is not falsy.
-    @param {Array} data The filtered data array to be displayed.
+    @desc Renders the color scale if this._colorScale is not falsey.
     @private
 */
-export default function(data = []) {
+export default function() {
+
+  const data = this._data;
 
   if (this._colorScale && data) {
 
