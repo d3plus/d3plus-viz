@@ -7,7 +7,7 @@ import {configPrep, elem, merge} from "d3plus-common";
     @private
 */
 export function legendLabel(d, i) {
-  const l = this._drawLabel(d, i);
+  const l = this._drawLabel(d, i, true);
   return l instanceof Array ? l.join(", ") : l;
 }
 

@@ -275,7 +275,7 @@ export default class Viz extends BaseClass {
       .map(g => !d || d.__d3plus__ && !d.data ? undefined : g(d.__d3plus__ ? d.data : d, d.__d3plus__ ? d.i : i))
       .filter(g => g !== undefined && g !== null && g.constructor !== Array);
 
-    this._drawLabel = (d, i) => {
+    this._drawLabel = (d, i, legend = false) => {
       if (!d) return "";
       while (d.__d3plus__ && d.data) {
         d = d.data;
@@ -283,7 +283,7 @@ export default class Viz extends BaseClass {
       }
       if (this._label) return this._label(d, i);
       const l = that._ids(d, i).slice(0, this._drawDepth + 1);
-      return l[l.length - 1];
+      return legend ? l[0] : l[l.length - 1];
     };
 
     // set the default timeFilter if it has not been specified
