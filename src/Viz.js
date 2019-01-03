@@ -283,7 +283,7 @@ export default class Viz extends BaseClass {
       }
       if (this._label) return this._label(d, i);
       const l = that._ids(d, i).slice(0, this._drawDepth + 1);
-      return legend ? l[0] : l[l.length - 1];
+      return legend ? l[this._depth ? l.length - 1 : 0] : l[l.length - 1];
     };
 
     // set the default timeFilter if it has not been specified
