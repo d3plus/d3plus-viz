@@ -710,4 +710,4 @@ This is a global function.
 
 
 
-###### <sub>Documentation generated on Fri, 09 Nov 2018 14:01:33 GMT</sub>
+###### <sub>Documentation generated on Thu, 03 Jan 2019 22:42:30 GMT</sub>
