@@ -58,6 +58,7 @@
     "d3plus-shape": "^0.16.0"
   },
   "module": "es/index",
+  "sideEffects": false,
   "files": [
     "bin",
     "build/d3plus-viz.js",
