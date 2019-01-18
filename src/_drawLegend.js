@@ -60,7 +60,8 @@ export default function(data = []) {
       .entries(this._colorScale ? data.filter((d, i) => this._colorScale(d, i) === undefined) : data);
 
     const hidden = (d, i) => {
-      const id = this._id(d, i);
+      let id = this._id(d, i);
+      if (id instanceof Array) id = id[0];
       return this._hidden.includes(id) || this._solo.length && !this._solo.includes(id);
     };
 

@@ -1,3 +1,4 @@
+import {merge} from "d3-array";
 import {event} from "d3-selection";
 
 import {legendLabel} from "../_drawLegend";
@@ -11,10 +12,17 @@ import {legendLabel} from "../_drawLegend";
 */
 export default function(d, i) {
   const position = event.touches ? [event.touches[0].clientX, event.touches[0].clientY] : [event.clientX, event.clientY];
-  const dataLength = this._legendClass.data().length;
+  const dataLength = merge(this._legendClass.data().map((d, i) => {
+    let id = this._id(d, i);
+    if (!(id instanceof Array)) id = [id];
+    return id;
+  })).length;
 
   if (this._tooltip && d) {
-    const id = this._id(d, i);
+
+    let id = this._id(d, i);
+    if (id instanceof Array) id = id[0];
+
     this._select.style("cursor", "pointer");
     this._tooltipClass.data([d])
       .footer(this._solo.length && !this._solo.includes(id) ? "Click to Show<br />Shift+Click to Solo"
@@ -26,6 +34,7 @@ export default function(d, i) {
       .config(this._tooltipConfig)
       .config(this._legendTooltip)
       .render();
+
   }
 
 }
