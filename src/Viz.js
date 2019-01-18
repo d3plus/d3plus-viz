@@ -827,6 +827,26 @@ function value(d) {
 
   /**
       @memberof Viz
+      @desc Defines the color used for legend shapes when the corresponding grouping is hidden from display (by clicking on the legend).
+      @param {Function|String} [*value* = "#aaa"]
+      @chainable
+  */
+  hiddenColor(_) {
+    return arguments.length ? (this._hiddenColor = typeof _ === "function" ? _ : constant(_), this) : this._hiddenColor;
+  }
+
+  /**
+      @memberof Viz
+      @desc Defines the opacity used for legend labels when the corresponding grouping is hidden from display (by clicking on the legend).
+      @param {Function|Number} [*value* = 0.5]
+      @chainable
+  */
+  hiddenOpacity(_) {
+    return arguments.length ? (this._hiddenOpacity = typeof _ === "function" ? _ : constant(_), this) : this._hiddenOpacity;
+  }
+
+  /**
+      @memberof Viz
       @desc If *value* is specified, sets the hover method to the specified function and returns the current class instance.
       @param {Function} [*value*]
       @chainable
