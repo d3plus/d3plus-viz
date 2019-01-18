@@ -38,7 +38,8 @@ import getSize from "./_getSize";
 import inViewport from "./_inViewport";
 import load from "./data/load";
 
-import click from "./on/click";
+import clickShape from "./on/click.shape";
+import clickLegend from "./on/click.legend";
 import mouseenter from "./on/mouseenter";
 import mouseleave from "./on/mouseleave";
 import mousemoveLegend from "./on/mousemove.legend";
@@ -94,6 +95,9 @@ export default class Viz extends BaseClass {
     this._downloadConfig = {type: "png"};
     this._downloadPosition = "top";
     this._duration = 600;
+    this._hidden = [];
+    this._hiddenColor = constant("#aaa");
+    this._hiddenOpacity = constant(0.5);
     this._history = [];
     this._groupBy = [accessor("id")];
     this._legend = true;
@@ -138,7 +142,8 @@ export default class Viz extends BaseClass {
 
     this._noDataMessage = true;
     this._on = {
-      "click": click.bind(this),
+      "click.shape": clickShape.bind(this),
+      "click.legend": clickLegend.bind(this),
       "mouseenter": mouseenter.bind(this),
       "mouseleave": mouseleave.bind(this),
       "mousemove.shape": mousemoveShape.bind(this),
@@ -181,6 +186,7 @@ export default class Viz extends BaseClass {
       role: "presentation",
       strokeWidth: constant(0)
     };
+    this._solo = [];
     this._svgDesc = "";
     this._svgTitle = "";
 
@@ -303,17 +309,22 @@ export default class Viz extends BaseClass {
     }
 
     this._filteredData = [];
+    this._legendData = [];
     let flatData = [];
     if (this._data.length) {
 
       flatData = this._timeFilter ? this._data.filter(this._timeFilter) : this._data;
       if (this._filter) flatData = flatData.filter(this._filter);
-
       const dataNest = nest();
       for (let i = 0; i <= this._drawDepth; i++) dataNest.key(this._groupBy[i]);
       if (this._discrete && `_${this._discrete}` in this) dataNest.key(this[`_${this._discrete}`]);
       if (this._discrete && `_${this._discrete}2` in this) dataNest.key(this[`_${this._discrete}2`]);
-      dataNest.rollup(leaves => this._filteredData.push(merge(leaves, this._aggs))).entries(flatData);
+      dataNest.rollup(leaves => {
+        const d = merge(leaves, this._aggs);
+        const id = this._id(d);
+        if (!this._hidden.includes(id) && (!this._solo.length || this._solo.includes(id))) this._filteredData.push(d);
+        this._legendData.push(d);
+      }).entries(flatData);
 
     }
 
@@ -344,24 +355,13 @@ export default class Viz extends BaseClass {
     drawTimeline.bind(this)(this._filteredData);
     drawControls.bind(this)(this._filteredData);
 
-    if (this._legendPosition === "top" || this._legendPosition === "bottom") drawLegend.bind(this)(this._filteredData);
+    if (this._legendPosition === "top" || this._legendPosition === "bottom") drawLegend.bind(this)(this._legendData);
     if (this._colorScalePosition === "top" || this._colorScalePosition === "bottom") drawColorScale.bind(this)(this._filteredData);
 
     this._shapes = [];
 
     // Draws a container and zoomGroup to test functionality.
-    // this._container = this._select.selectAll("svg.d3plus-viz").data([0]);
-
-    // this._container = this._container.enter().append("svg")
-    //     .attr("class", "d3plus-viz")
-    //     .attr("width", this._width - this._margin.left - this._margin.right)
-    //     .attr("height", this._height - this._margin.top - this._margin.bottom)
-    //     .attr("x", this._margin.left)
-    //     .attr("y", this._margin.top)
-    //     .style("background-color", "transparent")
-    //   .merge(this._container);
-
-    // this._zoomGroup = this._container.selectAll("g.d3plus-viz-zoomGroup").data([0]);
+    // this._zoomGroup = this._select.selectAll("g.d3plus-viz-zoomGroup").data([0]);
     // const enter = this._zoomGroup.enter().append("g").attr("class", "d3plus-viz-zoomGroup")
     //   .merge(this._zoomGroup);
 
@@ -377,12 +377,13 @@ export default class Viz extends BaseClass {
     //     mouseleave: this._on.mouseleave,
     //     mousemove: this._on["mousemove.shape"]
     //   })
-    //   .id(d => d.group)
-    //   .x(d => d.value * 10 + 200)
-    //   .y(d => d.value * 10 + 200)
+    //   .id(this._id)
+    //   .x((d, i) => i * 100 + 200)
+    //   .y(200)
     //   .width(100)
     //   .height(100)
     //   .render());
+
   }
 
   /**
@@ -418,6 +419,7 @@ export default class Viz extends BaseClass {
       }
 
       svg
+        .attr("class", "d3plus-viz")
         .style("width", `${this._width}px`)
         .style("height", `${this._height}px`);
 

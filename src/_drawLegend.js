@@ -58,7 +58,12 @@ export default function(data = []) {
       .key(fill)
       .rollup(leaves => legendData.push(merge(leaves, this._aggs)))
       .entries(this._colorScale ? data.filter((d, i) => this._colorScale(d, i) === undefined) : data);
-    
+
+    const hidden = (d, i) => {
+      const id = this._id(d, i);
+      return this._hidden.includes(id) || this._solo.length && !this._solo.includes(id);
+    };
+
     this._legendClass
       .id(fill)
       .align(wide ? "center" : position)
@@ -71,7 +76,13 @@ export default function(data = []) {
       .width(wide ? this._width - (this._margin.left + this._margin.right + this._padding.left + this._padding.right) : this._width - (this._margin.left + this._margin.right))
       .shapeConfig(configPrep.bind(this)(this._shapeConfig, "legend"))
       .config(this._legendConfig)
-      .shapeConfig({fill: color, opacity})
+      .shapeConfig({
+        fill: (d, i) => hidden(d, i) ? this._hiddenColor(d, i) : color(d, i),
+        labelConfig: {
+          fontOpacity: (d, i) => hidden(d, i) ? this._hiddenOpacity(d, i) : 1
+        },
+        opacity
+      })
       .render();
 
     if (!this._legendConfig.select && legendBounds.height) {

@@ -9,13 +9,18 @@ import {legendLabel} from "../_drawLegend";
     @param {Object} [*config*] Optional configuration methods for the Tooltip class.
     @private
 */
-export default function(d) {
+export default function(d, i) {
   const position = event.touches ? [event.touches[0].clientX, event.touches[0].clientY] : [event.clientX, event.clientY];
+  const dataLength = this._legendClass.data().length;
 
   if (this._tooltip && d) {
+    const id = this._id(d, i);
     this._select.style("cursor", "pointer");
     this._tooltipClass.data([d])
-      .footer(this._drawDepth < this._groupBy.length - 1 ? "Click to Expand" : "")
+      .footer(this._solo.length && !this._solo.includes(id) ? "Click to Show<br />Shift+Click to Solo"
+      : this._solo.length === 1 && this._solo.includes(id) || this._hidden.length === dataLength - 1 ? "Click to Reset"
+      : this._solo.includes(id) ? "Click to Hide"
+      : `${this._hidden.includes(id) ? "Click to Show" : "Click to Hide"}<br />Shift+Click to Solo`)
       .title(this._legendConfig.label ? this._legendClass.label() : legendLabel.bind(this))
       .position(position)
       .config(this._tooltipConfig)
