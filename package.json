@@ -32,16 +32,16 @@
     "d3-selection": "^1.3.2",
     "d3-transition": "^1.1.3",
     "d3-zoom": "^1.7.3",
-    "d3plus-axis": "^0.3.50",
-    "d3plus-color": "^0.6.2",
-    "d3plus-common": "^0.6.43",
-    "d3plus-export": "^0.3.4",
+    "d3plus-axis": "^0.3.53",
+    "d3plus-color": "^0.6.3",
+    "d3plus-common": "^0.6.44",
+    "d3plus-export": "^0.3.6",
     "d3plus-form": "^0.2.6",
-    "d3plus-format": "^0.1.2",
-    "d3plus-legend": "^0.8.18",
-    "d3plus-text": "^0.9.33",
-    "d3plus-timeline": "^0.4.6",
-    "d3plus-tooltip": "^0.3.0",
+    "d3plus-format": "^0.1.4",
+    "d3plus-legend": "^0.8.19",
+    "d3plus-text": "^0.9.34",
+    "d3plus-timeline": "^0.4.8",
+    "d3plus-tooltip": "^0.3.3",
     "lrucache": "^1.0.3"
   },
   "scripts": {
@@ -54,8 +54,8 @@
     "test": "d3plus-test"
   },
   "devDependencies": {
-    "d3plus-dev": "^0.6.9",
-    "d3plus-shape": "^0.16.0"
+    "d3plus-dev": "^0.6.13",
+    "d3plus-shape": "^0.16.2"
   },
   "module": "es/index",
   "sideEffects": false,
