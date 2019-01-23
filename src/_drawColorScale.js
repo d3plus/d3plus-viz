@@ -1,3 +1,4 @@
+import {min} from "d3-array";
 import {elem} from "d3plus-common";
 
 /**
@@ -12,9 +13,21 @@ export default function() {
   const position = this._colorScalePosition || "bottom";
   const wide = ["top", "bottom"].includes(position);
 
+  const availableWidth = this._width - (this._margin.left + this._margin.right + this._padding.left + this._padding.right);
+
+  const width = wide
+    ? min([this._colorScaleMaxSize, availableWidth])
+    : this._width - (this._margin.left + this._margin.right);
+
+  const availableHeight = this._height - (this._margin.bottom + this._margin.top + this._padding.bottom + this._padding.top);
+
+  const height = !wide
+    ? min([this._colorScaleMaxSize, availableHeight])
+    : this._height - (this._margin.bottom + this._margin.top);
+
   const transform = {
     opacity: this._colorScalePosition ? 1 : 0,
-    transform: `translate(${wide ? this._margin.left + this._padding.left : this._margin.left}, ${wide ? this._margin.top : this._margin.top + this._padding.top})`
+    transform: `translate(${wide ? this._margin.left + this._padding.left + (availableWidth - width) / 2 : this._margin.left}, ${wide ? this._margin.top : this._margin.top + this._padding.top + (availableHeight - height) / 2})`
   };
 
   const showColorScale = this._colorScale && data && data.length > 1;
@@ -37,11 +50,11 @@ export default function() {
       .align({bottom: "end", left: "start", right: "end", top: "start"}[position] || "bottom")
       .duration(this._duration)
       .data(scaleData)
-      .height(wide ? this._height - (this._margin.bottom + this._margin.top) : this._height - (this._margin.bottom + this._margin.top + this._padding.bottom + this._padding.top))
+      .height(height)
       .orient(position)
       .select(scaleGroup)
       .value(this._colorScale)
-      .width(wide ? this._width - (this._margin.left + this._margin.right + this._padding.left + this._padding.right) : this._width - (this._margin.left + this._margin.right))
+      .width(width)
       .config(this._colorScaleConfig)
       .render();
 
@@ -56,6 +69,6 @@ export default function() {
     this._colorScaleClass.config(this._colorScaleConfig);
   }
 
-  
+
 
 }

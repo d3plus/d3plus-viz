@@ -81,6 +81,7 @@ export default class Viz extends BaseClass {
     this._colorScaleClass = new ColorScale();
     this._colorScaleConfig = {};
     this._colorScalePosition = "bottom";
+    this._colorScaleMaxSize = 600;
     const controlTest = new Select();
     this._controlCache = {};
     this._controlConfig = {
@@ -634,6 +635,16 @@ export default class Viz extends BaseClass {
   */
   colorScalePosition(_) {
     return arguments.length ? (this._colorScalePosition = _, this) : this._colorScalePosition;
+  }
+
+  /**
+      @memberof Viz
+      @desc Sets the maximum pixel size for drawing the color scale: width for horizontal scales and height for vertical scales.
+      @param {Number} [*value* = 600]
+      @chainable
+  */
+  colorScaleMaxSize(_) {
+    return arguments.length ? (this._colorScaleMaxSize = _, this) : this._colorScaleMaxSize;
   }
 
   /**
