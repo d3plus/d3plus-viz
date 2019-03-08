@@ -1,6 +1,6 @@
 {
   "name": "d3plus-viz",
-  "version": "0.12.10",
+  "version": "0.12.11",
   "description": "Abstract ES6 class that drives d3plus visualizations.",
   "main": "build/d3plus-viz.js",
   "jsnext:main": "es/index",
@@ -32,7 +32,7 @@
     "d3-selection": "^1.3.2",
     "d3-transition": "^1.1.3",
     "d3-zoom": "^1.7.3",
-    "d3plus-axis": "^0.3.53",
+    "d3plus-axis": "^0.4.3",
     "d3plus-color": "^0.6.3",
     "d3plus-common": "^0.6.44",
     "d3plus-export": "^0.3.6",
