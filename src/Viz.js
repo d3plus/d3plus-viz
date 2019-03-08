@@ -210,7 +210,6 @@ export default class Viz extends BaseClass {
     this._tooltip = true;
     this._tooltipClass = new Tooltip();
     this._tooltipConfig = {
-      duration: 50,
       pointerEvents: "none",
       titleStyle: {
         "max-width": "200px"
