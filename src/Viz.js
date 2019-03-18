@@ -401,14 +401,18 @@ export default class Viz extends BaseClass {
 
     // Appends a fullscreen SVG to the BODY if a container has not been provided through .select().
     if (this._select === void 0 || this._select.node().tagName.toLowerCase() !== "svg") {
-
       const parent = this._select === void 0 ? select("body").append("div") : this._select;
-      let [w, h] = getSize(parent.node());
       const svg = parent.append("svg");
-      w -= parseFloat(svg.style("border-left-width"), 10);
-      w -= parseFloat(svg.style("border-right-width"), 10);
-      h -= parseFloat(svg.style("border-top-width"), 10);
-      h -= parseFloat(svg.style("border-bottom-width"), 10);
+      this.select(svg.node());
+    }
+
+    // Calculates the width and/or height of the Viz based on the this._select, if either has not been defined.
+    if ((!this._width || !this._height) && (!this._detectVisible || inViewport(this._select.node()))) {
+      let [w, h] = getSize(this._select.node().parentNode);
+      w -= parseFloat(this._select.style("border-left-width"), 10);
+      w -= parseFloat(this._select.style("border-right-width"), 10);
+      h -= parseFloat(this._select.style("border-top-width"), 10);
+      h -= parseFloat(this._select.style("border-bottom-width"), 10);
       if (!this._width) {
         this._autoWidth = true;
         this.width(w);
@@ -417,23 +421,12 @@ export default class Viz extends BaseClass {
         this._autoHeight = true;
         this.height(h);
       }
-
-      svg
-        .attr("class", "d3plus-viz")
-        .style("width", `${this._width}px`)
-        .style("height", `${this._height}px`);
-
-      this.select(svg.node());
-    }
-
-    // Calculates the width and/or height of the Viz based on the this._select, if either has not been defined.
-    if (!this._width || !this._height) {
-      const [w, h] = getSize(this._select.node());
-      if (!this._width) this.width(w);
-      if (!this._height) this.height(h);
     }
 
     this._select
+      .attr("class", "d3plus-viz")
+      .style("width", `${this._width}px`)
+      .style("height", `${this._height}px`)
       .attr("aria-labelledby", `${this._uuid}-title ${this._uuid}-desc`)
       .attr("role", "img")
       .transition(this._transition)
