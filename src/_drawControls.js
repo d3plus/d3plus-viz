@@ -48,8 +48,8 @@ export default function() {
       width: wide ? this._width - (this._margin.left + this._margin.right + this._padding.left + this._padding.right) : this._width - (this._margin.left + this._margin.right)
     };
 
-    transform.x = (wide ? this._margin.left + this._padding.left : this._margin.left) + (area === "right" ? transform.width : 0);
-    transform.y = (wide ? this._margin.top : this._margin.top + this._padding.top)  + (area === "bottom" ? transform.height : 0);
+    transform.x = (wide ? this._margin.left + this._padding.left : this._margin.left) + (area === "right" ? this._width - this._margin.bottom : 0);
+    transform.y = (wide ? this._margin.top : this._margin.top + this._padding.top) + (area === "bottom" ? this._height - this._margin.bottom : 0);
 
     const foreign = elem(`foreignObject.d3plus-viz-controls-${area}`, {
       condition: controls.length,
@@ -109,9 +109,12 @@ export default function() {
 
       const bounds = container.node().getBoundingClientRect();
 
-      foreign.transition(this._transition)
+      foreign
+        .transition(this._transition)
         .attr("x", transform.x - (area === "right" ? bounds.width : 0))
-        .attr("y", transform.y - (area === "bottom" ? bounds.height : 0));
+        .attr("y", transform.y - (area === "bottom" ? bounds.height : 0))
+        .attr("height", wide ? bounds.height : transform.height)
+        .attr("width", wide ? transform.width : bounds.width);
 
       this._margin[area] += ["top", "bottom"].includes(area) ? bounds.height : bounds.width;
 
