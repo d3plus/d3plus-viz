@@ -3,7 +3,7 @@
     @see https://github.com/d3plus/d3plus-common#BaseClass
 */
 
-import {max, merge as arrayMerge} from "d3-array";
+import {max, merge as arrayMerge, range} from "d3-array";
 import {brush} from "d3-brush";
 import {color} from "d3-color";
 import {nest} from "d3-collection";
@@ -516,6 +516,29 @@ export default class Viz extends BaseClass {
       });
       this._queue = [];
       q.awaitAll(() => {
+
+        const columns = this._data instanceof Array && this._data.length > 0 ? Object.keys(this._data[0]) : [];
+        const svgTable = this._select.selectAll("g.data-table")
+          .data(this._data instanceof Array && this._data.length ? [0] : []);
+        const svgTableEnter = svgTable.enter().append("g")
+          .attr("class", "data-table")
+          .attr("role", "table");
+        svgTable.exit().remove();
+        const rows = svgTable.merge(svgTableEnter)
+          .selectAll("text")
+          .data(this._data instanceof Array ? range(0, this._data.length + 1) : []);
+        rows.exit().remove();
+        const cells = rows.merge(rows.enter().append("text").attr("role", "row"))
+          .selectAll("tspan")
+          .data((d, i) => columns.map(c => ({
+            role: i ? "cell" : "columnheader",
+            text: i ? this._data[i - 1][c] : c
+          })));
+        cells.exit().remove();
+        cells.merge(cells.enter().append("tspan"))
+          .attr("role", d => d.role)
+          .attr("dy", "-1000px")
+          .html(d => d.text);
 
         this._preDraw();
         this._draw(callback);
