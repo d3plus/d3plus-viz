@@ -406,32 +406,46 @@ export default class Viz extends BaseClass {
       this.select(svg.node());
     }
 
-    // Calculates the width and/or height of the Viz based on the this._select, if either has not been defined.
-    if ((!this._width || !this._height) && (!this._detectVisible || inViewport(this._select.node()))) {
+    /** detects width and height and sets SVG properties */
+    function setSVGSize() {
+
+      const display = this._select.style("display");
+      this._select.style("display", "none");
+
       let [w, h] = getSize(this._select.node().parentNode);
       w -= parseFloat(this._select.style("border-left-width"), 10);
       w -= parseFloat(this._select.style("border-right-width"), 10);
       h -= parseFloat(this._select.style("border-top-width"), 10);
       h -= parseFloat(this._select.style("border-bottom-width"), 10);
-      if (!this._width) {
-        this._autoWidth = true;
+      this._select.style("display", display);
+
+      if (this._autoWidth) {
         this.width(w);
+        this._select.style("width", `${this._width}px`).attr("width", `${this._width}px`);
       }
-      if (!this._height) {
-        this._autoHeight = true;
+      if (this._autoHeight) {
         this.height(h);
+        this._select.style("height", `${this._height}px`).attr("height", `${this._height}px`);
       }
+
+    }
+
+    // Calculates the width and/or height of the Viz based on the this._select, if either has not been defined.
+    if ((!this._width || !this._height) && (!this._detectVisible || inViewport(this._select.node()))) {
+      this._autoWidth = this._width === undefined;
+      this._autoHeight = this._height === undefined;
+      setSVGSize.bind(this)();
     }
 
     this._select
-      .attr("class", "d3plus-viz")
-      .style("width", `${this._width}px`)
-      .style("height", `${this._height}px`)
-      .attr("aria-labelledby", `${this._uuid}-title ${this._uuid}-desc`)
-      .attr("role", "img")
-      .transition(this._transition)
-      .style("width", `${this._width}px`)
-      .style("height", `${this._height}px`);
+        .attr("class", "d3plus-viz")
+        .attr("aria-labelledby", `${this._uuid}-title ${this._uuid}-desc`)
+        .attr("role", "img")
+      .transition(transition)
+        .style("width", this._width !== undefined ? `${this._width}px` : undefined)
+        .style("height", this._height !== undefined ? `${this._height}px` : undefined)
+        .attr("width", this._width !== undefined ? `${this._width}px` : undefined)
+        .attr("height", this._height !== undefined ? `${this._height}px` : undefined);
 
     // Updates the <title> tag if already exists else creates a new <title> tag on this.select.
     const svgTitle = this._select.selectAll("title").data([0]);
@@ -514,16 +528,7 @@ export default class Viz extends BaseClass {
             this._resizePoll = clearTimeout(this._resizePoll);
             this._resizePoll = setTimeout(() => {
               this._resizePoll = clearTimeout(this._resizePoll);
-              const display = this._select.style("display");
-              this._select.style("display", "none");
-              let [w, h] = getSize(this._select.node().parentNode);
-              w -= parseFloat(this._select.style("border-left-width"), 10);
-              w -= parseFloat(this._select.style("border-right-width"), 10);
-              h -= parseFloat(this._select.style("border-top-width"), 10);
-              h -= parseFloat(this._select.style("border-bottom-width"), 10);
-              this._select.style("display", display);
-              if (this._autoWidth) this.width(w);
-              if (this._autoHeight) this.height(h);
+              setSVGSize.bind(this)();
               this.render(callback);
             }, this._detectResizeDelay);
           });
