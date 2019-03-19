@@ -65,6 +65,7 @@ export default class Viz extends BaseClass {
     super();
 
     this._aggs = {};
+    this._ariaHidden = false;
     this._backClass = new TextBox()
       .on("click", () => {
         if (this._history.length) this.config(this._history.pop()).render();
@@ -439,6 +440,7 @@ export default class Viz extends BaseClass {
 
     this._select
         .attr("class", "d3plus-viz")
+        .attr("aria-hidden", this._ariaHidden)
         .attr("aria-labelledby", `${this._uuid}-title ${this._uuid}-desc`)
         .attr("role", "img")
       .transition(transition)
@@ -519,7 +521,7 @@ export default class Viz extends BaseClass {
 
         const columns = this._data instanceof Array && this._data.length > 0 ? Object.keys(this._data[0]) : [];
         const svgTable = this._select.selectAll("g.data-table")
-          .data(this._data instanceof Array && this._data.length ? [0] : []);
+          .data(!this._ariaHidden && this._data instanceof Array && this._data.length ? [0] : []);
         const svgTableEnter = svgTable.enter().append("g")
           .attr("class", "data-table")
           .attr("role", "table");
@@ -595,6 +597,16 @@ export default class Viz extends BaseClass {
   */
   aggs(_) {
     return arguments.length ? (this._aggs = assign(this._aggs, _), this) : this._aggs;
+  }
+
+  /**
+      @memberof Viz
+      @desc Sets the "aria-hidden" attribute of the containing SVG element. The default value is "false", but it you need to hide the SVG from screen readers set this property to "true".
+      @param {Boolean} [*value* = false]
+      @chainable
+  */
+  ariaHidden(_) {
+    return arguments.length ? (this._ariaHidden = _, this) : this._ariaHidden;
   }
 
   /**
