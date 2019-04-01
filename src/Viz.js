@@ -224,7 +224,7 @@ export default class Viz extends BaseClass {
       resize: false,
       textAnchor: "middle"
     };
-    this._totalFormat = formatAbbreviate;
+    this._totalFormat = d => `Total: ${formatAbbreviate(d)}`;
 
     this._zoom = false;
     this._zoomBehavior = zoom();

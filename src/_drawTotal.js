@@ -25,7 +25,7 @@ export default function(data = []) {
   const visible = typeof total === "number";
 
   this._totalClass
-    .data(visible ? [{text: `Total: ${this._totalFormat(total)}`}] : [])
+    .data(visible ? [{text: this._totalFormat(total)}] : [])
     .select(group)
     .width(this._width - (this._margin.left + this._margin.right + this._padding.left + this._padding.right))
     .config(this._totalConfig)
