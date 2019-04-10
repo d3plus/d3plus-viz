@@ -23,19 +23,29 @@ export default function(d, i) {
   })).length;
 
   if (event.shiftKey) {
-    if (soloIndex < 0) {
-      this._solo = id;
+
+    if (hiddenIndex < 0 && !this._solo.length) {
+      this._hidden = this._hidden.concat(id);
+      if (this._solo.length === dataLength) this._solo = [];
+      if (this._hidden.length === dataLength) this._hidden = [];
+      this.render();
+    }
+    else if (soloIndex >= 0) {
+      this._solo = [];
       this._hidden = [];
       this.render();
     }
+
   }
   else {
-    if (soloIndex >= 0) this._solo.splice(soloIndex, id.length);
-    else if (this._solo.length) this._solo = this._solo.concat(id);
-    else if (hiddenIndex >= 0) this._hidden.splice(hiddenIndex, id.length);
-    else this._hidden = this._hidden.concat(id);
-    if (this._solo.length === dataLength) this._solo = [];
-    if (this._hidden.length === dataLength) this._hidden = [];
+    if (soloIndex < 0 && this._hidden.length < dataLength - 1) {
+      this._solo = id;
+      this._hidden = [];
+    }
+    else {
+      this._solo = [];
+      this._hidden = [];
+    }
     this.render();
   }
 
