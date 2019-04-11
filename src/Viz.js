@@ -27,6 +27,7 @@ import {Tooltip} from "d3plus-tooltip";
 
 import Message from "./Message";
 
+import applyThreshold from "./_threshold";
 import drawBack from "./_drawBack";
 import drawColorScale from "./_drawColorScale";
 import drawControls from "./_drawControls";
@@ -202,6 +203,9 @@ export default class Viz extends BaseClass {
       padding: 5
     };
 
+    this._threshold = 0.0001;
+    this._thresholdKey = undefined;
+
     this._titleClass = new TextBox();
     this._titleConfig = {
       ariaHidden: true,
@@ -323,6 +327,12 @@ export default class Viz extends BaseClass {
       for (let i = 0; i <= this._drawDepth; i++) dataNest.key(this._groupBy[i]);
       if (this._discrete && `_${this._discrete}` in this) dataNest.key(this[`_${this._discrete}`]);
       if (this._discrete && `_${this._discrete}2` in this) dataNest.key(this[`_${this._discrete}2`]);
+
+      if (this._threshold && this._thresholdKey) {
+        const thresholdValue = this._threshold(flatData);
+        flatData = applyThreshold(flatData, thresholdValue, this._thresholdKey, this._aggs);
+      }
+
       dataNest.rollup(leaves => {
         const d = merge(leaves, this._aggs);
         const id = this._id(d);
@@ -1133,6 +1143,38 @@ function value(d) {
   */
   svgTitle(_) {
     return arguments.length ? (this._svgTitle = _, this) : this._svgTitle;
+  }
+
+  /**
+      @memberof Viz
+      @desc If *value* is specified, sets the threshold for buckets to the specified function or string, and returns the current class instance.
+      @param {Function|Number} [value] 
+      @chainable
+   */
+  threshold(_) {
+    if (arguments.length) {
+      if (typeof _ === "function") {
+        this._threshold = _;
+      }
+      else if (isFinite(_) && !isNaN(_)) {
+        this._threshold = constant(_ * 1);
+      }
+      return this;
+    }
+    else return this._threshold;
+  }
+
+  thresholdKey(key) {
+    if (arguments.length) {
+      if (typeof key === "function") {
+        this._thresholdKey = key;
+      }
+      else {
+        this._thresholdKey = accessor(key);
+      }
+      return this;
+    }
+    else return this._thresholdKey;
   }
 
   /**
