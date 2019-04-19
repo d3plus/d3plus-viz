@@ -8,12 +8,16 @@ import {min} from "d3-array";
 */
 export default function(d, i) {
 
-  const filterId = this._ids(d, i);
+  if (this._shapeConfig.hoverOpacity !== 1) {
 
-  this.hover((h, x) => {
-    const ids = this._ids(h, x);
-    const index = min([ids.length - 1, filterId.length - 1, this._drawDepth]);
-    return filterId.slice(0, index + 1).join("_") === ids.slice(0, index + 1).join("_");
-  });
+    const filterId = this._ids(d, i);
+
+    this.hover((h, x) => {
+      const ids = this._ids(h, x);
+      const index = min([ids.length - 1, filterId.length - 1, this._drawDepth]);
+      return filterId.slice(0, index + 1).join("_") === ids.slice(0, index + 1).join("_");
+    });
+
+  }
 
 }

@@ -4,9 +4,16 @@
     @param {Number} *i* The index of the data object being interacted with.
     @private
 */
-export default function() {
+export default function(d, i) {
 
-  this.hover(false);
+  if (this._shapeConfig.hoverOpacity !== 1) {
+    setTimeout(() => {
+      if (this._hover ? this._hover(d, i) : true) {
+        this.hover(false);
+      }
+    }, 100);
+  }
+
   this._select.style("cursor", "auto");
   if (this._tooltip) this._tooltipClass.data([]).render();
 
