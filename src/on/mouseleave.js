@@ -6,15 +6,13 @@
 */
 export default function(d, i) {
 
-  if (this._shapeConfig.hoverOpacity !== 1) {
-    setTimeout(() => {
-      if (this._hover ? this._hover(d, i) : true) {
-        this.hover(false);
-      }
-    }, 100);
-  }
+  setTimeout(() => {
+    if (this._shapeConfig.hoverOpacity !== 1 && this._hover ? this._hover(d, i) : true) {
+      this.hover(false);
+    }
+    if (this._tooltip && this._tooltipClass.data()[0] === d) this._tooltipClass.data([]).render();
+  }, 50);
 
   this._select.style("cursor", "auto");
-  if (this._tooltip) this._tooltipClass.data([]).render();
 
 }
