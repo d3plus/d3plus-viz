@@ -89,7 +89,7 @@ export default class Viz extends BaseClass {
       selectStyle: Object.assign({margin: "5px"}, controlTest.selectStyle())
     };
     this._data = [];
-    this._dataCutoff = 50;
+    this._dataCutoff = 100;
     this._detectResize = true;
     this._detectResizeDelay = 400;
     this._detectVisible = true;
