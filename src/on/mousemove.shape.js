@@ -8,10 +8,10 @@ import {event} from "d3-selection";
     @private
 */
 export default function(d) {
-  const position = event.touches ? [event.touches[0].clientX, event.touches[0].clientY] : [event.clientX, event.clientY];
 
   if (this._tooltip && d) {
     this._select.style("cursor", "pointer");
+    const position = event.touches ? [event.touches[0].clientX, event.touches[0].clientY] : [event.clientX, event.clientY];
     this._tooltipClass.data([d])
       .footer(this._drawDepth < this._groupBy.length - 1 ? "Click to Expand" : "")
       .title(this._drawLabel)
