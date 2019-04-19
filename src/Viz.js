@@ -65,7 +65,7 @@ export default class Viz extends BaseClass {
     super();
 
     this._aggs = {};
-    this._ariaHidden = false;
+    this._ariaHidden = true;
     this._backClass = new TextBox()
       .on("click", () => {
         if (this._history.length) this.config(this._history.pop()).render();
@@ -629,7 +629,7 @@ export default class Viz extends BaseClass {
   /**
       @memberof Viz
       @desc Sets the "aria-hidden" attribute of the containing SVG element. The default value is "false", but it you need to hide the SVG from screen readers set this property to "true".
-      @param {Boolean} [*value* = false]
+      @param {Boolean} [*value* = true]
       @chainable
   */
   ariaHidden(_) {
