@@ -89,6 +89,7 @@ export default class Viz extends BaseClass {
       selectStyle: Object.assign({margin: "5px"}, controlTest.selectStyle())
     };
     this._data = [];
+    this._dataCutoff = 50;
     this._detectResize = true;
     this._detectResizeDelay = 400;
     this._detectVisible = true;
@@ -329,6 +330,15 @@ export default class Viz extends BaseClass {
 
     }
 
+    // overrides the hoverOpacity of shapes if data is larger than cutoff
+    if (this._filteredData.length > this._dataCutoff) {
+      if (this._userHover === undefined) this._userHover = this._shapeConfig.hoverOpacity || 0.5;
+      this._shapeConfig.hoverOpacity = 1;
+    }
+    else if (this._userHover !== undefined) {
+      this._shapeConfig.hoverOpacity = this._userHover;
+    }
+
     if (this._noDataMessage && !this._filteredData.length) {
       this._messageClass.render({
         container: this._select.node().parentNode,
@@ -384,6 +394,7 @@ export default class Viz extends BaseClass {
 
     // this._zoomGroup = enter.merge(this._zoomGroup);
 
+    // const testWidth = 5;
     // this._shapes.push(new Rect()
     //   .config(this._shapeConfig)
     //   .data(this._filteredData)
@@ -395,9 +406,9 @@ export default class Viz extends BaseClass {
     //     mousemove: this._on["mousemove.shape"]
     //   })
     //   .id(this._id)
-    //   .x((d, i) => i * 100 + 200)
+    //   .x((d, i) => i * testWidth)
     //   .y(200)
-    //   .width(100)
+    //   .width(testWidth)
     //   .height(100)
     //   .render());
 
