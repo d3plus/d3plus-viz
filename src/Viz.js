@@ -27,7 +27,6 @@ import {Tooltip} from "d3plus-tooltip";
 
 import Message from "./Message";
 
-import applyThreshold from "./_threshold";
 import drawBack from "./_drawBack";
 import drawColorScale from "./_drawColorScale";
 import drawControls from "./_drawControls";
@@ -200,8 +199,9 @@ export default class Viz extends BaseClass {
       padding: 5
     };
 
-    this._threshold = 0.0001;
+    this._threshold = constant(0.0001);
     this._thresholdKey = undefined;
+    this._thresholdName = "Values";
 
     this._titleClass = new TextBox();
     this._titleConfig = {
@@ -288,6 +288,9 @@ export default class Viz extends BaseClass {
 
     this._drawLabel = (d, i) => {
       if (!d) return "";
+      if (d._isAggregation) {
+        return `${this._thresholdName} < ${formatAbbreviate(d._threshold * 100)}%`;
+      }
       while (d.__d3plus__ && d.data) {
         d = d.data;
         i = d.i;
@@ -325,17 +328,14 @@ export default class Viz extends BaseClass {
       if (this._discrete && `_${this._discrete}` in this) dataNest.key(this[`_${this._discrete}`]);
       if (this._discrete && `_${this._discrete}2` in this) dataNest.key(this[`_${this._discrete}2`]);
 
-      if (this._threshold && this._thresholdKey) {
-        const thresholdValue = this._threshold(flatData);
-        flatData = applyThreshold(flatData, thresholdValue, this._thresholdKey, this._aggs);
-      }
-
-      dataNest.rollup(leaves => {
+      const tree = dataNest.rollup(leaves => {
         const d = merge(leaves, this._aggs);
         const id = this._id(d);
         if (!this._hidden.includes(id) && (!this._solo.length || this._solo.includes(id))) this._filteredData.push(d);
         this._legendData.push(d);
       }).entries(flatData);
+
+      this._filteredData = this._thresholdFunction(this._filteredData, tree);
 
     }
 
@@ -395,6 +395,14 @@ export default class Viz extends BaseClass {
     //   .height(100)
     //   .render());
 
+  }
+
+  /**
+   * Applies the threshold algorithm according to the type of chart used.
+   * @param {Array} data The data to process.
+   */
+  _thresholdFunction(data) {
+    return data;
   }
 
   /**
@@ -1119,7 +1127,7 @@ function value(d) {
   /**
       @memberof Viz
       @desc If *value* is specified, sets the threshold for buckets to the specified function or string, and returns the current class instance.
-      @param {Function|Number} [value] 
+      @param {Function|Number} [value]
       @chainable
    */
   threshold(_) {
@@ -1135,6 +1143,12 @@ function value(d) {
     else return this._threshold;
   }
 
+  /**
+      @memberof Viz
+      @desc If *value* is specified, sets the accesor for the value used in the threshold algorithm, and returns the current class instance.
+      @param {Function|Number} [value]
+      @chainable
+   */
   thresholdKey(key) {
     if (arguments.length) {
       if (typeof key === "function") {
@@ -1146,6 +1160,16 @@ function value(d) {
       return this;
     }
     else return this._thresholdKey;
+  }
+
+  /**
+      @memberof Viz
+      @desc If *value* is specified, sets the label for the bucket item, and returns the current class instance.
+      @param {String} [value]
+      @chainable
+   */
+  thresholdName(_) {
+    return arguments.length ? (this._thresholdName = _, this) : this._thresholdName;
   }
 
   /**
