@@ -746,4 +746,4 @@ This is a global function.
 
 
 
-###### <sub>Documentation generated on Thu, 02 May 2019 20:59:18 GMT</sub>
+###### <sub>Documentation generated on Mon, 06 May 2019 19:32:34 GMT</sub>
