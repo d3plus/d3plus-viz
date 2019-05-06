@@ -165,8 +165,8 @@ export default class Viz extends BaseClass {
         }
         if (this._colorScale) {
           const c = this._colorScale(d, i);
-          if (c !== undefined && c !== null) {
-            const scale = this._colorScaleClass._colorScale;
+          const scale = this._colorScaleClass._colorScale;
+          if (c !== undefined && c !== null && scale) {
             if (!scale.domain().length) return scale.range()[scale.range().length - 1];
             return scale(c);
           }
