@@ -12,6 +12,7 @@ const formTypes = {Button, Radio, Select};
 export default function() {
 
   const that = this;
+  const padding = this._controlPadding() ? this._padding : {top: 0, right: 0, bottom: 0, left: 0};
 
   const areas = ["left", "right", "top", "bottom"];
   for (let a = 0; a < areas.length; a++) {
@@ -44,12 +45,12 @@ export default function() {
     const wide = area === "top" || area === "bottom";
 
     const transform = {
-      height: wide ? this._height - (this._margin.top + this._margin.bottom) : this._height - (this._margin.top + this._margin.bottom + this._padding.top + this._padding.bottom),
-      width: wide ? this._width - (this._margin.left + this._margin.right + this._padding.left + this._padding.right) : this._width - (this._margin.left + this._margin.right)
+      height: wide ? this._height - (this._margin.top + this._margin.bottom) : this._height - (this._margin.top + this._margin.bottom + padding.top + padding.bottom),
+      width: wide ? this._width - (this._margin.left + this._margin.right + padding.left + padding.right) : this._width - (this._margin.left + this._margin.right)
     };
 
-    transform.x = (wide ? this._margin.left + this._padding.left : this._margin.left) + (area === "right" ? this._width - this._margin.bottom : 0);
-    transform.y = (wide ? this._margin.top : this._margin.top + this._padding.top) + (area === "bottom" ? this._height - this._margin.bottom : 0);
+    transform.x = (wide ? this._margin.left + padding.left : this._margin.left) + (area === "right" ? this._width - this._margin.bottom : 0);
+    transform.y = (wide ? this._margin.top : this._margin.top + padding.top) + (area === "bottom" ? this._height - this._margin.bottom : 0);
 
     const foreign = elem(`foreignObject.d3plus-viz-controls-${area}`, {
       condition: controls.length,

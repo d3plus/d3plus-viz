@@ -24,8 +24,9 @@ export default function(data = []) {
     const legendBounds = this._legendClass.outerBounds();
     const position = this._legendPosition;
     const wide = ["top", "bottom"].includes(position);
+    const padding = this._legendPadding() ? this._padding : {top: 0, right: 0, bottom: 0, left: 0};
 
-    const transform = {transform: `translate(${wide ? this._margin.left + this._padding.left : this._margin.left}, ${wide ? this._margin.top : this._margin.top + this._padding.top})`};
+    const transform = {transform: `translate(${wide ? this._margin.left + padding.left : this._margin.left}, ${wide ? this._margin.top : this._margin.top + padding.top})`};
 
     const legendGroup = elem("g.d3plus-viz-legend", {
       condition: this._legend && !this._legendConfig.select,
@@ -71,10 +72,10 @@ export default function(data = []) {
       .direction(wide ? "row" : "column")
       .duration(this._duration)
       .data(legendData.length > 1 || this._colorScale ? legendData : [])
-      .height(wide ? this._height - (this._margin.bottom + this._margin.top) : this._height - (this._margin.bottom + this._margin.top + this._padding.bottom + this._padding.top))
+      .height(wide ? this._height - (this._margin.bottom + this._margin.top) : this._height - (this._margin.bottom + this._margin.top + padding.bottom + padding.top))
       .select(legendGroup)
       .verticalAlign(!wide ? "middle" : position)
-      .width(wide ? this._width - (this._margin.left + this._margin.right + this._padding.left + this._padding.right) : this._width - (this._margin.left + this._margin.right))
+      .width(wide ? this._width - (this._margin.left + this._margin.right + padding.left + padding.right) : this._width - (this._margin.left + this._margin.right))
       .shapeConfig(configPrep.bind(this)(this._shapeConfig, "legend"))
       .config(this._legendConfig)
       .shapeConfig({

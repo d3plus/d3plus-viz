@@ -49,6 +49,13 @@ import touchstartBody from "./on/touchstart.body";
 import zoomControls from "./_zoomControls";
 
 /**
+ * Default padding logic that will return false if the screen is less than 600 pixels wide.
+ */
+function defaultPadding() {
+  return typeof window !== "undefined" ? window.innerWidth > 600 : true;
+}
+
+/**
     @class Viz
     @extends external:BaseClass
     @desc Creates an x/y plot based on an array of data. If *data* is specified, immediately draws the tree map based on the specified array and returns the current class instance. If *data* is not specified on instantiation, it can be passed/updated after instantiation using the [data](#treemap.data) method. See [this example](https://d3plus.org/examples/d3plus-treemap/getting-started/) for help getting started using the treemap generator.
@@ -78,16 +85,21 @@ export default class Viz extends BaseClass {
       resize: false
     };
     this._cache = true;
+
     this._color = (d, i) => this._groupBy[0](d, i);
     this._colorScaleClass = new ColorScale();
     this._colorScaleConfig = {};
+    this._colorScalePadding = defaultPadding;
     this._colorScalePosition = "bottom";
     this._colorScaleMaxSize = 600;
+
     const controlTest = new Select();
     this._controlCache = {};
     this._controlConfig = {
       selectStyle: Object.assign({margin: "5px"}, controlTest.selectStyle())
     };
+    this._controlPadding = defaultPadding;
+
     this._data = [];
     this._dataCutoff = 100;
     this._detectResize = true;
@@ -103,7 +115,9 @@ export default class Viz extends BaseClass {
     this._hiddenOpacity = constant(0.5);
     this._history = [];
     this._groupBy = [accessor("id")];
+
     this._legend = true;
+    this._legendClass = new Legend();
     this._legendConfig = {
       label: legendLabel.bind(this),
       shapeConfig: {
@@ -115,9 +129,9 @@ export default class Viz extends BaseClass {
         }
       }
     };
-    this._legendTooltip = {};
-    this._legendClass = new Legend();
+    this._legendPadding = defaultPadding;
     this._legendPosition = "bottom";
+    this._legendTooltip = {};
 
     this._loadingHTML = constant(`
     <div style="font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
@@ -201,6 +215,7 @@ export default class Viz extends BaseClass {
       brushing: false,
       padding: 5
     };
+    this._timelinePadding = defaultPadding;
 
     this._threshold = constant(0.0001);
     this._thresholdKey = undefined;
@@ -214,6 +229,7 @@ export default class Viz extends BaseClass {
       resize: false,
       textAnchor: "middle"
     };
+    this._titlePadding = defaultPadding;
 
     this._tooltip = true;
     this._tooltipClass = new Tooltip();
@@ -232,6 +248,7 @@ export default class Viz extends BaseClass {
       textAnchor: "middle"
     };
     this._totalFormat = d => `Total: ${formatAbbreviate(d, this._locale)}`;
+    this._totalPadding = defaultPadding;
 
     this._zoom = false;
     this._zoomBehavior = zoom();
@@ -708,6 +725,16 @@ export default class Viz extends BaseClass {
 
   /**
       @memberof Viz
+      @desc Tells the colorScale whether or not to use the internal padding defined by the visualization in it's positioning. For example, d3plus-plot will add padding on the left so that the colorScale appears centered above the x-axis. By default, this padding is only applied on screens larger than 600 pixels wide.
+      @param {Boolean|Function} [*value*]
+      @chainable
+  */
+  colorScalePadding(_) {
+    return arguments.length ? (this._colorScalePadding = typeof _ === "function" ? _ : constant(_), this) : this._colorScalePadding;
+  }
+
+  /**
+      @memberof Viz
       @desc Defines which side of the visualization to anchor the color scale. Acceptable values are `"top"`, `"bottom"`, `"left"`, `"right"`, and `false`. A `false` value will cause the color scale to not be displayed, but will still color shapes based on the scale.
       @param {String|Boolean} [*value* = "bottom"]
       @chainable
@@ -744,6 +771,16 @@ export default class Viz extends BaseClass {
   */
   controlConfig(_) {
     return arguments.length ? (this._controlConfig = assign(this._controlConfig, _), this) : this._controlConfig;
+  }
+
+  /**
+      @memberof Viz
+      @desc Tells the controls whether or not to use the internal padding defined by the visualization in it's positioning. For example, d3plus-plot will add padding on the left so that the controls appears centered above the x-axis. By default, this padding is only applied on screens larger than 600 pixels wide.
+      @param {Boolean|Function} [*value*]
+      @chainable
+  */
+  controlPadding(_) {
+    return arguments.length ? (this._controlPadding = typeof _ === "function" ? _ : constant(_), this) : this._controlPadding;
   }
 
   /**
@@ -1015,6 +1052,16 @@ function value(d) {
 
   /**
       @memberof Viz
+      @desc Tells the legend whether or not to use the internal padding defined by the visualization in it's positioning. For example, d3plus-plot will add padding on the left so that the legend appears centered underneath the x-axis. By default, this padding is only applied on screens larger than 600 pixels wide.
+      @param {Boolean|Function} [*value*]
+      @chainable
+  */
+  legendPadding(_) {
+    return arguments.length ? (this._legendPadding = typeof _ === "function" ? _ : constant(_), this) : this._legendPadding;
+  }
+
+  /**
+      @memberof Viz
       @desc Defines which side of the visualization to anchor the legend. Expected values are `"top"`, `"bottom"`, `"left"`, and `"right"`.
       @param {String} [*value* = "bottom"]
       @chainable
@@ -1259,6 +1306,16 @@ function value(d) {
 
   /**
       @memberof Viz
+      @desc Tells the timeline whether or not to use the internal padding defined by the visualization in it's positioning. For example, d3plus-plot will add padding on the left so that the timeline appears centered underneath the x-axis. By default, this padding is only applied on screens larger than 600 pixels wide.
+      @param {Boolean|Function} [*value*]
+      @chainable
+  */
+  timelinePadding(_) {
+    return arguments.length ? (this._timelinePadding = typeof _ === "function" ? _ : constant(_), this) : this._timelinePadding;
+  }
+
+  /**
+      @memberof Viz
       @desc If *value* is specified, sets the title accessor to the specified function or string and returns the current class instance.
       @param {Function|String} [*value*]
       @chainable
@@ -1275,6 +1332,16 @@ function value(d) {
   */
   titleConfig(_) {
     return arguments.length ? (this._titleConfig = assign(this._titleConfig, _), this) : this._titleConfig;
+  }
+
+  /**
+      @memberof Viz
+      @desc Tells the title whether or not to use the internal padding defined by the visualization in it's positioning. For example, d3plus-plot will add padding on the left so that the title appears centered above the x-axis. By default, this padding is only applied on screens larger than 600 pixels wide.
+      @param {Boolean|Function} [*value*]
+      @chainable
+  */
+  titlePadding(_) {
+    return arguments.length ? (this._titlePadding = typeof _ === "function" ? _ : constant(_), this) : this._titlePadding;
   }
 
   /**
@@ -1331,6 +1398,16 @@ function value(d) {
   */
   totalFormat(_) {
     return arguments.length ? (this._totalFormat = _, this) : this._totalFormat;
+  }
+
+  /**
+      @memberof Viz
+      @desc Tells the total whether or not to use the internal padding defined by the visualization in it's positioning. For example, d3plus-plot will add padding on the left so that the total appears centered above the x-axis. By default, this padding is only applied on screens larger than 600 pixels wide.
+      @param {Boolean|Function} [*value*]
+      @chainable
+  */
+  totalPadding(_) {
+    return arguments.length ? (this._totalPadding = typeof _ === "function" ? _ : constant(_), this) : this._totalPadding;
   }
 
   /**

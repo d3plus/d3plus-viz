@@ -12,14 +12,15 @@ export default function() {
 
   const position = this._colorScalePosition || "bottom";
   const wide = ["top", "bottom"].includes(position);
+  const padding = this._colorScalePadding() ? this._padding : {top: 0, right: 0, bottom: 0, left: 0};
 
-  const availableWidth = this._width - (this._margin.left + this._margin.right + this._padding.left + this._padding.right);
+  const availableWidth = this._width - (this._margin.left + this._margin.right + padding.left + padding.right);
 
   const width = wide
     ? min([this._colorScaleMaxSize, availableWidth])
     : this._width - (this._margin.left + this._margin.right);
 
-  const availableHeight = this._height - (this._margin.bottom + this._margin.top + this._padding.bottom + this._padding.top);
+  const availableHeight = this._height - (this._margin.bottom + this._margin.top + padding.bottom + padding.top);
 
   const height = !wide
     ? min([this._colorScaleMaxSize, availableHeight])
@@ -27,7 +28,7 @@ export default function() {
 
   const transform = {
     opacity: this._colorScalePosition ? 1 : 0,
-    transform: `translate(${wide ? this._margin.left + this._padding.left + (availableWidth - width) / 2 : this._margin.left}, ${wide ? this._margin.top : this._margin.top + this._padding.top + (availableHeight - height) / 2})`
+    transform: `translate(${wide ? this._margin.left + padding.left + (availableWidth - width) / 2 : this._margin.left}, ${wide ? this._margin.top : this._margin.top + padding.top + (availableHeight - height) / 2})`
   };
 
   const showColorScale = this._colorScale && data && data.length > 1;

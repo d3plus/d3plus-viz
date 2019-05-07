@@ -32,8 +32,9 @@ export default function(data = []) {
   let timelinePossible = this._time && this._timeline;
   const ticks = timelinePossible ? Array.from(new Set(this._data.map(this._time))).map(date) : [];
   timelinePossible = timelinePossible && ticks.length > 1;
+  const padding = this._timelinePadding() ? this._padding : {top: 0, right: 0, bottom: 0, left: 0};
 
-  const transform = {transform: `translate(${this._margin.left + this._padding.left}, 0)`};
+  const transform = {transform: `translate(${this._margin.left + padding.left}, 0)`};
 
   const timelineGroup = elem("g.d3plus-viz-timeline", {
     condition: timelinePossible,
@@ -51,7 +52,7 @@ export default function(data = []) {
       .height(this._height - this._margin.bottom)
       .select(timelineGroup)
       .ticks(ticks.sort((a, b) => +a - +b))
-      .width(this._width - (this._margin.left + this._margin.right + this._padding.left + this._padding.right));
+      .width(this._width - (this._margin.left + this._margin.right + padding.left + padding.right));
 
     if (timeline.selection() === undefined) {
       this._timelineSelection = extent(data, this._time).map(date);
