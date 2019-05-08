@@ -808,6 +808,16 @@ If *data* is not specified, this method returns the current primary data array, 
 
   /**
       @memberof Viz
+      @desc If the number of visible data points exceeds this number, the default hover behavior will be disabled (helpful for very large visualizations bogging down the DOM with opacity updates).
+      @param {Number} [*value* = 100]
+      @chainable
+  */
+  dataCutoff(_) {
+    return arguments.length ? (this._dataCutoff = _, this) : this._dataCutoff;
+  }
+
+  /**
+      @memberof Viz
       @desc If *value* is specified, sets the depth to the specified number and returns the current class instance. The *value* should correspond with an index in the [groupBy](#groupBy) array.
       @param {Number} [*value*]
       @chainable
