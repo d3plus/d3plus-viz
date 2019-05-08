@@ -10,7 +10,8 @@ export default function(d, i) {
     if (this._shapeConfig.hoverOpacity !== 1 && this._hover ? this._hover(d, i) : true) {
       this.hover(false);
     }
-    if (this._tooltip && this._id(this._tooltipClass.data()[0]) === this._id(d)) this._tooltipClass.data([]).render();
+    const tooltipData = this._tooltipClass.data();
+    if (tooltipData.length && this._tooltip && this._id(this._tooltipClass.data()[0]) === this._id(d)) this._tooltipClass.data([]).render();
   }, 50);
 
   this._select.style("cursor", "auto");
