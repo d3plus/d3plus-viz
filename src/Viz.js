@@ -360,7 +360,8 @@ export default class Viz extends BaseClass {
     }
 
     // overrides the hoverOpacity of shapes if data is larger than cutoff
-    if (this._filteredData.length > this._dataCutoff) {
+    const uniqueIds = nest().key(this._id).entries(this._filteredData).length;
+    if (uniqueIds > this._dataCutoff) {
       if (this._userHover === undefined) this._userHover = this._shapeConfig.hoverOpacity || 0.5;
       this._shapeConfig.hoverOpacity = 1;
     }
