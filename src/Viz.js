@@ -129,6 +129,7 @@ export default class Viz extends BaseClass {
         }
       }
     };
+    this._legendCutoff = 1;
     this._legendPadding = defaultPadding;
     this._legendPosition = "bottom";
     this._legendTooltip = {};
@@ -1049,6 +1050,16 @@ function value(d) {
   */
   legendConfig(_) {
     return arguments.length ? (this._legendConfig = assign(this._legendConfig, _), this) : this._legendConfig;
+  }
+
+  /**
+   * @memberof Viz
+   * @desc If *value* is specified, sets the cutoff for the amount of categories in the legend.
+   * @param {number} [*value*]
+   * @chainable
+   */
+  legendCutoff(_) {
+    return arguments.length ? (this._legendCutoff = _, this) : this._legendCutoff;
   }
 
   /**
