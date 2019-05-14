@@ -1055,7 +1055,7 @@ function value(d) {
   /**
    * @memberof Viz
    * @desc If *value* is specified, sets the cutoff for the amount of categories in the legend.
-   * @param {number} [*value*]
+   * @param {Number} [*value* = 1]
    * @chainable
    */
   legendCutoff(_) {
