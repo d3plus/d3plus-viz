@@ -60,6 +60,8 @@ export default function(data = []) {
       .rollup(leaves => legendData.push(merge(leaves, this._aggs)))
       .entries(this._colorScale ? data.filter((d, i) => this._colorScale(d, i) === undefined) : data);
 
+    legendData.sort((a, b) => this._legendSort(a, b));
+
     const hidden = (d, i) => {
       let id = this._id(d, i);
       if (id instanceof Array) id = id[0];
