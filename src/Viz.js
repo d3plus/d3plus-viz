@@ -132,6 +132,7 @@ export default class Viz extends BaseClass {
     this._legendCutoff = 1;
     this._legendPadding = defaultPadding;
     this._legendPosition = "bottom";
+    this._legendSort = (a, b) => a - b;
     this._legendTooltip = {};
 
     this._loadingHTML = constant(`
@@ -1090,6 +1091,16 @@ function value(d) {
   */
   legendPosition(_) {
     return arguments.length ? (this._legendPosition = _, this) : this._legendPosition;
+  }
+
+  /**
+      @memberof Viz
+      @desc A JavaScript [sort comparator function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort) for legends.
+      @param {Function} *value*
+      @chainable
+  */
+  legendSort(_) {
+    return arguments.length ? (this._legendSort = _, this) : this._legendSort;
   }
 
   /**
