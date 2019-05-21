@@ -132,7 +132,7 @@ export default class Viz extends BaseClass {
     this._legendCutoff = 1;
     this._legendPadding = defaultPadding;
     this._legendPosition = "bottom";
-    this._legendSort = (a, b) => a - b;
+    this._legendSort = (a, b) => this._drawLabel(a).localeCompare(this._drawLabel(b));
     this._legendTooltip = {};
 
     this._loadingHTML = constant(`
@@ -1095,7 +1095,7 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc A JavaScript [sort comparator function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort) for legends.
+      @desc A JavaScript [sort comparator function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort) used to sort the legend.
       @param {Function} *value*
       @chainable
   */
