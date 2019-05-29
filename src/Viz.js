@@ -56,6 +56,19 @@ function defaultPadding() {
 }
 
 /**
+ * Turns an array of values into a list string.
+ */
+function listify(n) {
+  return n.reduce((str, item, i) => {
+    if (!i) str += item;
+    else if (i === n.length - 1 && i === 1) str += ` and ${item}`;
+    else if (i === n.length - 1) str += `, and ${item}`;
+    else str += `, ${item}`;
+    return str;
+  }, "");
+}
+
+/**
     @class Viz
     @extends external:BaseClass
     @desc Creates an x/y plot based on an array of data. If *data* is specified, immediately draws the tree map based on the specified array and returns the current class instance. If *data* is not specified on instantiation, it can be passed/updated after instantiation using the [data](#treemap.data) method. See [this example](https://d3plus.org/examples/d3plus-treemap/getting-started/) for help getting started using the treemap generator.
@@ -306,7 +319,7 @@ export default class Viz extends BaseClass {
     this._id = this._groupBy[this._drawDepth];
     this._ids = (d, i) => this._groupBy
       .map(g => !d || d.__d3plus__ && !d.data ? undefined : g(d.__d3plus__ ? d.data : d, d.__d3plus__ ? d.i : i))
-      .filter(g => g !== undefined && g !== null && g.constructor !== Array);
+      .filter(g => g !== undefined && g !== null);
 
     this._drawLabel = (d, i) => {
       if (!d) return "";
@@ -319,7 +332,8 @@ export default class Viz extends BaseClass {
       }
       if (this._label) return this._label(d, i);
       const l = that._ids(d, i).slice(0, this._drawDepth + 1);
-      return l[l.length - 1];
+      const n = l.reverse().find(ll => !(ll instanceof Array)) || l[l.length - 1];
+      return n instanceof Array ? listify(n) : n;
     };
 
     // set the default timeFilter if it has not been specified
