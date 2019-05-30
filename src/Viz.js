@@ -324,7 +324,7 @@ export default class Viz extends BaseClass {
     this._drawLabel = (d, i) => {
       if (!d) return "";
       if (d._isAggregation) {
-        return `${this._thresholdName} < ${formatAbbreviate(d._threshold * 100)}%`;
+        return `${this._thresholdName} < ${formatAbbreviate(d._threshold, this._locale, "%")}`;
       }
       while (d.__d3plus__ && d.data) {
         d = d.data;
