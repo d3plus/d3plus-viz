@@ -1,4 +1,5 @@
 import {event} from "d3-selection";
+import {configPrep} from "d3plus-common";
 
 /**
     @desc Tooltip logic for a specified data point.
@@ -7,16 +8,16 @@ import {event} from "d3-selection";
     @param {Object} [*config*] Optional configuration methods for the Tooltip class.
     @private
 */
-export default function(d) {
+export default function(d, i, x) {
 
   if (this._tooltip && d) {
     this._select.style("cursor", "pointer");
     const position = event.touches ? [event.touches[0].clientX, event.touches[0].clientY] : [event.clientX, event.clientY];
-    this._tooltipClass.data([d])
+    this._tooltipClass.data([x || d])
       .footer(this._drawDepth < this._groupBy.length - 1 ? "Click to Expand" : "")
       .title(this._drawLabel)
       .position(position)
-      .config(this._tooltipConfig)
+      .config(configPrep.bind(this)(this._tooltipConfig))
       .render();
   }
 
