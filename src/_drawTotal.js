@@ -28,6 +28,7 @@ export default function(data = []) {
 
   this._totalClass
     .data(visible ? [{text: this._totalFormat(total)}] : [])
+    .locale(this._locale)
     .select(group)
     .width(this._width - (this._margin.left + this._margin.right + padding.left + padding.right))
     .config(this._totalConfig)

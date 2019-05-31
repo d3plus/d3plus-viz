@@ -75,6 +75,7 @@ export default function(data = []) {
       .duration(this._duration)
       .data(legendData.length > this._legendCutoff || this._colorScale ? legendData : [])
       .height(wide ? this._height - (this._margin.bottom + this._margin.top) : this._height - (this._margin.bottom + this._margin.top + padding.bottom + padding.top))
+      .locale(this._locale)
       .select(legendGroup)
       .verticalAlign(!wide ? "middle" : position)
       .width(wide ? this._width - (this._margin.left + this._margin.right + padding.left + padding.right) : this._width - (this._margin.left + this._margin.right))
