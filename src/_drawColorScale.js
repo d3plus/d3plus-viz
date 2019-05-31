@@ -52,6 +52,7 @@ export default function() {
       .duration(this._duration)
       .data(scaleData)
       .height(height)
+      .locale(this._locale)
       .orient(position)
       .select(scaleGroup)
       .value(this._colorScale)

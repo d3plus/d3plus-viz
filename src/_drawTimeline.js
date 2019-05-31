@@ -50,6 +50,7 @@ export default function(data = []) {
       .domain(extent(ticks))
       .duration(this._duration)
       .height(this._height - this._margin.bottom)
+      .locale(this._locale)
       .select(timelineGroup)
       .ticks(ticks.sort((a, b) => +a - +b))
       .width(this._width - (this._margin.left + this._margin.right + padding.left + padding.right));

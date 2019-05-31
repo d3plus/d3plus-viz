@@ -22,6 +22,7 @@ export default function(data = []) {
 
   this._titleClass
     .data(text ? [{text}] : [])
+    .locale(this._locale)
     .select(group)
     .width(this._width - (this._margin.left + this._margin.right + padding.left + padding.right))
     .config(this._titleConfig)
