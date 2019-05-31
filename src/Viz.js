@@ -157,7 +157,6 @@ export default class Viz extends BaseClass {
     </div>`);
 
     this._loadingMessage = true;
-    this._locale = "en-US";
     this._lrucache = lrucache(10);
     this._messageClass = new Message();
     this._messageMask = "rgba(0, 0, 0, 0.1)";
@@ -1139,16 +1138,6 @@ function value(d) {
   */
   loadingMessage(_) {
     return arguments.length ? (this._loadingMessage = _, this) : this._loadingMessage;
-  }
-
-  /**
-      @memberof Viz
-      @desc If *value* is specified, sets the locale to the specified string and returns the current class instance.
-      @param {String} [*value* = "en-US"]
-      @chainable
-  */
-  locale(_) {
-    return arguments.length ? (this._locale = _, this) : this._locale;
   }
 
   /**
