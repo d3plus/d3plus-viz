@@ -38,7 +38,7 @@ export default function(d, i, x) {
       .title(this._legendConfig.label ? this._legendClass.label() : legendLabel.bind(this))
       .position(position)
       .config(configPrep.bind(this)(this._tooltipConfig))
-      .config(configPrep.bind(this)(this._legendConfig))
+      .config(configPrep.bind(this)(this._legendTooltip))
       .render();
 
   }
