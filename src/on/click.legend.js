@@ -12,6 +12,12 @@ export default function(d, i) {
   this._select.style("cursor", "auto");
   if (this._tooltip) this._tooltipClass.data([]).render();
 
+  if (!this._hiddenBehavior) {
+    this._solo = [];
+    this._hidden = [];
+    return;
+  }
+
   let id = this._id(d, i);
   if (!(id instanceof Array)) id = [id];
   const hiddenIndex = this._hidden.indexOf(id[0]);

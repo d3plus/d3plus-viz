@@ -29,16 +29,19 @@ export default function(d, i, x) {
     this._select.style("cursor", "pointer");
     this._tooltipClass.data([x || d])
       .footer(
-        this._solo.length && !this._solo.includes(id) ? "Click to Highlight"
-        : this._solo.length === 1 && this._solo.includes(id) || this._hidden.length === dataLength - 1 ? "Click to Reset"
-        : this._solo.includes(id) ? "Click to Hide"
-        : this._hidden.includes(id) ? "Click to Highlight"
-        : "Click to Highlight<br />Shift+Click to Hide"
+        this._hiddenBehavior 
+          ? this._solo.length && !this._solo.includes(id) 
+            ? "Click to Highlight"
+            : this._solo.length === 1 && this._solo.includes(id) || this._hidden.length === dataLength - 1 ? "Click to Reset"
+            : this._solo.includes(id) ? "Click to Hide"
+            : this._hidden.includes(id) ? "Click to Highlight"
+            : "Click to Highlight<br />Shift+Click to Hide"
+          : ""
       )
       .title(this._legendConfig.label ? this._legendClass.label() : legendLabel.bind(this))
       .position(position)
       .config(configPrep.bind(this)(this._tooltipConfig))
-      .config(configPrep.bind(this)(this._legendConfig))
+      .config(configPrep.bind(this)(this._legendTooltip))
       .render();
 
   }

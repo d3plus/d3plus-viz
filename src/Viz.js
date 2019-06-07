@@ -126,6 +126,7 @@ export default class Viz extends BaseClass {
     this._downloadPosition = "top";
     this._duration = 600;
     this._hidden = [];
+    this._hiddenBehavior = true;
     this._hiddenColor = constant("#aaa");
     this._hiddenOpacity = constant(0.5);
     this._history = [];
@@ -980,6 +981,16 @@ function value(d) {
   */
   height(_) {
     return arguments.length ? (this._height = _, this) : this._height;
+  }
+
+  /**
+      @memberof Viz
+      @desc Defines if the hide/solo behavior clicking on the legend is enabled.
+      @param {Boolean} [*value* = false]
+      @chainable
+  */
+  hiddenBehavior(_) {
+    return arguments.length ? (this._hiddenBehavior = _, this) : this._hiddenBehavior;
   }
 
   /**
