@@ -1,4 +1,4 @@
-import test from "zora";
+import {test} from "zora";
 import {select} from "d3-selection";
 import {default as getSize} from "../src/_getSize.js";
 

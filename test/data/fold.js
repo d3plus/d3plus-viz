@@ -1,4 +1,4 @@
-import test from "zora";
+import {test} from "zora";
 import {default as fold} from "../../src/data/fold.js";
 
 test("data/fold", assert => {

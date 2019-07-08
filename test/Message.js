@@ -1,4 +1,4 @@
-import test from "zora";
+import {test} from "zora";
 import {selectAll} from "d3-selection";
 
 import Message from "../src/Message.js";
