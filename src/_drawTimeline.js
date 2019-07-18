@@ -1,7 +1,7 @@
 import {extent} from "d3-array";
 
 import {date} from "d3plus-axis";
-import {elem} from "d3plus-common";
+import {elem, unique} from "d3plus-common";
 
 /**
     @function setTimeFilter
@@ -30,7 +30,7 @@ function setTimeFilter(s) {
 export default function(data = []) {
 
   let timelinePossible = this._time && this._timeline;
-  const ticks = timelinePossible ? Array.from(new Set(this._data.map(this._time))).map(date) : [];
+  const ticks = timelinePossible ? unique(this._data.map(this._time)).map(date) : [];
   timelinePossible = timelinePossible && ticks.length > 1;
   const padding = this._timelinePadding() ? this._padding : {top: 0, right: 0, bottom: 0, left: 0};
 

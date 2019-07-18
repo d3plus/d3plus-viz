@@ -16,7 +16,7 @@ import lrucache from "lrucache";
 
 import {date} from "d3plus-axis";
 import {colorAssign, colorContrast} from "d3plus-color";
-import {accessor, assign, BaseClass, constant, merge} from "d3plus-common";
+import {accessor, assign, BaseClass, constant, merge, unique} from "d3plus-common";
 import {Select} from "d3plus-form";
 import {formatAbbreviate} from "d3plus-format";
 import {ColorScale, Legend} from "d3plus-legend";
@@ -965,7 +965,7 @@ function value(d) {
       else {
         if (!this._aggs[k]) {
           this._aggs[k] = a => {
-            const v = Array.from(new Set(a));
+            const v = unique(a);
             return v.length === 1 ? v[0] : v;
           };
         }
@@ -1305,7 +1305,7 @@ function value(d) {
         this._time = accessor(_);
         if (!this._aggs[_]) {
           this._aggs[_] = a => {
-            const v = Array.from(new Set(a));
+            const v = unique(a);
             return v.length === 1 ? v[0] : v;
           };
         }
