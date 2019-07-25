@@ -151,9 +151,9 @@ export default class Viz extends BaseClass {
     this._legendTooltip = {};
 
     this._loadingHTML = constant(`
-    <div style="font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+    <div style="left: 50%; top: 50%; position: absolute; transform: translate(-50%, -50%); font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
       <strong>Loading Visualization</strong>
-      <sub style="display: block; margin-top: 5px;"><a href="https://d3plus.org" target="_blank">Powered by D3plus</a></sub>
+      <sub style="bottom: 0; display: block; line-height: 1; margin-top: 5px;"><a href="https://d3plus.org" target="_blank">Powered by D3plus</a></sub>
     </div>`);
 
     this._loadingMessage = true;
@@ -161,15 +161,16 @@ export default class Viz extends BaseClass {
     this._messageClass = new Message();
     this._messageMask = "rgba(0, 0, 0, 0.05)";
     this._messageStyle = {
-      "left": "0px",
+      "bottom": "0",
+      "left": "0",
       "position": "absolute",
+      "right": "0",
       "text-align": "center",
-      "top": "45%",
-      "width": "100%"
+      "top": "0"
     };
 
     this._noDataHTML = constant(`
-    <div style="font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+    <div style="left: 50%; top: 50%; position: absolute; transform: translate(-50%, -50%); font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
       <strong>No Data Available</strong>
     </div>`);
 
@@ -390,7 +391,7 @@ export default class Viz extends BaseClass {
       this._messageClass.render({
         container: this._select.node().parentNode,
         html: this._noDataHTML(this),
-        mask: this._messageMask,
+        mask: false,
         style: this._messageStyle
       });
     }
