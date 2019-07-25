@@ -62,7 +62,7 @@ export default class Message {
     container = "body",
     duration = 600,
     html = "Please Wait",
-    mask = "rgba(0, 0, 0, 0.1)",
+    mask = "rgba(0, 0, 0, 0.05)",
     style = {}
   } = {}) {
 

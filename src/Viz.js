@@ -159,7 +159,7 @@ export default class Viz extends BaseClass {
     this._loadingMessage = true;
     this._lrucache = lrucache(10);
     this._messageClass = new Message();
-    this._messageMask = "rgba(0, 0, 0, 0.1)";
+    this._messageMask = "rgba(0, 0, 0, 0.05)";
     this._messageStyle = {
       "left": "0px",
       "position": "absolute",
@@ -590,7 +590,7 @@ export default class Viz extends BaseClass {
         this._messageClass.render({
           container: this._select.node().parentNode,
           html: this._loadingHTML(this),
-          mask: this._messageMask,
+          mask: this._filteredData ? this._messageMask : false,
           style: this._messageStyle
         });
       }
