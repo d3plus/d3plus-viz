@@ -381,10 +381,13 @@ export default class Viz extends BaseClass {
     const uniqueIds = nest().key(this._id).entries(this._filteredData).length;
     if (uniqueIds > this._dataCutoff) {
       if (this._userHover === undefined) this._userHover = this._shapeConfig.hoverOpacity || 0.5;
+      if (this._userDuration === undefined) this._userDuration = this._shapeConfig.duration || 600;
       this._shapeConfig.hoverOpacity = 1;
+      this._shapeConfig.duration = 0;
     }
     else if (this._userHover !== undefined) {
       this._shapeConfig.hoverOpacity = this._userHover;
+      this._shapeConfig.duration = this._userDuration;
     }
 
     if (this._noDataMessage && !this._filteredData.length) {
