@@ -16,11 +16,11 @@ export default function() {
   }).node();
 
   this._backClass
-    .data(visible ? [{text: this._translate("Back"), x: 0, y: 0}] : [])
+    .data(visible ? [{text: `← ${this._translate("Back")}`, x: 0, y: 0}] : [])
     .select(backGroup)
     .config(this._backConfig)
     .render();
 
-  this._margin.top += visible ? this._backClass.fontSize()() : 0;
+  this._margin.top += visible ? this._backClass.fontSize()() + this._backClass.padding()() * 2 : 0;
 
 }
