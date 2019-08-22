@@ -24,8 +24,8 @@ import {TextBox} from "d3plus-text";
 import {Timeline} from "d3plus-timeline";
 import {Tooltip} from "d3plus-tooltip";
 
-// import {Rect} from "d3plus-shape";
-// import {configPrep} from "d3plus-common";
+import {Rect} from "d3plus-shape";
+import {configPrep} from "d3plus-common";
 
 import Message from "./Message";
 
@@ -150,11 +150,11 @@ export default class Viz extends BaseClass {
     this._legendSort = (a, b) => this._drawLabel(a).localeCompare(this._drawLabel(b));
     this._legendTooltip = {};
 
-    this._loadingHTML = constant(`
+    this._loadingHTML = () => `
     <div style="left: 50%; top: 50%; position: absolute; transform: translate(-50%, -50%); font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
-      <strong>Loading Visualization</strong>
-      <sub style="bottom: 0; display: block; line-height: 1; margin-top: 5px;"><a href="https://d3plus.org" target="_blank">Powered by D3plus</a></sub>
-    </div>`);
+      <strong>${this._translate("Loading Visualization")}</strong>
+      <sub style="bottom: 0; display: block; line-height: 1; margin-top: 5px;"><a href="https://d3plus.org" target="_blank">${this._translate("Powered by D3plus")}</a></sub>
+    </div>`;
 
     this._loadingMessage = true;
     this._lrucache = lrucache(10);
@@ -169,10 +169,10 @@ export default class Viz extends BaseClass {
       "top": "0"
     };
 
-    this._noDataHTML = constant(`
+    this._noDataHTML = () => `
     <div style="left: 50%; top: 50%; position: absolute; transform: translate(-50%, -50%); font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
-      <strong>No Data Available</strong>
-    </div>`);
+      <strong>${this._translate("No Data Available")}</strong>
+    </div>`;
 
     this._noDataMessage = true;
     this._on = {
@@ -236,7 +236,7 @@ export default class Viz extends BaseClass {
 
     this._threshold = constant(0.0001);
     this._thresholdKey = undefined;
-    this._thresholdName = "Values";
+    this._thresholdName = () => this._translate("Values");
 
     this._titleClass = new TextBox();
     this._titleConfig = {
@@ -264,7 +264,7 @@ export default class Viz extends BaseClass {
       resize: false,
       textAnchor: "middle"
     };
-    this._totalFormat = d => `Total: ${formatAbbreviate(d, this._locale)}`;
+    this._totalFormat = d => `${this._translate("Total")}: ${formatAbbreviate(d, this._locale)}`;
     this._totalPadding = defaultPadding;
 
     this._zoom = false;
@@ -326,7 +326,7 @@ export default class Viz extends BaseClass {
     this._drawLabel = (d, i) => {
       if (!d) return "";
       if (d._isAggregation) {
-        return `${this._thresholdName} < ${formatAbbreviate(d._threshold * 100, this._locale)}%`;
+        return `${this._thresholdName(d, i)} < ${formatAbbreviate(d._threshold * 100, this._locale)}%`;
       }
       while (d.__d3plus__ && d.data) {
         d = d.data;
@@ -423,47 +423,47 @@ export default class Viz extends BaseClass {
     this._shapes = [];
 
     // Draws a container and zoomGroup to test functionality.
-    // this._testGroup = this._select.selectAll("g.d3plus-viz-testGroup").data([0]);
-    // const enterTest = this._testGroup.enter().append("g").attr("class", "d3plus-viz-testGroup")
-    //   .merge(this._testGroup);
-    // this._testGroup = enterTest.merge(this._testGroup);
-    // const bgHeight = this._height - this._margin.top - this._margin.bottom;
-    // const bgWidth = this._width - this._margin.left - this._margin.right;
-    // new Rect()
-    //   .data([{id: "background"}])
-    //   .select(this._testGroup.node())
-    //   .x(bgWidth / 2 + this._margin.left)
-    //   .y(bgHeight / 2 + this._margin.top)
-    //   .width(bgWidth)
-    //   .height(bgHeight)
-    //   .fill("#ccc")
-    //   .render();
+    this._testGroup = this._select.selectAll("g.d3plus-viz-testGroup").data([0]);
+    const enterTest = this._testGroup.enter().append("g").attr("class", "d3plus-viz-testGroup")
+      .merge(this._testGroup);
+    this._testGroup = enterTest.merge(this._testGroup);
+    const bgHeight = this._height - this._margin.top - this._margin.bottom;
+    const bgWidth = this._width - this._margin.left - this._margin.right;
+    new Rect()
+      .data([{id: "background"}])
+      .select(this._testGroup.node())
+      .x(bgWidth / 2 + this._margin.left)
+      .y(bgHeight / 2 + this._margin.top)
+      .width(bgWidth)
+      .height(bgHeight)
+      .fill("#ccc")
+      .render();
 
-    // this._zoomGroup = this._select.selectAll("g.d3plus-viz-zoomGroup").data([0]);
-    // const enter = this._zoomGroup.enter().append("g").attr("class", "d3plus-viz-zoomGroup")
-    //   .merge(this._zoomGroup);
+    this._zoomGroup = this._select.selectAll("g.d3plus-viz-zoomGroup").data([0]);
+    const enter = this._zoomGroup.enter().append("g").attr("class", "d3plus-viz-zoomGroup")
+      .merge(this._zoomGroup);
 
-    // this._zoomGroup = enter.merge(this._zoomGroup);
-    // const testConfig = {
-    //   on: {
-    //     mouseenter: this._on.mouseenter,
-    //     mouseleave: this._on.mouseleave,
-    //     mousemove: this._on["mousemove.shape"]
-    //   }
-    // };
-    // const testWidth = 5;
-    // this._shapes.push(new Rect()
-    //   .config(this._shapeConfig)
-    //   .config(configPrep(testConfig))
-    //   .data(this._filteredData)
-    //   .label("Test Label")
-    //   .select(this._zoomGroup.node())
-    //   .id(this._id)
-    //   .x((d, i) => i * testWidth)
-    //   .y(200)
-    //   .width(testWidth)
-    //   .height(100)
-    //   .render());
+    this._zoomGroup = enter.merge(this._zoomGroup);
+    const testConfig = {
+      on: {
+        mouseenter: this._on.mouseenter,
+        mouseleave: this._on.mouseleave,
+        mousemove: this._on["mousemove.shape"]
+      }
+    };
+    const testWidth = 20;
+    this._shapes.push(new Rect()
+      .config(this._shapeConfig)
+      .config(configPrep(testConfig))
+      .data(this._filteredData)
+      .label("Test Label")
+      .select(this._zoomGroup.node())
+      .id(this._id)
+      .x((d, i) => i * testWidth + testWidth / 2)
+      .y(200)
+      .width(testWidth)
+      .height(100)
+      .render());
 
   }
 
@@ -1287,11 +1287,11 @@ function value(d) {
   /**
       @memberof Viz
       @desc If *value* is specified, sets the label for the bucket item, and returns the current class instance.
-      @param {String} [value]
+      @param {Function|String} [value]
       @chainable
    */
   thresholdName(_) {
-    return arguments.length ? (this._thresholdName = _, this) : this._thresholdName;
+    return arguments.length ? (this._thresholdName = typeof _ === "function" ? _ : constant(_), this) : this._thresholdName;
   }
 
   /**

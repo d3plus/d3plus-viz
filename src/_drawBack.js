@@ -16,7 +16,7 @@ export default function() {
   }).node();
 
   this._backClass
-    .data(visible ? [{text: "Back", x: 0, y: 0}] : [])
+    .data(visible ? [{text: this._translate("Back"), x: 0, y: 0}] : [])
     .select(backGroup)
     .config(this._backConfig)
     .render();

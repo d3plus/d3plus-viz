@@ -14,7 +14,7 @@ export default function(d, i, x) {
     this._select.style("cursor", "pointer");
     const position = event.touches ? [event.touches[0].clientX, event.touches[0].clientY] : [event.clientX, event.clientY];
     this._tooltipClass.data([x || d])
-      .footer(this._drawDepth < this._groupBy.length - 1 ? "Click to Expand" : "")
+      .footer(this._drawDepth < this._groupBy.length - 1 ? this._translate("Click to Expand") : false)
       .title(this._drawLabel)
       .position(position)
       .config(configPrep.bind(this)(this._tooltipConfig))

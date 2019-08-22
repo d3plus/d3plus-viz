@@ -21,7 +21,7 @@ export default function() {
 
     if (this._downloadButton && this._downloadPosition === area) {
       controls.push({
-        data: [{text: "Download", value: 1}],
+        data: [{text: this._translate("Download"), value: 1}],
         label: "downloadButton",
         on: {
           click: () => {
