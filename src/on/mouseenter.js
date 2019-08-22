@@ -1,4 +1,22 @@
-import {min} from "d3-array";
+const flattenIds = levels => levels.reduce((arr, level) => {
+  if (level instanceof Array) {
+    if (arr.length) {
+      const oldArray = arr.slice();
+      arr = [];
+      level.forEach(id => arr = arr.concat(oldArray.map(a => `${a}_${id}`)));
+    }
+    else {
+      arr = level.slice();
+    }
+  }
+  else if (arr.length) {
+    arr = arr.map(a => `${a}_${level}`);
+  }
+  else {
+    arr.push(level);
+  }
+  return arr;
+}, []);
 
 /**
     @desc On mouseenter event for all shapes in a Viz.
@@ -10,12 +28,10 @@ export default function(d, i) {
 
   if (this._shapeConfig.hoverOpacity !== 1) {
 
-    const filterId = this._ids(d, i);
-
+    const filterIds = flattenIds(this._ids(d, i));
     this.hover((h, x) => {
-      const ids = this._ids(h, x);
-      const index = min([ids.length - 1, filterId.length - 1, this._drawDepth]);
-      return filterId.slice(0, index + 1).join("_") === ids.slice(0, index + 1).join("_");
+      const ids = flattenIds(this._ids(h, x));
+      return filterIds.some(id => ids.includes(id));
     });
 
   }
