@@ -52,20 +52,18 @@ export default function(path, formatter, key, callback) {
     }
     else { // Array of urls
       const loaded = [];
-      let keyStr;
 
       path.forEach((url, ix) => {
-        keyStr = `_${key}_${ix}`;
         parser = getParser(url);
         parser(url, (err, data) => {
           data = validateData(err, parser, data);
           data = err ? [] : data;
           if (data && !(data instanceof Array) && data.data && data.headers) data = fold(data);
-          if (key && keyStr in this) this[keyStr] = data;
-          if (this._cache) this._lrucache.set(path, data);
           loaded.push(data);
           if (loaded.length === path.length) {
             data = formatter ? formatter(loaded) : loaded;
+            if (key && `_${key}` in this) this[`_${key}`] = data;
+            if (this._cache) this._lrucache.set(path, data);
             if (callback) callback(err, data);
           }
         });
