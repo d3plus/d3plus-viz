@@ -11,33 +11,75 @@ import {default as fold} from "./fold";
 */
 export default function(path, formatter, key, callback) {
 
+  let parser;
+  const getParser = path => {
+    const ext = path.slice(path.length - 4);
+    switch (ext) {
+      case ".csv":
+        return csv;
+      case ".tsv":
+        return tsv;
+      case ".txt":
+        return text;
+      default:
+        return json;
+    }
+  };
+
+  const validateData = (err, parser, data) => {
+    if (parser !== json && !err && data && data instanceof Array) {
+      data.forEach(d => {
+        for (const k in d) {
+          if (!isNaN(d[k])) d[k] = parseFloat(d[k]);
+          else if (d[k].toLowerCase() === "false") d[k] = false;
+          else if (d[k].toLowerCase() === "true") d[k] = true;
+          else if (d[k].toLowerCase() === "null") d[k] = null;
+          else if (d[k].toLowerCase() === "undefined") d[k] = undefined;
+        }
+      });
+    }
+    return data;
+  };
+
   if (typeof path !== "string") {
 
-    const data = formatter ? formatter(path) : path;
-    if (key && `_${key}` in this) this[`_${key}`] = data;
-    if (callback) callback(null, data);
+    const isArrayOfStrings = path.map(r => typeof r).every(v => v === "string");
+
+    if (!isArrayOfStrings) { // Array of objects
+      const data = formatter ? formatter(path) : path;
+      if (key && `_${key}` in this) this[`_${key}`] = data;
+      if (callback) callback(null, data);
+    }
+    else { // Array of urls
+      const loaded = [];
+      let keyStr;
+
+      path.forEach((url, ix) => {
+        keyStr = `_${key}_${ix}`;
+        parser = getParser(url);
+        parser(url, (err, data) => {
+          data = validateData(err, parser, data);
+          data = err ? [] : data;
+          if (data && !(data instanceof Array) && data.data && data.headers) data = fold(data);
+          if (key && keyStr in this) this[keyStr] = data;
+          if (this._cache) this._lrucache.set(path, data);
+          loaded.push(data);
+          if (loaded.length === path.length) {
+            data = formatter ? formatter(loaded) : loaded;
+            if (callback) callback(err, data);
+          }
+        });
+      });
+    }
 
   }
-  else {
+  else { // Single url
 
-    const parser = path.slice(path.length - 4) === ".csv" ? csv
-      : path.slice(path.length - 4) === ".tsv" ? tsv
-      : path.slice(path.length - 4) === ".txt" ? text
-      : json;
+    const parser = getParser(path);
 
     parser(path, (err, data) => {
 
-      if (parser !== json && !err && data && data instanceof Array) {
-        data.forEach(d => {
-          for (const k in d) {
-            if (!isNaN(d[k])) d[k] = parseFloat(d[k]);
-            else if (d[k].toLowerCase() === "false") d[k] = false;
-            else if (d[k].toLowerCase() === "true") d[k] = true;
-            else if (d[k].toLowerCase() === "null") d[k] = null;
-            else if (d[k].toLowerCase() === "undefined") d[k] = undefined;
-          }
-        });
-      }
+      data = validateData(err, parser, data);
 
       data = err ? [] : formatter ? formatter(data) : data;
       if (data && !(data instanceof Array) && data.data && data.headers) data = fold(data);
