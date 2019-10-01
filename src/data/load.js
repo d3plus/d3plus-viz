@@ -1,10 +1,11 @@
 import {csv, json, text, tsv} from "d3-request";
 import {default as fold} from "./fold";
+import {default as concat} from "./concat";
 
 /**
   @function dataLoad
   @desc Loads data from a filepath or URL, converts it to a valid JSON object, and returns it to a callback function.
-  @param {Array|String} path The path to the file or url to be loaded. If an Array is passed, the xhr request logic is skipped.
+  @param {Array|String} path The path to the file or url to be loaded. Also support array of paths strings. If an Array of objects is passed, the xhr request logic is skipped.
   @param {Function} [formatter] An optional formatter function that is run on the loaded data.
   @param {String} [key] The key in the `this` context to save the resulting data to.
   @param {Function} [callback] A function that is called when the final data is loaded. It is passed 2 variables, any error present and the data loaded.
@@ -53,15 +54,15 @@ export default function(path, formatter, key, callback) {
     else { // Array of urls
       const loaded = [];
 
-      path.forEach((url, ix) => {
+      path.forEach(url => {
         parser = getParser(url);
         parser(url, (err, data) => {
           data = validateData(err, parser, data);
           data = err ? [] : data;
           if (data && !(data instanceof Array) && data.data && data.headers) data = fold(data);
           loaded.push(data);
-          if (loaded.length === path.length) {
-            data = formatter ? formatter(loaded) : loaded;
+          if (loaded.length === path.length) { // All urls loaded
+            data = formatter ? formatter(loaded) : concat(loaded);
             if (key && `_${key}` in this) this[`_${key}`] = data;
             if (this._cache) this._lrucache.set(path, data);
             if (callback) callback(err, data);
