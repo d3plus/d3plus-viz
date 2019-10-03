@@ -13,6 +13,7 @@ import {default as concat} from "./concat";
 export default function(path, formatter, key, callback) {
 
   let parser;
+
   const getParser = path => {
     const ext = path.slice(path.length - 4);
     switch (ext) {
@@ -42,42 +43,60 @@ export default function(path, formatter, key, callback) {
     return data;
   };
 
-  // If data param is a single string url then convert path to a 1 element array of urls to re-use logic
+  // If data param is a single string url or an plain object then convert path to a 1 element array of urls to re-use logic
   if (typeof path === "string") {
     path = [path];
   }
 
-  if (typeof path !== "string") {
+  const isThereAnyString = path.find(dataItem => typeof dataItem === "string");
 
-    const isArrayOfStrings = path.map(r => typeof r).every(v => v === "string");
+  let loaded = [];
+  const toLoad = [];
 
-    // Array of objects
-    if (!isArrayOfStrings) {
-      const data = formatter ? formatter(path) : path;
-      if (key && `_${key}` in this) this[`_${key}`] = data;
-      if (callback) callback(null, data);
-    }
-    // Array of urls
-    else {
-      const loaded = [];
+  // If there is a string I'm assuming is a Array to merge, urls or data
+  if (isThereAnyString) {
+    path.forEach(dataItem => {
+      if (typeof dataItem !== "string") {
+        loaded.push(dataItem);
+      }
+      else if (typeof dataItem === "string") {
+        toLoad.push(dataItem);
+      }
+    });
+  }
 
-      path.forEach(url => {
-        parser = getParser(url);
-        parser(url, (err, data) => {
-          data = err ? [] : data;
-          if (data && !(data instanceof Array) && data.data && data.headers) data = fold(data);
-          data = validateData(err, parser, data);
-          loaded.push(data);
-          if (loaded.length === path.length) { // All urls loaded
-            data = formatter ? formatter(loaded.length === 1 ? loaded[0] : loaded) : concat(loaded);
-            if (key && `_${key}` in this) this[`_${key}`] = data;
-            if (this._cache) this._lrucache.set(path, data);
-            if (callback) callback(err, data);
-          }
-        });
-      });
-    }
+  // Data array itself
+  else {
+    loaded.push(path);
+  }
 
+  // Load all urls an combine them with data arrays
+  const alreadyLoaded = loaded.length;
+  toLoad.forEach(url => {
+    parser = getParser(url);
+    parser(url, (err, data) => {
+      data = err ? [] : data;
+      if (data && !(data instanceof Array) && data.data && data.headers) data = fold(data);
+      loaded.push(data);
+      if (loaded.length - alreadyLoaded === toLoad.length) { // All urls loaded
+        data = formatter ? formatter(loaded.length === 1 ? loaded[0] : loaded) : concat(loaded);
+        if (key && `_${key}` in this) this[`_${key}`] = data;
+        if (this._cache) this._lrucache.set(url, data);
+        if (callback) callback(err, data);
+      }
+    });
+  });
+
+  // If there is no data to Load response is immediately
+  if (toLoad.length === 0) {
+    loaded = loaded.map(data => {
+      if (data && !(data instanceof Array) && data.data && data.headers) data = fold(data);
+      return data;
+    });
+    const data = formatter ? formatter(loaded.length === 1 ? loaded[0] : loaded) : concat(loaded);
+    if (key && `_${key}` in this) this[`_${key}`] = data;
+    if (this._cache) this._lrucache.set(key, data);
+    if (callback) callback(null, data);
   }
 
 }
