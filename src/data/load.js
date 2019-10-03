@@ -42,27 +42,34 @@ export default function(path, formatter, key, callback) {
     return data;
   };
 
+  // If data param is a single string url then convert path to a 1 element array of urls to re-use logic
+  if (typeof path === "string") {
+    path = [path];
+  }
+
   if (typeof path !== "string") {
 
     const isArrayOfStrings = path.map(r => typeof r).every(v => v === "string");
 
-    if (!isArrayOfStrings) { // Array of objects
+    // Array of objects
+    if (!isArrayOfStrings) {
       const data = formatter ? formatter(path) : path;
       if (key && `_${key}` in this) this[`_${key}`] = data;
       if (callback) callback(null, data);
     }
-    else { // Array of urls
+    // Array of urls
+    else {
       const loaded = [];
 
       path.forEach(url => {
         parser = getParser(url);
         parser(url, (err, data) => {
-          data = validateData(err, parser, data);
           data = err ? [] : data;
           if (data && !(data instanceof Array) && data.data && data.headers) data = fold(data);
+          data = validateData(err, parser, data);
           loaded.push(data);
           if (loaded.length === path.length) { // All urls loaded
-            data = formatter ? formatter(loaded) : concat(loaded);
+            data = formatter ? formatter(loaded.length === 1 ? loaded[0] : loaded) : concat(loaded);
             if (key && `_${key}` in this) this[`_${key}`] = data;
             if (this._cache) this._lrucache.set(path, data);
             if (callback) callback(err, data);
@@ -70,23 +77,6 @@ export default function(path, formatter, key, callback) {
         });
       });
     }
-
-  }
-  else { // Single url
-
-    const parser = getParser(path);
-
-    parser(path, (err, data) => {
-
-      data = validateData(err, parser, data);
-
-      data = err ? [] : formatter ? formatter(data) : data;
-      if (data && !(data instanceof Array) && data.data && data.headers) data = fold(data);
-      if (key && `_${key}` in this) this[`_${key}`] = data;
-      if (this._cache) this._lrucache.set(path, data);
-      if (callback) callback(err, data);
-
-    });
 
   }
 
