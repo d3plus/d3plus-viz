@@ -77,6 +77,7 @@ export default function(path, formatter, key, callback) {
     parser(url, (err, data) => {
       data = err ? [] : data;
       if (data && !(data instanceof Array) && data.data && data.headers) data = fold(data);
+      data = validateData(err, parser, data);
       loaded.push(data);
       if (loaded.length - alreadyLoaded === toLoad.length) { // All urls loaded
         data = formatter ? formatter(loaded.length === 1 ? loaded[0] : loaded) : concat(loaded);
