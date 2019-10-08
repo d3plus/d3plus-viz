@@ -831,20 +831,6 @@ If *data* is not specified, this method returns the current primary data array, 
     return this._data;
   }
 
-  // TEMPORAL REMOVE!!!
-  topojson(_, f) {
-    if (arguments.length) {
-      const prev = this._queue.find(q => q[3] === "topojson");
-      const d = [load.bind(this), _, f, "topojson"];
-      if (prev) this._queue[this._queue.indexOf(prev)] = d;
-      else this._queue.push(d);
-      this._zoomSet = false;
-      return this;
-    }
-    return this._topojson;
-  }
-
-
   /**
       @memberof Viz
       @desc If the number of visible data points exceeds this number, the default hover behavior will be disabled (helpful for very large visualizations bogging down the DOM with opacity updates).
