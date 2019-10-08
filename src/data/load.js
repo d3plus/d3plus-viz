@@ -2,9 +2,6 @@ import {csv, json, text, tsv} from "d3-request";
 import {default as fold} from "./fold";
 import {default as concat} from "./concat";
 
-/** defaultFormatter */
-const defaultFormatter = d => d;
-
 /**
   @function dataLoad
   @desc Loads data from a filepath or URL, converts it to a valid JSON object, and returns it to a callback function.
@@ -85,7 +82,7 @@ export default function(path, formatter, key, callback) {
       if (loaded.length - alreadyLoaded === toLoad.length) { // All urls loaded
 
         // Format data
-        data = defaultFormatter(loaded.length === 1 ? loaded[0] : loaded);
+        data = loaded.length === 1 ? loaded[0] : loaded;
         if (formatter) {
           data = formatter(loaded.length === 1 ? loaded[0] : loaded);
         }
@@ -108,7 +105,7 @@ export default function(path, formatter, key, callback) {
     });
 
     // Format data
-    let data = defaultFormatter(loaded.length === 1 ? loaded[0] : loaded);
+    let data = loaded.length === 1 ? loaded[0] : loaded;
     if (formatter) {
       data = formatter(loaded.length === 1 ? loaded[0] : loaded);
     }
