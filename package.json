@@ -1,6 +1,6 @@
 {
   "name": "d3plus-viz",
-  "version": "0.12.41",
+  "version": "0.12.42",
   "description": "Abstract ES6 class that drives d3plus visualizations.",
   "main": "build/d3plus-viz.js",
   "jsnext:main": "es/index",
@@ -24,22 +24,22 @@
   },
   "dependencies": {
     "d3-array": "^1.2.4",
-    "d3-brush": "^1.0.6",
+    "d3-brush": "^1.1.3",
     "d3-collection": "^1.0.7",
-    "d3-color": "^1.2.8",
+    "d3-color": "^1.4.0",
     "d3-queue": "^3.0.7",
     "d3-request": "^1.0.6",
     "d3-selection": "^1.4.0",
     "d3-transition": "^1.2.0",
-    "d3-zoom": "^1.7.3",
-    "d3plus-axis": "^0.4.16",
-    "d3plus-color": "^0.6.6",
-    "d3plus-common": "^0.6.56",
+    "d3-zoom": "^1.8.3",
+    "d3plus-axis": "^0.4.17",
+    "d3plus-color": "^0.6.7",
+    "d3plus-common": "^0.6.57",
     "d3plus-export": "^0.3.16",
     "d3plus-form": "^0.2.8",
-    "d3plus-format": "^0.1.15",
-    "d3plus-legend": "^0.8.24",
-    "d3plus-text": "^0.9.49",
+    "d3plus-format": "^0.1.16",
+    "d3plus-legend": "^0.8.26",
+    "d3plus-text": "^0.9.50",
     "d3plus-timeline": "^0.4.13",
     "d3plus-tooltip": "^0.3.12",
     "lrucache": "^1.0.3"
@@ -55,7 +55,7 @@
   },
   "devDependencies": {
     "d3plus-dev": "^0.7.4",
-    "d3plus-shape": "^0.16.11"
+    "d3plus-shape": "^0.16.12"
   },
   "module": "es/index",
   "sideEffects": false,

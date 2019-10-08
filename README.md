@@ -19,6 +19,7 @@ If you use NPM, run `npm install d3plus-viz --save`. Otherwise, download the [la
 * [Viz](#Viz)
 
 ##### 
+* [dataConcat](#dataConcat) - Reduce and concat all the elements included in arrayOfArrays if they are arrays. If it is a JSON object try to concat the array under given key data. If the key doesn't exists in object item, a warning message is lauched to the console. You need to implement DataFormat callback to concat the arrays manually.
 * [dataFold](#dataFold) - Given a JSON object where the data values and headers have been split into separate key lookups, this function will combine the data values with the headers and returns one large array of objects.
 * [dataLoad](#dataLoad) - Loads data from a filepath or URL, converts it to a valid JSON object, and returns it to a callback function.
 * [defaultPadding](#defaultPadding) - Default padding logic that will return false if the screen is less than 600 pixels wide.
@@ -811,6 +812,22 @@ This is a static method of [<code>Viz</code>](#Viz), and is chainable with other
 
 ---
 
+<a name="dataConcat"></a>
+#### d3plus.**dataConcat**(arrayOfArray, [data]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/data/concat.js#L1)
+
+Reduce and concat all the elements included in arrayOfArrays if they are arrays. If it is a JSON object try to concat the array under given key data. If the key doesn't exists in object item, a warning message is lauched to the console. You need to implement DataFormat callback to concat the arrays manually.
+
+
+This is a global function.
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| arrayOfArray | <code>Array</code> |  | Array of elements |
+| [data] | <code>String</code> | <code>&quot;data&quot;</code> | The key used for the flat data array if exists inside of the JSON object. |
+
+
+---
+
 <a name="dataFold"></a>
 #### d3plus.**dataFold**(json, [data], [headers]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/data/fold.js#L1)
 
@@ -829,7 +846,7 @@ This is a global function.
 ---
 
 <a name="dataLoad"></a>
-#### d3plus.**dataLoad**(path, [formatter], [key], [callback]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/data/load.js#L4)
+#### d3plus.**dataLoad**(path, [formatter], [key], [callback]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/data/load.js#L5)
 
 Loads data from a filepath or URL, converts it to a valid JSON object, and returns it to a callback function.
 
@@ -838,7 +855,7 @@ This is a global function.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| path | <code>Array</code> \| <code>String</code> | The path to the file or url to be loaded. If an Array is passed, the xhr request logic is skipped. |
+| path | <code>Array</code> \| <code>String</code> | The path to the file or url to be loaded. Also support array of paths strings. If an Array of objects is passed, the xhr request logic is skipped. |
 | [formatter] | <code>function</code> | An optional formatter function that is run on the loaded data. |
 | [key] | <code>String</code> | The key in the `this` context to save the resulting data to. |
 | [callback] | <code>function</code> | A function that is called when the final data is loaded. It is passed 2 variables, any error present and the data loaded. |
@@ -878,4 +895,4 @@ This is a global function.
 
 
 
-###### <sub>Documentation generated on Thu, 22 Aug 2019 14:45:05 GMT</sub>
+###### <sub>Documentation generated on Fri, 04 Oct 2019 16:43:10 GMT</sub>

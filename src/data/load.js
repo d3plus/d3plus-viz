@@ -79,7 +79,7 @@ export default function(path, formatter, key, callback) {
       if (data && !(data instanceof Array) && data.data && data.headers) data = fold(data);
       loaded.push(data);
       if (loaded.length - alreadyLoaded === toLoad.length) { // All urls loaded
-        data = formatter ? formatter(loaded.length === 1 ? loaded[0] : loaded) : concat(loaded);
+        data = formatter || key === "topojson" ? formatter(loaded.length === 1 ? loaded[0] : loaded) : concat(loaded);
         if (key && `_${key}` in this) this[`_${key}`] = data;
         if (this._cache) this._lrucache.set(url, data);
         if (callback) callback(err, data);
@@ -93,7 +93,7 @@ export default function(path, formatter, key, callback) {
       if (data && !(data instanceof Array) && data.data && data.headers) data = fold(data);
       return data;
     });
-    const data = formatter ? formatter(loaded.length === 1 ? loaded[0] : loaded) : concat(loaded);
+    const data = formatter || key === "topojson" ? formatter(loaded.length === 1 ? loaded[0] : loaded) : concat(loaded);
     if (key && `_${key}` in this) this[`_${key}`] = data;
     if (this._cache) this._lrucache.set(key, data);
     if (callback) callback(null, data);
