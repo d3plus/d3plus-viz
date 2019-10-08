@@ -2,6 +2,9 @@ import {csv, json, text, tsv} from "d3-request";
 import {default as fold} from "./fold";
 import {default as concat} from "./concat";
 
+/** defaultFormatter */
+const defaultFormatter = d => d;
+
 /**
   @function dataLoad
   @desc Loads data from a filepath or URL, converts it to a valid JSON object, and returns it to a callback function.
@@ -80,7 +83,16 @@ export default function(path, formatter, key, callback) {
       data = validateData(err, parser, data);
       loaded.push(data);
       if (loaded.length - alreadyLoaded === toLoad.length) { // All urls loaded
-        data = formatter || key === "topojson" ? formatter(loaded.length === 1 ? loaded[0] : loaded) : concat(loaded);
+
+        // Format data
+        data = defaultFormatter(loaded.length === 1 ? loaded[0] : loaded);
+        if (formatter) {
+          data = formatter(loaded.length === 1 ? loaded[0] : loaded);
+        }
+        else if (key === "data") {
+          data = concat(loaded, "data");
+        }
+
         if (key && `_${key}` in this) this[`_${key}`] = data;
         if (this._cache) this._lrucache.set(url, data);
         if (callback) callback(err, data);
@@ -94,7 +106,16 @@ export default function(path, formatter, key, callback) {
       if (data && !(data instanceof Array) && data.data && data.headers) data = fold(data);
       return data;
     });
-    const data = formatter || key === "topojson" ? formatter(loaded.length === 1 ? loaded[0] : loaded) : concat(loaded);
+
+    // Format data
+    let data = defaultFormatter(loaded.length === 1 ? loaded[0] : loaded);
+    if (formatter) {
+      data = formatter(loaded.length === 1 ? loaded[0] : loaded);
+    }
+    else if (key === "data") {
+      data = concat(loaded, "data");
+    }
+
     if (key && `_${key}` in this) this[`_${key}`] = data;
     if (this._cache) this._lrucache.set(key, data);
     if (callback) callback(null, data);
