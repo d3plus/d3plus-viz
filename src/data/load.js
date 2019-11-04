@@ -43,6 +43,10 @@ export default function(path, formatter, key, callback) {
     return data;
   };
 
+  const loadedLength = loadedArray => loadedArray.reduce((prev, current) => current ? prev + 1 : prev, 0);
+
+  const getPathIndex = (url, array) => array.indexOf(url);
+
   // If data param is a single string url or an plain object then convert path to a 1 element array of urls to re-use logic
   if (typeof path === "string") {
     path = [path];
@@ -50,14 +54,14 @@ export default function(path, formatter, key, callback) {
 
   const isThereAnyString = path.find(dataItem => typeof dataItem === "string");
 
-  let loaded = [];
+  let loaded = new Array(path.length);
   const toLoad = [];
 
   // If there is a string I'm assuming is a Array to merge, urls or data
   if (isThereAnyString) {
-    path.forEach(dataItem => {
+    path.forEach((dataItem, ix) => {
       if (typeof dataItem !== "string") {
-        loaded.push(dataItem);
+        loaded[ix] = dataItem;
       }
       else if (typeof dataItem === "string") {
         toLoad.push(dataItem);
@@ -67,24 +71,24 @@ export default function(path, formatter, key, callback) {
 
   // Data array itself
   else {
-    loaded.push(path);
+    loaded[0] = path;
   }
 
   // Load all urls an combine them with data arrays
-  const alreadyLoaded = loaded.length;
+  const alreadyLoaded = loadedLength(loaded);
   toLoad.forEach(url => {
     parser = getParser(url);
     parser(url, (err, data) => {
       data = err ? [] : data;
       if (data && !(data instanceof Array) && data.data && data.headers) data = fold(data);
       data = validateData(err, parser, data);
-      loaded.push(data);
-      if (loaded.length - alreadyLoaded === toLoad.length) { // All urls loaded
+      loaded[getPathIndex(url, path)] = data;
+      if (loadedLength(loaded) - alreadyLoaded === toLoad.length) { // All urls loaded
 
         // Format data
-        data = loaded.length === 1 ? loaded[0] : loaded;
+        data = loadedLength(loaded) === 1 ? loaded[0] : loaded;
         if (formatter) {
-          data = formatter(loaded.length === 1 ? loaded[0] : loaded);
+          data = formatter(loadedLength(loaded) === 1 ? loaded[0] : loaded);
         }
         else if (key === "data") {
           data = concat(loaded, "data");
@@ -105,9 +109,9 @@ export default function(path, formatter, key, callback) {
     });
 
     // Format data
-    let data = loaded.length === 1 ? loaded[0] : loaded;
+    let data = loadedLength(loaded) === 1 ? loaded[0] : loaded;
     if (formatter) {
-      data = formatter(loaded.length === 1 ? loaded[0] : loaded);
+      data = formatter(loadedLength(loaded) === 1 ? loaded[0] : loaded);
     }
     else if (key === "data") {
       data = concat(loaded, "data");
