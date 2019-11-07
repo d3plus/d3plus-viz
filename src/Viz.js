@@ -367,10 +367,19 @@ export default class Viz extends BaseClass {
       if (this._discrete && `_${this._discrete}2` in this) dataNest.key(this[`_${this._discrete}2`]);
 
       const tree = dataNest.rollup(leaves => {
+
+        const index = this._data.indexOf(leaves[0]);
+        const shape = this._shape(leaves[0], index);
+        const id = this._id(leaves[0], index);
+
         const d = merge(leaves, this._aggs);
-        const id = this._id(d);
-        if (!this._hidden.includes(id) && (!this._solo.length || this._solo.includes(id))) this._filteredData.push(d);
+
+        if (!this._hidden.includes(id) && (!this._solo.length || this._solo.includes(id))) {
+          if (shape === "Line") this._filteredData = this._filteredData.concat(leaves);
+          else this._filteredData.push(d);
+        }
         this._legendData.push(d);
+
       }).entries(flatData);
 
       this._filteredData = this._thresholdFunction(this._filteredData, tree);
