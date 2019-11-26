@@ -7,7 +7,7 @@
 export default function(d, i) {
 
   this._select.style("cursor", "auto");
-  
+
   if (this._drawDepth < this._groupBy.length - 1) {
 
     const filterGroup = this._groupBy[this._drawDepth],
@@ -16,14 +16,16 @@ export default function(d, i) {
     this.hover(false);
     if (this._tooltip) this._tooltipClass.data([]).render();
 
+    const oldFilter = this._filter;
+
     this._history.push({
       depth: this._depth,
-      filter: this._filter
+      filter: oldFilter
     });
 
     this.config({
       depth: this._drawDepth + 1,
-      filter: (f, x) => filterGroup(f, x) === filterId
+      filter: (f, x) => (!oldFilter || oldFilter(f, x)) && filterGroup(f, x) === filterId
     }).render();
 
   }

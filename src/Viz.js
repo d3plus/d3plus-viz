@@ -455,6 +455,7 @@ export default class Viz extends BaseClass {
     // this._zoomGroup = enter.merge(this._zoomGroup);
     // const testConfig = {
     //   on: {
+    //     click: this._on["click.shape"],
     //     mouseenter: this._on.mouseenter,
     //     mouseleave: this._on.mouseleave,
     //     mousemove: this._on["mousemove.shape"]
