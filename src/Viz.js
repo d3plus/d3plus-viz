@@ -323,7 +323,7 @@ export default class Viz extends BaseClass {
       .map(g => !d || d.__d3plus__ && !d.data ? undefined : g(d.__d3plus__ ? d.data : d, d.__d3plus__ ? d.i : i))
       .filter(g => g !== undefined && g !== null);
 
-    this._drawLabel = (d, i) => {
+    this._drawLabel = (d, i, depth = this._drawDepth) => {
       if (!d) return "";
       if (d._isAggregation) {
         return `${this._thresholdName(d, i)} < ${formatAbbreviate(d._threshold * 100, this._locale)}%`;
@@ -333,9 +333,9 @@ export default class Viz extends BaseClass {
         i = d.i;
       }
       if (this._label) return this._label(d, i);
-      const l = that._ids(d, i).slice(0, this._drawDepth + 1);
+      const l = that._ids(d, i).slice(0, depth + 1);
       const n = l.reverse().find(ll => !(ll instanceof Array)) || l[l.length - 1];
-      return n instanceof Array ? listify(n) : n;
+      return n instanceof Array ? listify(n) : `${n}`;
     };
 
     // set the default timeFilter if it has not been specified

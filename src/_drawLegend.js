@@ -7,8 +7,7 @@ import {configPrep, elem, merge} from "d3plus-common";
     @private
 */
 export function legendLabel(d, i) {
-  const l = this._drawLabel(d, i);
-  return l instanceof Array ? l.join(", ") : l;
+  return this._drawLabel(d, i, this._legendDepth);
 }
 
 /**
@@ -61,6 +60,16 @@ export default function(data = []) {
       .entries(this._colorScale ? data.filter((d, i) => this._colorScale(d, i) === undefined) : data);
 
     legendData.sort(this._legendSort);
+
+    const labels = legendData.map((d, i) => this._ids(d, i).slice(0, this._drawDepth + 1));
+    this._legendDepth = 0;
+    for (let x = 0; x <= this._drawDepth; x++) {
+      const values = labels.map(l => l[x]);
+      if (!values.some(v => v instanceof Array) && Array.from(new Set(values)).length === legendData.length) {
+        this._legendDepth = x;
+        break;
+      }
+    }
 
     const hidden = (d, i) => {
       let id = this._id(d, i);
