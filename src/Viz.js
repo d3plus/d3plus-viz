@@ -375,7 +375,7 @@ export default class Viz extends BaseClass {
         const d = merge(leaves, this._aggs);
 
         if (!this._hidden.includes(id) && (!this._solo.length || this._solo.includes(id))) {
-          if (shape === "Line") this._filteredData = this._filteredData.concat(leaves);
+          if (!this._discrete && shape === "Line") this._filteredData = this._filteredData.concat(leaves);
           else this._filteredData.push(d);
         }
         this._legendData.push(d);
