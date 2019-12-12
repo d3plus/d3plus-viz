@@ -541,6 +541,8 @@ export default class Viz extends BaseClass {
         .attr("aria-hidden", this._ariaHidden)
         .attr("aria-labelledby", `${this._uuid}-title ${this._uuid}-desc`)
         .attr("role", "img")
+        .attr("xmlns", "http://www.w3.org/2000/svg")
+        .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
       .transition(transition)
         .style("width", this._width !== undefined ? `${this._width}px` : undefined)
         .style("height", this._height !== undefined ? `${this._height}px` : undefined)
