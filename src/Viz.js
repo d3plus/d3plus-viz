@@ -332,7 +332,7 @@ export default class Viz extends BaseClass {
         d = d.data;
         i = d.i;
       }
-      if (this._label) return this._label(d, i);
+      if (this._label) return `${this._label(d, i)}`;
       const l = that._ids(d, i).slice(0, depth + 1);
       const n = l.reverse().find(ll => !(ll instanceof Array)) || l[l.length - 1];
       return n instanceof Array ? listify(n) : `${n}`;
