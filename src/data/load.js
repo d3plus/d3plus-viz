@@ -47,28 +47,22 @@ export default function(path, formatter, key, callback) {
 
   const getPathIndex = (url, array) => array.indexOf(url);
 
-  // If data param is a single string url or an plain object then convert path to a 1 element array of urls to re-use logic
-  if (typeof path === "string") {
-    path = [path];
-  }
+  // If path param is a not an Array then convert path to a 1 element Array to re-use logic
+  if (!(path instanceof Array)) path = [path];
 
-  const isThereAnyString = path.find(dataItem => typeof dataItem === "string");
+  const isData = dataItem => typeof dataItem === "string" || typeof dataItem === "object" && dataItem.url && dataItem.headers;
+  const needToLoad = path.find(isData);
 
   let loaded = new Array(path.length);
   const toLoad = [];
 
   // If there is a string I'm assuming is a Array to merge, urls or data
-  if (isThereAnyString) {
+  if (needToLoad) {
     path.forEach((dataItem, ix) => {
-      if (typeof dataItem !== "string") {
-        loaded[ix] = dataItem;
-      }
-      else if (typeof dataItem === "string") {
-        toLoad.push(dataItem);
-      }
+      if (isData(dataItem)) toLoad.push(dataItem);
+      else loaded[ix] = dataItem;
     });
   }
-
   // Data array itself
   else {
     loaded[0] = path;
@@ -76,9 +70,20 @@ export default function(path, formatter, key, callback) {
 
   // Load all urls an combine them with data arrays
   const alreadyLoaded = loadedLength(loaded);
-  toLoad.forEach(url => {
+  toLoad.forEach(dataItem => {
+    let headers = {}, url = dataItem;
+    if (typeof dataItem === "object") {
+      url = dataItem.url;
+      headers = dataItem.headers;
+    }
     parser = getParser(url);
-    parser(url, (err, data) => {
+    const request = parser(url);
+    for (const key in headers) {
+      if ({}.hasOwnProperty.call(headers, key)) {
+        request.header(key, headers[key]);
+      }
+    }
+    request.get((err, data) => {
       data = err ? [] : data;
       if (data && !(data instanceof Array) && data.data && data.headers) data = fold(data);
       data = validateData(err, parser, data);
