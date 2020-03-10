@@ -11,7 +11,7 @@ export default function(d, i) {
       this.hover(false);
     }
     const tooltipData = this._tooltipClass.data();
-    if (tooltipData.length && this._tooltip) {
+    if (tooltipData.length && this._tooltip(d, i)) {
       let tooltipDatum = tooltipData[0];
       while (tooltipDatum.__d3plus__ && tooltipDatum.data) tooltipDatum = tooltipDatum.data;
       if (this._id(tooltipDatum) === this._id(d)) this._tooltipClass.data([]).render();

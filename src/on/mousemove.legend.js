@@ -21,7 +21,7 @@ export default function(d, i, x) {
     return id;
   })).length;
 
-  if (this._tooltip && d) {
+  if (d && this._tooltip(d, i)) {
 
     let id = this._id(d, i);
     if (id instanceof Array) id = id[0];

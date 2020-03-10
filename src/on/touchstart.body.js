@@ -8,5 +8,5 @@ export default function(d) {
   event.preventDefault();
   event.stopPropagation();
 
-  if (this._tooltip && !d) this._tooltipClass.data([]).render();
+  if (!d) this._tooltipClass.data([]).render();
 }

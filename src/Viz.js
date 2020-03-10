@@ -248,7 +248,7 @@ export default class Viz extends BaseClass {
     };
     this._titlePadding = defaultPadding;
 
-    this._tooltip = true;
+    this._tooltip = constant(true);
     this._tooltipClass = new Tooltip();
     this._tooltipConfig = {
       pointerEvents: "none",
@@ -464,7 +464,7 @@ export default class Viz extends BaseClass {
     // const testWidth = 20;
     // this._shapes.push(new Rect()
     //   .config(this._shapeConfig)
-    //   .config(configPrep(testConfig))
+    //   .config(configPrep.bind(this)(testConfig))
     //   .data(this._filteredData)
     //   .label("Test Label")
     //   .select(this._zoomGroup.node())
@@ -1407,11 +1407,11 @@ function value(d) {
   /**
       @memberof Viz
       @desc If *value* is specified, toggles the tooltip based on the specified boolean and returns the current class instance.
-      @param {Boolean} [*value* = true]
+      @param {Boolean|Function} [*value* = true]
       @chainable
   */
   tooltip(_) {
-    return arguments.length ? (this._tooltip = _, this) : this._tooltip;
+    return arguments.length ? (this._tooltip = typeof _ === "function" ? _ : constant(_), this) : this._tooltip;
   }
 
   /**

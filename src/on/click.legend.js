@@ -10,7 +10,7 @@ import {event} from "d3-selection";
 export default function(d, i) {
 
   this._select.style("cursor", "auto");
-  if (this._tooltip) this._tooltipClass.data([]).render();
+  if (this._tooltip(d, i)) this._tooltipClass.data([]).render();
 
   let id = this._id(d, i);
   if (!(id instanceof Array)) id = [id];

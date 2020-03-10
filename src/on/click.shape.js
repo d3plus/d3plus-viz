@@ -14,7 +14,7 @@ export default function(d, i) {
           filterId = filterGroup(d, i);
 
     this.hover(false);
-    if (this._tooltip) this._tooltipClass.data([]).render();
+    if (this._tooltip(d, i)) this._tooltipClass.data([]).render();
 
     const oldFilter = this._filter;
 

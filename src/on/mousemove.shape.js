@@ -10,7 +10,7 @@ import {configPrep} from "d3plus-common";
 */
 export default function(d, i, x) {
 
-  if (this._tooltip && d) {
+  if (d && this._tooltip(d, i)) {
     this._select.style("cursor", "pointer");
     const position = event.touches ? [event.touches[0].clientX, event.touches[0].clientY] : [event.clientX, event.clientY];
     this._tooltipClass.data([x || d])
