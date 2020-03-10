@@ -823,6 +823,8 @@ export default class Viz extends BaseClass {
       @memberof Viz
       @desc Sets the primary data array to be used when drawing the visualization. The value passed should be an *Array* of objects or a *String* representing a filepath or URL to be loaded. The following filetypes are supported: `csv`, `tsv`, `txt`, and `json`.
 
+If your data URL needs specific headers to be set, an Object with "url" and "headers" keys may also be passed.
+
 Additionally, a custom formatting function can be passed as a second argument to this method. This custom function will be passed the data that has been loaded, as long as there are no errors. This function should return the final array of obejcts to be used as the primary data array. For example, some JSON APIs return the headers split from the data values to save bandwidth. These would need be joined using a custom formatter.
 
 If *data* is not specified, this method returns the current primary data array, which defaults to an empty array (`[]`);
