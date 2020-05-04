@@ -92,6 +92,8 @@ export default function(path, formatter, key, callback) {
 
         // Format data
         data = loadedLength(loaded) === 1 ? loaded[0] : loaded;
+        if (this._cache) this._lrucache.set(`${key}_${url}`, data);
+
         if (formatter) {
           data = formatter(loadedLength(loaded) === 1 ? loaded[0] : loaded);
         }
@@ -100,7 +102,6 @@ export default function(path, formatter, key, callback) {
         }
 
         if (key && `_${key}` in this) this[`_${key}`] = data;
-        if (this._cache) this._lrucache.set(url, data);
         if (callback) callback(err, data);
       }
     });
@@ -123,7 +124,6 @@ export default function(path, formatter, key, callback) {
     }
 
     if (key && `_${key}` in this) this[`_${key}`] = data;
-    if (this._cache) this._lrucache.set(key, data);
     if (callback) callback(null, data);
   }
 

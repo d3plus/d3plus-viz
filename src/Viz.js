@@ -612,9 +612,11 @@ export default class Viz extends BaseClass {
       }
 
       this._queue.forEach(p => {
-        const cache = this._cache ? this._lrucache.get(p[1]) : undefined;
+        const cache = this._cache
+          ? this._lrucache.get(`${p[3]}_${p[1]}`)
+          : undefined;
         if (!cache) q.defer(...p);
-        else this[`_${p[3]}`] = cache;
+        else this[`_${p[3]}`] = p[2] ? p[2](cache) : cache;
       });
       this._queue = [];
       q.awaitAll(() => {
