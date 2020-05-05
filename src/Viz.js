@@ -461,7 +461,8 @@ export default class Viz extends BaseClass {
     //     mousemove: this._on["mousemove.shape"]
     //   }
     // };
-    // const testWidth = 20;
+
+    // const testWidth = 10;
     // this._shapes.push(new Rect()
     //   .config(this._shapeConfig)
     //   .config(configPrep.bind(this)(testConfig))
@@ -469,10 +470,10 @@ export default class Viz extends BaseClass {
     //   .label("Test Label")
     //   .select(this._zoomGroup.node())
     //   .id(this._id)
-    //   .x((d, i) => i * testWidth + testWidth / 2)
-    //   .y(200)
+    //   .x(() => Math.random() * bgWidth)
+    //   .y(() => Math.random() * bgHeight)
     //   .width(testWidth)
-    //   .height(100)
+    //   .height(testWidth)
     //   .render());
 
   }
@@ -602,15 +603,6 @@ export default class Viz extends BaseClass {
     else {
       const q = queue();
 
-      if (this._loadingMessage) {
-        this._messageClass.render({
-          container: this._select.node().parentNode,
-          html: this._loadingHTML(this),
-          mask: this._filteredData ? this._messageMask : false,
-          style: this._messageStyle
-        });
-      }
-
       this._queue.forEach(p => {
         const cache = this._cache
           ? this._lrucache.get(`${p[3]}_${p[1]}`)
@@ -619,6 +611,16 @@ export default class Viz extends BaseClass {
         else this[`_${p[3]}`] = p[2] ? p[2](cache) : cache;
       });
       this._queue = [];
+
+      if (this._loadingMessage && q._tasks.length) {
+        this._messageClass.render({
+          container: this._select.node().parentNode,
+          html: this._loadingHTML(this),
+          mask: this._filteredData ? this._messageMask : false,
+          style: this._messageStyle
+        });
+      }
+
       q.awaitAll(() => {
 
         const columns = this._data instanceof Array && this._data.length > 0 ? Object.keys(this._data[0]) : [];
