@@ -99,7 +99,6 @@ export default function(data = []) {
     })
     .render();
 
-  console.log(legendBounds.height);
   if (!this._legendConfig.select && legendBounds.height) {
     if (wide) this._margin[position] += legendBounds.height + this._legendClass.padding() * 2;
     else this._margin[position] += legendBounds.width + this._legendClass.padding() * 2;
