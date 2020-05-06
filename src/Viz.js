@@ -49,6 +49,7 @@ import mousemoveShape from "./on/mousemove.shape";
 import touchstartBody from "./on/touchstart.body";
 
 import zoomControls from "./_zoomControls";
+import drawAttribution from "./_drawAttribution";
 
 /**
  * Default padding logic that will return false if the screen is less than 600 pixels wide.
@@ -88,6 +89,17 @@ export default class Viz extends BaseClass {
 
     this._aggs = {};
     this._ariaHidden = true;
+    this._attribution = false;
+    this._attributionStyle = {
+      background: "rgba(255, 255, 255, 0.75)",
+      border: "1px solid rgba(0, 0, 0, 0.25)",
+      color: "rgba(0, 0, 0, 0.75)",
+      display: "block",
+      font: "400 11px/11px 'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+      margin: "5px",
+      opacity: 0.75,
+      padding: "4px 6px 3px"
+    };
     this._backClass = new TextBox()
       .on("click", () => {
         if (this._history.length) this.config(this._history.pop()).render();
@@ -654,6 +666,7 @@ export default class Viz extends BaseClass {
         this._preDraw();
         this._draw(callback);
         zoomControls.bind(this)();
+        drawAttribution.bind(this)();
 
         if (this._messageClass._isVisible && (!this._noDataMessage || this._filteredData.length)) this._messageClass.hide();
 
@@ -716,6 +729,26 @@ export default class Viz extends BaseClass {
   */
   ariaHidden(_) {
     return arguments.length ? (this._ariaHidden = _, this) : this._ariaHidden;
+  }
+
+  /**
+      @memberof Viz
+      @desc Sets text to be shown positioned absolute on top of the visualization in the bottom-right corner. This is most often used in Geomaps to display the copyright of map tiles. The text is rendered as HTML, so any valid HTML string will render as expected (eg. anchor links work).
+      @param {HTMLString|Boolean} *value* = false
+      @chainable
+  */
+  attribution(_) {
+    return arguments.length ? (this._attribution = _, this) : this._attribution;
+  }
+
+  /**
+      @memberof Viz
+      @desc If *value* is specified, sets the config method for the back button and returns the current class instance.
+      @param {Object} [*value*]
+      @chainable
+  */
+  attributionStyle(_) {
+    return arguments.length ? (this._attributionStyle = assign(this._attributionStyle, _), this) : this._attributionStyle;
   }
 
   /**
