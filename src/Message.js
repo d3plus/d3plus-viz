@@ -66,8 +66,7 @@ export default class Message {
     style = {}
   } = {}) {
 
-    const parent = select(container)
-      .style("position", "relative");
+    const parent = select(container);
 
     this.mask = parent.selectAll("div.d3plus-Mask").data(mask ? [mask] : []);
 

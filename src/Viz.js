@@ -550,6 +550,11 @@ export default class Viz extends BaseClass {
         .attr("width", this._width !== undefined ? `${this._width}px` : undefined)
         .attr("height", this._height !== undefined ? `${this._height}px` : undefined);
 
+    // sets "position: relative" on the SVG parent if currently undefined
+    const parent = select(this._select.node().parentNode);
+    const position = parent.style("position");
+    if (position === "static") parent.style("position", "relative");
+
     // Updates the <title> tag if already exists else creates a new <title> tag on this.select.
     const svgTitle = this._select.selectAll("title").data([0]);
     const svgTitleEnter = svgTitle.enter().append("title").attr("id", `${this._uuid}-title`);
