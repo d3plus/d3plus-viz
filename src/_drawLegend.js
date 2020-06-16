@@ -83,6 +83,7 @@ export default function(data = []) {
     .direction(wide ? "row" : "column")
     .duration(this._duration)
     .data(legendData.length > this._legendCutoff || this._colorScale ? legendData : [])
+    .groupBy(this._groupBy)
     .height(wide ? this._height - (this._margin.bottom + this._margin.top) : this._height - (this._margin.bottom + this._margin.top + padding.bottom + padding.top))
     .locale(this._locale)
     .select(legendGroup)
