@@ -40,14 +40,14 @@ export default function(data = []) {
     const attr = shape === "Line" ? "stroke" : "fill";
     const value = this._shapeConfig[shape] && this._shapeConfig[shape][attr]
       ? this._shapeConfig[shape][attr] : this._shapeConfig[attr];
-    return typeof value === "function" ? value(d, i) : value;
+    return typeof value === "function" ? value.bind(this)(d, i) : value;
   };
 
   const opacity = (d, i) => {
     const shape = this._shape(d, i);
     const value = this._shapeConfig[shape] && this._shapeConfig[shape].opacity
       ? this._shapeConfig[shape].opacity : this._shapeConfig.opacity;
-    return typeof value === "function" ? value(d, i) : value;
+    return typeof value === "function" ? value.bind(this)(d, i) : value;
   };
 
   const fill = (d, i) => `${ color(d, i) }_${ opacity(d, i) }`;
@@ -90,7 +90,6 @@ export default function(data = []) {
     .verticalAlign(!wide ? "middle" : position)
     .width(wide ? this._width - (this._margin.left + this._margin.right + padding.left + padding.right) : this._width - (this._margin.left + this._margin.right))
     .shapeConfig(configPrep.bind(this)(this._shapeConfig, "legend"))
-    .config(this._legendConfig)
     .shapeConfig({
       fill: (d, i) => hidden(d, i) ? this._hiddenColor(d, i) : color(d, i),
       labelConfig: {
@@ -98,6 +97,7 @@ export default function(data = []) {
       },
       opacity
     })
+    .config(this._legendConfig)
     .render();
 
   if (!this._legendConfig.select && legendBounds.height) {
