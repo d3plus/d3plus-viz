@@ -1024,8 +1024,8 @@ function value(d) {
       if (typeof k === "function") return k;
       else {
         if (!this._aggs[k]) {
-          this._aggs[k] = a => {
-            const v = unique(a);
+          this._aggs[k] = (a, c) => {
+            const v = unique(a.map(c));
             return v.length === 1 ? v[0] : v;
           };
         }
@@ -1364,8 +1364,8 @@ function value(d) {
       else {
         this._time = accessor(_);
         if (!this._aggs[_]) {
-          this._aggs[_] = a => {
-            const v = unique(a);
+          this._aggs[_] = (a, c) => {
+            const v = unique(a.map(c));
             return v.length === 1 ? v[0] : v;
           };
         }
