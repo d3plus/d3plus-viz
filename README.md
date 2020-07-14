@@ -9,7 +9,7 @@ Abstract ES6 class that drives d3plus visualizations.
 If you use NPM, run `npm install d3plus-viz --save`. Otherwise, download the [latest release](https://github.com/d3plus/d3plus-viz/releases/latest). The released bundle supports AMD, CommonJS, and vanilla environments. You can also load directly from [d3plus.org](https://d3plus.org):
 
 ```html
-<script src="https://d3plus.org/js/d3plus-viz.v0.12.full.min.js"></script>
+<script src="https://d3plus.org/js/d3plus-viz.v0.13.full.min.js"></script>
 ```
 
 
@@ -915,4 +915,4 @@ This is a global function.
 
 
 
-###### <sub>Documentation generated on Tue, 30 Jun 2020 16:53:22 GMT</sub>
+###### <sub>Documentation generated on Tue, 14 Jul 2020 21:10:18 GMT</sub>
