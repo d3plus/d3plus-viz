@@ -337,12 +337,12 @@ export default class Viz extends BaseClass {
 
     this._drawLabel = (d, i, depth = this._drawDepth) => {
       if (!d) return "";
-      if (d._isAggregation) {
-        return `${this._thresholdName(d, i)} < ${formatAbbreviate(d._threshold * 100, this._locale)}%`;
-      }
       while (d.__d3plus__ && d.data) {
         d = d.data;
         i = d.i;
+      }
+      if (d._isAggregation) {
+        return `${this._thresholdName(d, i)} < ${formatAbbreviate(d._threshold * 100, this._locale)}%`;
       }
       if (this._label) return `${this._label(d, i)}`;
       const l = that._ids(d, i).slice(0, depth + 1);
