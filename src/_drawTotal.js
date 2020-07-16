@@ -24,16 +24,14 @@ export default function(data = []) {
     update: transform
   }).node();
 
-  const visible = typeof total === "number";
-
   this._totalClass
-    .data(visible ? [{text: this._totalFormat(total)}] : [])
+    .data(total ? [{text: this._totalFormat(total)}] : [])
     .locale(this._locale)
     .select(group)
     .width(this._width - (this._margin.left + this._margin.right + padding.left + padding.right))
     .config(this._totalConfig)
     .render();
 
-  this._margin.top += visible ? group.getBBox().height + this._totalConfig.padding * 2 : 0;
+  this._margin.top += total ? group.getBBox().height + this._totalConfig.padding * 2 : 0;
 
 }
