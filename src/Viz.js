@@ -869,6 +869,8 @@ If your data URL needs specific headers to be set, an Object with "url" and "hea
 
 Additionally, a custom formatting function can be passed as a second argument to this method. This custom function will be passed the data that has been loaded, as long as there are no errors. This function should return the final array of obejcts to be used as the primary data array. For example, some JSON APIs return the headers split from the data values to save bandwidth. These would need be joined using a custom formatter.
 
+If you would like to specify certain configuration options based on the yet-to-be-loaded data, you can also return a full `config` object from the data formatter (including the new `data` array as a key in the object).
+
 If *data* is not specified, this method returns the current primary data array, which defaults to an empty array (`[]`);
       @param {Array|String} *data* = []
       @param {Function} [*formatter*]

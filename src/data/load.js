@@ -95,7 +95,13 @@ export default function(path, formatter, key, callback) {
         if (this._cache) this._lrucache.set(`${key}_${url}`, data);
 
         if (formatter) {
-          data = formatter(loadedLength(loaded) === 1 ? loaded[0] : loaded);
+          const formatterResponse = formatter(loadedLength(loaded) === 1 ? loaded[0] : loaded);
+          if (key === "data" && !(formatterResponse instanceof Array)) {
+            data = formatterResponse.data;
+            delete formatterResponse.data;
+            this.config(formatterResponse);
+          }
+          else data = formatterResponse;
         }
         else if (key === "data") {
           data = concat(loaded, "data");
@@ -117,7 +123,13 @@ export default function(path, formatter, key, callback) {
     // Format data
     let data = loadedLength(loaded) === 1 ? loaded[0] : loaded;
     if (formatter) {
-      data = formatter(loadedLength(loaded) === 1 ? loaded[0] : loaded);
+      const formatterResponse = formatter(loadedLength(loaded) === 1 ? loaded[0] : loaded);
+      if (key === "data" && !(formatterResponse instanceof Array)) {
+        data = formatterResponse.data;
+        delete formatterResponse.data;
+        this.config(formatterResponse);
+      }
+      else data = formatterResponse;
     }
     else if (key === "data") {
       data = concat(loaded, "data");
