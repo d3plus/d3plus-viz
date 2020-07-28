@@ -32,7 +32,7 @@
     "d3-selection": "^1.4.0",
     "d3-transition": "^1.2.0",
     "d3-zoom": "^1.8.3",
-    "d3plus-axis": "^0.6.0",
+    "d3plus-axis": "^0.6.1",
     "d3plus-color": "^0.7.0",
     "d3plus-common": "^0.7.0",
     "d3plus-export": "^0.3.19",
@@ -54,7 +54,7 @@
     "test": "d3plus-test"
   },
   "devDependencies": {
-    "d3plus-dev": "^0.7.6",
+    "d3plus-dev": "^0.7.7",
     "d3plus-shape": "^0.17.0"
   },
   "module": "es/index",
