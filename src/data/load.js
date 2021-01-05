@@ -1,6 +1,7 @@
 import {csv, json, text, tsv} from "d3-request";
-import {default as fold} from "./fold";
-import {default as concat} from "./concat";
+import fold from "./fold";
+import concat from "./concat";
+import isData from "./isData.js";
 
 /**
   @function dataLoad
@@ -50,7 +51,6 @@ export default function(path, formatter, key, callback) {
   // If path param is a not an Array then convert path to a 1 element Array to re-use logic
   if (!(path instanceof Array)) path = [path];
 
-  const isData = dataItem => typeof dataItem === "string" || typeof dataItem === "object" && dataItem.url && dataItem.headers;
   const needToLoad = path.find(isData);
 
   let loaded = new Array(path.length);
