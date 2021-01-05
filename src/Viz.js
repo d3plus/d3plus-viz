@@ -38,7 +38,7 @@ import drawTitle from "./_drawTitle";
 import drawTotal from "./_drawTotal";
 import getSize from "./_getSize";
 import inViewport from "./_inViewport";
-import load from "./data/load";
+import addToQueue from "./data/addToQueue";
 
 import clickShape from "./on/click.shape";
 import clickLegend from "./on/click.legend";
@@ -878,10 +878,7 @@ If *data* is not specified, this method returns the current primary data array, 
   */
   data(_, f) {
     if (arguments.length) {
-      const prev = this._queue.find(q => q[3] === "data");
-      const d = [load.bind(this), _, f, "data"];
-      if (prev) this._queue[this._queue.indexOf(prev)] = d;
-      else this._queue.push(d);
+      addToQueue.bind(this)(_, f, "data");
       this._hidden = [];
       this._solo = [];
       return this;
