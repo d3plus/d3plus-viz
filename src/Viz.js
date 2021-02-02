@@ -136,7 +136,13 @@ export default class Viz extends BaseClass {
     this._history = [];
     this._groupBy = [accessor("id")];
 
-    this._legend = true;
+    this._legend = (config, arr) => {
+      const maxGrouped = max(arr, (d, i) => {
+        const id = this._groupBy[this._legendDepth].bind(this)(d, i);
+        return id instanceof Array ? id.length : 1;
+      });
+      return arr.length > 1 && maxGrouped <= 2;
+    };
     this._legendClass = new Legend();
     this._legendConfig = {
       label: legendLabel.bind(this),
@@ -149,7 +155,6 @@ export default class Viz extends BaseClass {
         }
       }
     };
-    this._legendCutoff = 1;
     this._legendPadding = defaultPadding;
     this._legendPosition = () => this._width > this._height ? "right" : "bottom";
     this._legendSort = (a, b) => this._drawLabel(a).localeCompare(this._drawLabel(b));
@@ -1078,11 +1083,11 @@ function value(d) {
   /**
       @memberof Viz
       @desc If *value* is specified, toggles the legend based on the specified boolean and returns the current class instance.
-      @param {Boolean} [*value* = true]
+      @param {Boolean|Function} [*value* = true]
       @chainable
   */
   legend(_) {
-    return arguments.length ? (this._legend = _, this) : this._legend;
+    return arguments.length ? (this._legend = typeof _ === "function" ? _ : constant(_), this) : this._legend;
   }
 
   /**
@@ -1093,16 +1098,6 @@ function value(d) {
   */
   legendConfig(_) {
     return arguments.length ? (this._legendConfig = assign(this._legendConfig, _), this) : this._legendConfig;
-  }
-
-  /**
-   * @memberof Viz
-   * @desc If *value* is specified, sets the cutoff for the amount of categories in the legend.
-   * @param {Number} [*value* = 1]
-   * @chainable
-   */
-  legendCutoff(_) {
-    return arguments.length ? (this._legendCutoff = _, this) : this._legendCutoff;
   }
 
   /**

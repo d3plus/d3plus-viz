@@ -18,21 +18,6 @@ export function legendLabel(d, i) {
 */
 export default function(data = []) {
 
-  const legendBounds = this._legendClass.outerBounds();
-  const position = this._legendPosition.bind(this)(this.config());
-  const wide = ["top", "bottom"].includes(position);
-  const padding = this._legendPadding() ? this._padding : {top: 0, right: 0, bottom: 0, left: 0};
-
-  const transform = {transform: `translate(${wide ? this._margin.left + padding.left : this._margin.left}, ${wide ? this._margin.top : this._margin.top + padding.top})`};
-
-  const legendGroup = elem("g.d3plus-viz-legend", {
-    condition: this._legend && !this._legendConfig.select,
-    enter: transform,
-    parent: this._select,
-    transition: this._transition,
-    update: transform
-  }).node();
-
   const legendData = [];
 
   const color = (d, i) => {
@@ -52,12 +37,10 @@ export default function(data = []) {
 
   const fill = (d, i) => `${ color(d, i) }_${ opacity(d, i) }`;
 
-  if (this._legend) {
-    nest()
-      .key(fill)
-      .rollup(leaves => legendData.push(merge(leaves, this._aggs)))
-      .entries(this._colorScale ? data.filter((d, i) => this._colorScale(d, i) === undefined) : data);
-  }
+  nest()
+    .key(fill)
+    .rollup(leaves => legendData.push(merge(leaves, this._aggs)))
+    .entries(this._colorScale ? data.filter((d, i) => this._colorScale(d, i) === undefined) : data);
 
   legendData.sort(this._legendSort);
 
@@ -77,12 +60,28 @@ export default function(data = []) {
     return this._hidden.includes(id) || this._solo.length && !this._solo.includes(id);
   };
 
+  const legendBounds = this._legendClass.outerBounds();
+  const config = this.config();
+  const position = this._legendPosition.bind(this)(config);
+  const wide = ["top", "bottom"].includes(position);
+  const padding = this._legendPadding() ? this._padding : {top: 0, right: 0, bottom: 0, left: 0};
+  const transform = {transform: `translate(${wide ? this._margin.left + padding.left : this._margin.left}, ${wide ? this._margin.top : this._margin.top + padding.top})`};
+  const visible = this._legend.bind(this)(config, legendData);
+
+  const legendGroup = elem("g.d3plus-viz-legend", {
+    condition: visible && !this._legendConfig.select,
+    enter: transform,
+    parent: this._select,
+    transition: this._transition,
+    update: transform
+  }).node();
+
   this._legendClass
     .id(fill)
     .align(wide ? "center" : position)
     .direction(wide ? "row" : "column")
     .duration(this._duration)
-    .data(legendData.length > this._legendCutoff || this._colorScale ? legendData : [])
+    .data(visible ? legendData : [])
     .height(wide ? this._height - (this._margin.bottom + this._margin.top) : this._height - (this._margin.bottom + this._margin.top + padding.bottom + padding.top))
     .locale(this._locale)
     .parent(this)
