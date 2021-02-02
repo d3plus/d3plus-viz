@@ -1,4 +1,3 @@
-import {event} from "d3-selection";
 import {configPrep} from "d3plus-common";
 
 /**
@@ -8,7 +7,7 @@ import {configPrep} from "d3plus-common";
     @param {Object} [*config*] Optional configuration methods for the Tooltip class.
     @private
 */
-export default function(d, i, x) {
+export default function(d, i, x, event) {
 
   if (d && this._tooltip(d, i)) {
     this._select.style("cursor", "pointer");

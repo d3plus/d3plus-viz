@@ -1,10 +1,8 @@
-import {event} from "d3-selection";
-
 /**
  @desc On touchstart event for the Body element.
  @private
  */
-export default function(d) {
+export default function(d, i, x, event) {
   event.preventDefault();
   event.stopPropagation();
 

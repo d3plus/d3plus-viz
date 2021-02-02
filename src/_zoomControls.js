@@ -1,4 +1,4 @@
-import {event, select} from "d3-selection";
+import {select} from "d3-selection";
 import {zoomTransform} from "d3-zoom";
 
 import {attrize, stylize} from "d3plus-common";
@@ -22,7 +22,7 @@ export default function() {
     .extent([[0, 0], [width, height]])
     .scaleExtent([1, this._zoomMax])
     .translateExtent([[0, 0], [width, height]])
-    .on("zoom", zoomed.bind(this));
+    .on("zoom", event => zoomed.bind(this)(event.transform));
 
   this._zoomToBounds = zoomToBounds.bind(this);
 
@@ -70,7 +70,7 @@ export default function() {
 
   this._zoomBrush
     .extent([[0, 0], [width, height]])
-    .filter(() => !event.button && event.detail < 2)
+    .filter(event => !event.button && event.detail < 2)
     .handleSize(this._zoomBrushHandleSize)
     .on("start", brushStart.bind(this))
     .on("brush", brushBrush.bind(this))
@@ -126,11 +126,9 @@ function zoomEvents(brush = false) {
 */
 function zoomed(transform = false, duration = 0) {
 
-  // console.log(transform || event.transform);
-
   if (this._zoomGroup) {
-    if (!duration) this._zoomGroup.attr("transform", transform || event.transform);
-    else this._zoomGroup.transition().duration(duration).attr("transform", transform || event.transform);
+    if (!duration) this._zoomGroup.attr("transform", transform);
+    else this._zoomGroup.transition().duration(duration).attr("transform", transform);
   }
 
   if (this._renderTiles) this._renderTiles(zoomTransform(this._container.node()), duration);
@@ -241,7 +239,7 @@ function brushBrush() {
     @desc Triggered on brush "end".
     @private
 */
-function brushEnd() {
+function brushEnd(event) {
 
   if (!event.selection) return; // Only transition after input.
 

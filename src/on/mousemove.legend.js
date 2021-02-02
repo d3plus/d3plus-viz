@@ -1,5 +1,4 @@
 import {merge} from "d3-array";
-import {event} from "d3-selection";
 
 import {configPrep} from "d3plus-common";
 
@@ -12,7 +11,7 @@ import {legendLabel} from "../_drawLegend";
     @param {Object} [*config*] Optional configuration methods for the Tooltip class.
     @private
 */
-export default function(d, i, x) {
+export default function(d, i, x, event) {
 
   const position = event.touches ? [event.touches[0].clientX, event.touches[0].clientY] : [event.clientX, event.clientY];
   const dataLength = merge(this._legendClass.data().map((d, i) => {

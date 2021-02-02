@@ -1,5 +1,4 @@
 import {merge} from "d3-array";
-import {event} from "d3-selection";
 
 /**
     @desc On click event for all legend shapes in a Viz.
@@ -7,7 +6,7 @@ import {event} from "d3-selection";
     @param {Number} *i* The index of the data object being interacted with.
     @private
 */
-export default function(d, i) {
+export default function(d, i, x, event) {
 
   this._select.style("cursor", "auto");
   if (this._tooltip(d, i)) this._tooltipClass.data([]).render();
