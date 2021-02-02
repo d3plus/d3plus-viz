@@ -10,7 +10,7 @@ export default function() {
 
   const data = this._data;
 
-  const position = this._colorScalePosition || "bottom";
+  const position = this._colorScalePosition.bind(this)(this.config()) || "bottom";
   const wide = ["top", "bottom"].includes(position);
   const padding = this._colorScalePadding() ? this._padding : {top: 0, right: 0, bottom: 0, left: 0};
 
@@ -27,7 +27,7 @@ export default function() {
     : this._height - (this._margin.bottom + this._margin.top);
 
   const transform = {
-    opacity: this._colorScalePosition ? 1 : 0,
+    opacity: position ? 1 : 0,
     transform: `translate(${wide ? this._margin.left + padding.left + (availableWidth - width) / 2 : this._margin.left}, ${wide ? this._margin.top : this._margin.top + padding.top + (availableHeight - height) / 2})`
   };
 
@@ -61,7 +61,7 @@ export default function() {
       .render();
 
     const scaleBounds = this._colorScaleClass.outerBounds();
-    if (this._colorScalePosition && !this._colorScaleConfig.select && scaleBounds.height) {
+    if (position && !this._colorScaleConfig.select && scaleBounds.height) {
       if (wide) this._margin[position] += scaleBounds.height + this._legendClass.padding() * 2;
       else this._margin[position] += scaleBounds.width + this._legendClass.padding() * 2;
     }

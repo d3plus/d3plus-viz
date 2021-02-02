@@ -113,9 +113,11 @@ export default class Viz extends BaseClass {
 
     this._color = (d, i) => this._groupBy[0](d, i);
     this._colorScaleClass = new ColorScale();
-    this._colorScaleConfig = {};
+    this._colorScaleConfig = {
+      scale: "jenks"
+    };
     this._colorScalePadding = defaultPadding;
-    this._colorScalePosition = "bottom";
+    this._colorScalePosition = () => this._width > this._height ? "right" : "bottom";
     this._colorScaleMaxSize = 600;
 
     this._data = [];
@@ -421,8 +423,9 @@ export default class Viz extends BaseClass {
   _draw() {
 
     const legendPosition = this._legendPosition.bind(this)(this.config());
+    const colorScalePosition = this._colorScalePosition.bind(this)(this.config());
     if (legendPosition === "left" || legendPosition === "right") drawLegend.bind(this)(this._filteredData);
-    if (this._colorScalePosition === "left" || this._colorScalePosition === "right" || this._colorScalePosition === false) drawColorScale.bind(this)(this._filteredData);
+    if (colorScalePosition === "left" || colorScalePosition === "right" || colorScalePosition === false) drawColorScale.bind(this)(this._filteredData);
 
     drawBack.bind(this)();
     drawTitle.bind(this)(this._filteredData);
@@ -430,7 +433,7 @@ export default class Viz extends BaseClass {
     drawTimeline.bind(this)(this._filteredData);
 
     if (legendPosition === "top" || legendPosition === "bottom") drawLegend.bind(this)(this._legendData);
-    if (this._colorScalePosition === "top" || this._colorScalePosition === "bottom") drawColorScale.bind(this)(this._filteredData);
+    if (colorScalePosition === "top" || colorScalePosition === "bottom") drawColorScale.bind(this)(this._filteredData);
 
     this._shapes = [];
 
@@ -805,11 +808,11 @@ export default class Viz extends BaseClass {
   /**
       @memberof Viz
       @desc Defines which side of the visualization to anchor the color scale. Acceptable values are `"top"`, `"bottom"`, `"left"`, `"right"`, and `false`. A `false` value will cause the color scale to not be displayed, but will still color shapes based on the scale.
-      @param {String|Boolean} [*value* = "bottom"]
+      @param {Function|String|Boolean} [*value* = "bottom"]
       @chainable
   */
   colorScalePosition(_) {
-    return arguments.length ? (this._colorScalePosition = _, this) : this._colorScalePosition;
+    return arguments.length ? (this._colorScalePosition = typeof _ === "function" ? _ : constant(_), this) : this._colorScalePosition;
   }
 
   /**
