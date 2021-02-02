@@ -17,7 +17,6 @@ import lrucache from "lrucache";
 import {date} from "d3plus-axis";
 import {colorAssign, colorContrast} from "d3plus-color";
 import {accessor, assign, BaseClass, constant, merge, unique} from "d3plus-common";
-import {Select} from "d3plus-form";
 import {formatAbbreviate} from "d3plus-format";
 import {ColorScale, Legend} from "d3plus-legend";
 import {TextBox} from "d3plus-text";
@@ -31,7 +30,6 @@ import Message from "./Message";
 
 import drawBack from "./_drawBack";
 import drawColorScale from "./_drawColorScale";
-import drawControls from "./_drawControls";
 import {default as drawLegend, legendLabel} from "./_drawLegend";
 import drawTimeline from "./_drawTimeline";
 import drawTitle from "./_drawTitle";
@@ -119,13 +117,6 @@ export default class Viz extends BaseClass {
     this._colorScalePadding = defaultPadding;
     this._colorScalePosition = "bottom";
     this._colorScaleMaxSize = 600;
-
-    const controlTest = new Select();
-    this._controlCache = {};
-    this._controlConfig = {
-      selectStyle: Object.assign({margin: "5px"}, controlTest.selectStyle())
-    };
-    this._controlPadding = defaultPadding;
 
     this._data = [];
     this._dataCutoff = 100;
@@ -436,7 +427,6 @@ export default class Viz extends BaseClass {
     drawTitle.bind(this)(this._filteredData);
     drawTotal.bind(this)(this._filteredData);
     drawTimeline.bind(this)(this._filteredData);
-    drawControls.bind(this)(this._filteredData);
 
     if (this._legendPosition === "top" || this._legendPosition === "bottom") drawLegend.bind(this)(this._legendData);
     if (this._colorScalePosition === "top" || this._colorScalePosition === "bottom") drawColorScale.bind(this)(this._filteredData);
@@ -829,36 +819,6 @@ export default class Viz extends BaseClass {
   */
   colorScaleMaxSize(_) {
     return arguments.length ? (this._colorScaleMaxSize = _, this) : this._colorScaleMaxSize;
-  }
-
-  /**
-      @memberof Viz
-      @desc Defines a list of controls to be rendered at the bottom of the visualization.
-      @param {Array} [*value*]
-      @chainable
-  */
-  controls(_) {
-    return arguments.length ? (this._controls = _, this) : this._controls;
-  }
-
-  /**
-      @memberof Viz
-      @desc If *value* is specified, sets the config method for the controls and returns the current class instance.
-      @param {Object} [*value*]
-      @chainable
-  */
-  controlConfig(_) {
-    return arguments.length ? (this._controlConfig = assign(this._controlConfig, _), this) : this._controlConfig;
-  }
-
-  /**
-      @memberof Viz
-      @desc Tells the controls whether or not to use the internal padding defined by the visualization in it's positioning. For example, d3plus-plot will add padding on the left so that the controls appears centered above the x-axis. By default, this padding is only applied on screens larger than 600 pixels wide.
-      @param {Boolean|Function} [*value*]
-      @chainable
-  */
-  controlPadding(_) {
-    return arguments.length ? (this._controlPadding = typeof _ === "function" ? _ : constant(_), this) : this._controlPadding;
   }
 
   /**
