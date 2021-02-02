@@ -3,10 +3,9 @@
     @see https://github.com/d3plus/d3plus-common#BaseClass
 */
 
-import {max, merge as arrayMerge, range} from "d3-array";
+import {max, merge as arrayMerge, group, range, rollup} from "d3-array";
 import {brush} from "d3-brush";
 import {color} from "d3-color";
-import {nest} from "d3-collection";
 import {queue} from "d3-queue";
 import {select} from "d3-selection";
 import {transition} from "d3-transition";
@@ -371,12 +370,12 @@ export default class Viz extends BaseClass {
 
       flatData = this._timeFilter ? this._data.filter(this._timeFilter) : this._data;
       if (this._filter) flatData = flatData.filter(this._filter);
-      const dataNest = nest();
-      for (let i = 0; i <= this._drawDepth; i++) dataNest.key(this._groupBy[i]);
-      if (this._discrete && `_${this._discrete}` in this) dataNest.key(this[`_${this._discrete}`]);
-      if (this._discrete && `_${this._discrete}2` in this) dataNest.key(this[`_${this._discrete}2`]);
+      const nestKeys = [];
+      for (let i = 0; i <= this._drawDepth; i++) nestKeys.push(this._groupBy[i]);
+      if (this._discrete && `_${this._discrete}` in this) nestKeys.push(this[`_${this._discrete}`]);
+      if (this._discrete && `_${this._discrete}2` in this) nestKeys.push(this[`_${this._discrete}2`]);
 
-      const tree = dataNest.rollup(leaves => {
+      const tree = rollup(flatData, leaves => {
 
         const index = this._data.indexOf(leaves[0]);
         const shape = this._shape(leaves[0], index);
@@ -390,14 +389,14 @@ export default class Viz extends BaseClass {
         }
         this._legendData.push(d);
 
-      }).entries(flatData);
+      }, ...nestKeys);
 
       this._filteredData = this._thresholdFunction(this._filteredData, tree);
 
     }
 
     // overrides the hoverOpacity of shapes if data is larger than cutoff
-    const uniqueIds = nest().key(this._id).entries(this._filteredData).length;
+    const uniqueIds = group(this._filteredData, this._id).size;
     if (uniqueIds > this._dataCutoff) {
       if (this._userHover === undefined) this._userHover = this._shapeConfig.hoverOpacity || 0.5;
       if (this._userDuration === undefined) this._userDuration = this._shapeConfig.duration || 600;

@@ -1,4 +1,4 @@
-import {nest} from "d3-collection";
+import {rollup} from "d3-array";
 import {configPrep, elem, merge} from "d3plus-common";
 
 /**
@@ -37,10 +37,8 @@ export default function(data = []) {
 
   const fill = (d, i) => `${ color(d, i) }_${ opacity(d, i) }`;
 
-  nest()
-    .key(fill)
-    .rollup(leaves => legendData.push(merge(leaves, this._aggs)))
-    .entries(this._colorScale ? data.filter((d, i) => this._colorScale(d, i) === undefined) : data);
+  const rollupData = this._colorScale ? data.filter((d, i) => this._colorScale(d, i) === undefined) : data;
+  rollup(rollupData, leaves => legendData.push(merge(leaves, this._aggs)), fill);
 
   legendData.sort(this._legendSort);
 
