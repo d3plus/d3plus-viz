@@ -23,8 +23,8 @@ import {TextBox} from "d3plus-text";
 import {Timeline} from "d3plus-timeline";
 import {Tooltip} from "d3plus-tooltip";
 
-import {Rect} from "d3plus-shape";
-import {configPrep} from "d3plus-common";
+// import {Rect} from "d3plus-shape";
+// import {configPrep} from "d3plus-common";
 
 import Message from "./Message";
 
@@ -149,7 +149,7 @@ export default class Viz extends BaseClass {
     };
     this._legendCutoff = 1;
     this._legendPadding = defaultPadding;
-    this._legendPosition = "bottom";
+    this._legendPosition = () => this._width > this._height ? "right" : "bottom";
     this._legendSort = (a, b) => this._drawLabel(a).localeCompare(this._drawLabel(b));
     this._legendTooltip = {};
 
@@ -420,7 +420,8 @@ export default class Viz extends BaseClass {
   */
   _draw() {
 
-    if (this._legendPosition === "left" || this._legendPosition === "right") drawLegend.bind(this)(this._filteredData);
+    const legendPosition = this._legendPosition.bind(this)(this.config());
+    if (legendPosition === "left" || legendPosition === "right") drawLegend.bind(this)(this._filteredData);
     if (this._colorScalePosition === "left" || this._colorScalePosition === "right" || this._colorScalePosition === false) drawColorScale.bind(this)(this._filteredData);
 
     drawBack.bind(this)();
@@ -428,55 +429,55 @@ export default class Viz extends BaseClass {
     drawTotal.bind(this)(this._filteredData);
     drawTimeline.bind(this)(this._filteredData);
 
-    if (this._legendPosition === "top" || this._legendPosition === "bottom") drawLegend.bind(this)(this._legendData);
+    if (legendPosition === "top" || legendPosition === "bottom") drawLegend.bind(this)(this._legendData);
     if (this._colorScalePosition === "top" || this._colorScalePosition === "bottom") drawColorScale.bind(this)(this._filteredData);
 
     this._shapes = [];
 
     // Draws a container and zoomGroup to test functionality.
-    this._testGroup = this._select.selectAll("g.d3plus-viz-testGroup").data([0]);
-    const enterTest = this._testGroup.enter().append("g").attr("class", "d3plus-viz-testGroup")
-      .merge(this._testGroup);
-    this._testGroup = enterTest.merge(this._testGroup);
-    const bgHeight = this._height - this._margin.top - this._margin.bottom;
-    const bgWidth = this._width - this._margin.left - this._margin.right;
-    new Rect()
-      .data([{id: "background"}])
-      .select(this._testGroup.node())
-      .x(bgWidth / 2 + this._margin.left)
-      .y(bgHeight / 2 + this._margin.top)
-      .width(bgWidth)
-      .height(bgHeight)
-      .fill("#ccc")
-      .render();
+    // this._testGroup = this._select.selectAll("g.d3plus-viz-testGroup").data([0]);
+    // const enterTest = this._testGroup.enter().append("g").attr("class", "d3plus-viz-testGroup")
+    //   .merge(this._testGroup);
+    // this._testGroup = enterTest.merge(this._testGroup);
+    // const bgHeight = this._height - this._margin.top - this._margin.bottom;
+    // const bgWidth = this._width - this._margin.left - this._margin.right;
+    // new Rect()
+    //   .data([{id: "background"}])
+    //   .select(this._testGroup.node())
+    //   .x(bgWidth / 2 + this._margin.left)
+    //   .y(bgHeight / 2 + this._margin.top)
+    //   .width(bgWidth)
+    //   .height(bgHeight)
+    //   .fill("#ccc")
+    //   .render();
 
-    this._zoomGroup = this._select.selectAll("g.d3plus-viz-zoomGroup").data([0]);
-    const enter = this._zoomGroup.enter().append("g").attr("class", "d3plus-viz-zoomGroup")
-      .merge(this._zoomGroup);
+    // this._zoomGroup = this._select.selectAll("g.d3plus-viz-zoomGroup").data([0]);
+    // const enter = this._zoomGroup.enter().append("g").attr("class", "d3plus-viz-zoomGroup")
+    //   .merge(this._zoomGroup);
 
-    this._zoomGroup = enter.merge(this._zoomGroup);
-    const testConfig = {
-      on: {
-        click: this._on["click.shape"],
-        mouseenter: this._on.mouseenter,
-        mouseleave: this._on.mouseleave,
-        mousemove: this._on["mousemove.shape"]
-      }
-    };
+    // this._zoomGroup = enter.merge(this._zoomGroup);
+    // const testConfig = {
+    //   on: {
+    //     click: this._on["click.shape"],
+    //     mouseenter: this._on.mouseenter,
+    //     mouseleave: this._on.mouseleave,
+    //     mousemove: this._on["mousemove.shape"]
+    //   }
+    // };
 
-    const testWidth = 10;
-    this._shapes.push(new Rect()
-      .config(this._shapeConfig)
-      .config(configPrep.bind(this)(testConfig))
-      .data(this._filteredData)
-      .label("Test Label")
-      .select(this._zoomGroup.node())
-      .id(this._id)
-      .x(() => Math.random() * bgWidth)
-      .y(() => Math.random() * bgHeight)
-      .width(testWidth)
-      .height(testWidth)
-      .render());
+    // const testWidth = 10;
+    // this._shapes.push(new Rect()
+    //   .config(this._shapeConfig)
+    //   .config(configPrep.bind(this)(testConfig))
+    //   .data(this._filteredData)
+    //   .label("Test Label")
+    //   .select(this._zoomGroup.node())
+    //   .id(this._id)
+    //   .x(() => Math.random() * bgWidth)
+    //   .y(() => Math.random() * bgHeight)
+    //   .width(testWidth)
+    //   .height(testWidth)
+    //   .render());
 
   }
 
@@ -1124,11 +1125,11 @@ function value(d) {
   /**
       @memberof Viz
       @desc Defines which side of the visualization to anchor the legend. Expected values are `"top"`, `"bottom"`, `"left"`, and `"right"`.
-      @param {String} [*value* = "bottom"]
+      @param {Function|String} [*value* = "bottom"]
       @chainable
   */
   legendPosition(_) {
-    return arguments.length ? (this._legendPosition = _, this) : this._legendPosition;
+    return arguments.length ? (this._legendPosition = typeof _ === "function" ? _ : constant(_), this) : this._legendPosition;
   }
 
   /**

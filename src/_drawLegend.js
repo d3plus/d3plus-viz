@@ -19,7 +19,7 @@ export function legendLabel(d, i) {
 export default function(data = []) {
 
   const legendBounds = this._legendClass.outerBounds();
-  const position = this._legendPosition;
+  const position = this._legendPosition.bind(this)(this.config());
   const wide = ["top", "bottom"].includes(position);
   const padding = this._legendPadding() ? this._padding : {top: 0, right: 0, bottom: 0, left: 0};
 
