@@ -12,8 +12,8 @@ export default function(_, f, key) {
   if (!(_ instanceof Array)) _ = [_];
   const needToLoad = _.find(isData);
   if (needToLoad) {
-    const prev = this._queue.find(q => q[3] === "data");
-    const d = [load.bind(this), _, f, "data"];
+    const prev = this._queue.find(q => q[3] === key);
+    const d = [load.bind(this), _, f, key];
     if (prev) this._queue[this._queue.indexOf(prev)] = d;
     else this._queue.push(d);
   }
