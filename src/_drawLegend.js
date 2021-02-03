@@ -70,7 +70,7 @@ export default function(data = []) {
     condition: visible && !this._legendConfig.select,
     enter: transform,
     parent: this._select,
-    transition: this._transition,
+    duration: this._duration,
     update: transform
   }).node();
 

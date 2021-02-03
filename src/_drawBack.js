@@ -11,7 +11,7 @@ export default function() {
 
   const backGroup = elem("g.d3plus-viz-back", {
     parent: this._select,
-    transition: this._transition,
+    duration: this._duration,
     update: {transform: `translate(${this._margin.left}, ${this._margin.top})`}
   }).node();
 

@@ -8,7 +8,6 @@ import {brush} from "d3-brush";
 import {color} from "d3-color";
 import {queue} from "d3-queue";
 import {select} from "d3-selection";
-import {transition} from "d3-transition";
 import {zoom} from "d3-zoom";
 
 import lrucache from "lrucache";
@@ -428,7 +427,7 @@ export default class Viz extends BaseClass {
 
     const legendPosition = this._legendPosition.bind(this)(this.config());
     const colorScalePosition = this._colorScalePosition.bind(this)(this.config());
-    if (legendPosition === "left" || legendPosition === "right") drawLegend.bind(this)(this._filteredData);
+    if (legendPosition === "left" || legendPosition === "right") drawLegend.bind(this)(this._legendData);
     if (colorScalePosition === "left" || colorScalePosition === "right" || colorScalePosition === false) drawColorScale.bind(this)(this._filteredData);
 
     drawBack.bind(this)();
@@ -507,7 +506,6 @@ export default class Viz extends BaseClass {
     // Resets margins and padding
     this._margin = {bottom: 0, left: 0, right: 0, top: 0};
     this._padding = {bottom: 0, left: 0, right: 0, top: 0};
-    this._transition = transition().duration(this._duration);
 
     // Appends a fullscreen SVG to the BODY if a container has not been provided through .select().
     if (this._select === void 0 || this._select.node().tagName.toLowerCase() !== "svg") {
@@ -554,7 +552,7 @@ export default class Viz extends BaseClass {
         .attr("role", "img")
         .attr("xmlns", "http://www.w3.org/2000/svg")
         .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
-      .transition(transition)
+      .transition().duration(this._duration)
         .style("width", this._width !== undefined ? `${this._width}px` : undefined)
         .style("height", this._height !== undefined ? `${this._height}px` : undefined)
         .attr("width", this._width !== undefined ? `${this._width}px` : undefined)

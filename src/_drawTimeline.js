@@ -40,7 +40,7 @@ export default function(data = []) {
     condition: timelinePossible,
     enter: transform,
     parent: this._select,
-    transition: this._transition,
+    duration: this._duration,
     update: transform
   }).node();
 

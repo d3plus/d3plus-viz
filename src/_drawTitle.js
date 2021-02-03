@@ -16,7 +16,7 @@ export default function(data = []) {
   const group = elem("g.d3plus-viz-title", {
     enter: transform,
     parent: this._select,
-    transition: this._transition,
+    duration: this._duration,
     update: transform
   }).node();
 

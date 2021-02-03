@@ -37,7 +37,7 @@ export default function() {
     condition: showColorScale && !this._colorScaleConfig.select,
     enter: transform,
     parent: this._select,
-    transition: this._transition,
+    duration: this._duration,
     update: transform
   }).node();
 
