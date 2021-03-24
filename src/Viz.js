@@ -425,8 +425,10 @@ export default class Viz extends BaseClass {
   */
   _draw() {
 
-    const legendPosition = this._legendPosition.bind(this)(this.config());
-    const colorScalePosition = this._colorScalePosition.bind(this)(this.config());
+    let legendPosition = this._legendPosition.bind(this)(this.config());
+    if (![false, "top", "bottom", "left", "right"].includes(legendPosition)) legendPosition = "bottom";
+    let colorScalePosition = this._colorScalePosition.bind(this)(this.config());
+    if (![false, "top", "bottom", "left", "right"].includes(colorScalePosition)) colorScalePosition = "bottom";
     if (legendPosition === "left" || legendPosition === "right") drawLegend.bind(this)(this._legendData);
     if (colorScalePosition === "left" || colorScalePosition === "right" || colorScalePosition === false) drawColorScale.bind(this)(this._filteredData);
 

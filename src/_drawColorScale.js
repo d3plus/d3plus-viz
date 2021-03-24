@@ -10,7 +10,8 @@ export default function() {
 
   const data = this._data;
 
-  const position = this._colorScalePosition.bind(this)(this.config());
+  let position = this._colorScalePosition.bind(this)(this.config());
+  if (![false, "top", "bottom", "left", "right"].includes(position)) position = "bottom";
   const wide = ["top", "bottom"].includes(position);
   const padding = this._colorScalePadding() ? this._padding : {top: 0, right: 0, bottom: 0, left: 0};
 
