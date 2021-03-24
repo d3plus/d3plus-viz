@@ -60,7 +60,8 @@ export default function(data = []) {
 
   const legendBounds = this._legendClass.outerBounds();
   const config = this.config();
-  const position = this._legendPosition.bind(this)(config);
+  let position = this._legendPosition.bind(this)(config);
+  if (![false, "top", "bottom", "left", "right"].includes(position)) position = "bottom";
   const wide = ["top", "bottom"].includes(position);
   const padding = this._legendPadding() ? this._padding : {top: 0, right: 0, bottom: 0, left: 0};
   const transform = {transform: `translate(${wide ? this._margin.left + padding.left : this._margin.left}, ${wide ? this._margin.top : this._margin.top + padding.top})`};
