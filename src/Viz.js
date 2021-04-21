@@ -552,7 +552,6 @@ export default class Viz extends BaseClass {
         .attr("class", "d3plus-viz")
         .attr("aria-hidden", this._ariaHidden)
         .attr("aria-labelledby", `${this._uuid}-title ${this._uuid}-desc`)
-        .attr("opacity", 1)
         .attr("role", "img")
         .attr("xmlns", "http://www.w3.org/2000/svg")
         .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
@@ -566,6 +565,9 @@ export default class Viz extends BaseClass {
     const parent = select(this._select.node().parentNode);
     const position = parent.style("position");
     if (position === "static") parent.style("position", "relative");
+
+    // sets initial opacity to 1, if it has not already been set
+    if (this._select.attr("opacity") === null) this._select.attr("opacity", 1);
 
     // Updates the <title> tag if already exists else creates a new <title> tag on this.select.
     const svgTitle = this._select.selectAll("title").data([0]);
