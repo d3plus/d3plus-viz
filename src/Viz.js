@@ -414,6 +414,7 @@ export default class Viz extends BaseClass {
         mask: false,
         style: this._messageStyle
       });
+      this._select.transition().duration(this._duration).attr("opacity", 0);
     }
 
   }
@@ -551,6 +552,7 @@ export default class Viz extends BaseClass {
         .attr("class", "d3plus-viz")
         .attr("aria-hidden", this._ariaHidden)
         .attr("aria-labelledby", `${this._uuid}-title ${this._uuid}-desc`)
+        .attr("opacity", 1)
         .attr("role", "img")
         .attr("xmlns", "http://www.w3.org/2000/svg")
         .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
@@ -666,7 +668,10 @@ export default class Viz extends BaseClass {
         zoomControls.bind(this)();
         drawAttribution.bind(this)();
 
-        if (this._messageClass._isVisible && (!this._noDataMessage || this._filteredData.length)) this._messageClass.hide();
+        if (this._messageClass._isVisible && (!this._noDataMessage || this._filteredData.length)) {
+          this._messageClass.hide();
+          if (this._select.attr("opacity") === "0") this._select.transition().duration(this._duration).attr("opacity", 1);
+        }
 
         if (this._detectResize && (this._autoWidth || this._autoHeight)) {
           select(this._scrollContainer).on(`resize.${this._uuid}`, () => {
