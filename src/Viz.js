@@ -993,6 +993,7 @@ function value(d) {
   */
   groupBy(_) {
     if (!arguments.length) return this._groupBy;
+    this._groupByRaw = _;
     if (!(_ instanceof Array)) _ = [_];
     return this._groupBy = _.map(k => {
       if (typeof k === "function") return k;
