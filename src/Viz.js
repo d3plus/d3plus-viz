@@ -3,7 +3,7 @@
     @see https://github.com/d3plus/d3plus-common#BaseClass
 */
 
-import {max, merge as arrayMerge, group, range, rollup} from "d3-array";
+import {group, max, merge as arrayMerge, min, range, rollup} from "d3-array";
 import {brush} from "d3-brush";
 import {color} from "d3-color";
 import {queue} from "d3-queue";
@@ -325,7 +325,9 @@ export default class Viz extends BaseClass {
     const that = this;
 
     // based on the groupBy, determine the draw depth and current depth id
-    this._drawDepth = this._depth !== void 0 ? this._depth : this._groupBy.length - 1;
+    this._drawDepth = this._depth !== void 0
+      ? min([this._depth >= 0 ? this._depth : 0, this._groupBy.length - 1])
+      : this._groupBy.length - 1;
     this._id = this._groupBy[this._drawDepth];
     this._ids = (d, i) => this._groupBy
       .map(g => !d || d.__d3plus__ && !d.data ? undefined : g(d.__d3plus__ ? d.data : d, d.__d3plus__ ? d.i : i))
