@@ -28,6 +28,6 @@ export default function(data = []) {
     .config(this._titleConfig)
     .render();
 
-  this._margin.top += text ? group.getBBox().height : 0;
+  this._margin.top += text ? group.getBBox().height + this._titleConfig.padding * 2 : 0;
 
 }
