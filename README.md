@@ -864,7 +864,7 @@ This is a global function.
 ---
 
 <a name="dataLoad"></a>
-#### d3plus.**dataLoad**(path, [formatter], [key], [callback]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/data/load.js#L6)
+#### d3plus.**dataLoad**(path, [formatter], [key], [callback]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/data/load.js#L7)
 
 Loads data from a filepath or URL, converts it to a valid JSON object, and returns it to a callback function.
 
@@ -913,4 +913,4 @@ This is a global function.
 
 
 
-###### <sub>Documentation generated on Thu, 27 May 2021 15:30:19 GMT</sub>
+###### <sub>Documentation generated on Tue, 15 Jun 2021 20:23:23 GMT</sub>
