@@ -2,6 +2,7 @@ import {csv, json, text, tsv} from "d3-request";
 import fold from "./fold";
 import concat from "./concat";
 import isData from "./isData.js";
+import {isObject} from "d3plus-common";
 
 /**
   @function dataLoad
@@ -96,12 +97,12 @@ export default function(path, formatter, key, callback) {
 
         if (formatter) {
           const formatterResponse = formatter(loadedLength(loaded) === 1 ? loaded[0] : loaded);
-          if (key === "data" && !(formatterResponse instanceof Array)) {
-            data = formatterResponse.data;
+          if (key === "data" && isObject(formatterResponse)) {
+            data = formatterResponse.data || [];
             delete formatterResponse.data;
             this.config(formatterResponse);
           }
-          else data = formatterResponse;
+          else data = formatterResponse || [];
         }
         else if (key === "data") {
           data = concat(loaded, "data");
@@ -124,12 +125,12 @@ export default function(path, formatter, key, callback) {
     let data = loadedLength(loaded) === 1 ? loaded[0] : loaded;
     if (formatter) {
       const formatterResponse = formatter(loadedLength(loaded) === 1 ? loaded[0] : loaded);
-      if (key === "data" && !(formatterResponse instanceof Array)) {
-        data = formatterResponse.data;
+      if (key === "data" && isObject(formatterResponse)) {
+        data = formatterResponse.data || [];
         delete formatterResponse.data;
         this.config(formatterResponse);
       }
-      else data = formatterResponse;
+      else data = formatterResponse || [];
     }
     else if (key === "data") {
       data = concat(loaded, "data");
