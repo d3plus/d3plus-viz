@@ -4,7 +4,8 @@
     @param {Number} *i* The index of the data object being interacted with.
     @private
 */
-export default function(d, i) {
+export default function(d, i, x, event) {
+  event.stopPropagation();
 
   this._select.style("cursor", "auto");
 
