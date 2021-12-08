@@ -1337,7 +1337,10 @@ function value(d) {
           };
         }
       }
-      this._timeFilter = false;
+      if (this._data.length && !this._data.find(this._timeFilter)) {
+        this._timeFilter = false;
+        this._timelineSelection = false;
+      }
       return this;
     }
     else return this._time;
