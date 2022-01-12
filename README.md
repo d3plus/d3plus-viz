@@ -15,7 +15,6 @@ If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest releas
 </script>
 ```
 
-
 ## API Reference
 
 ##### 
@@ -913,4 +912,4 @@ This is a global function.
 
 
 
-###### <sub>Documentation generated on Wed, 08 Dec 2021 14:53:30 GMT</sub>
+###### <sub>Documentation generated on Wed, 12 Jan 2022 19:58:27 GMT</sub>
