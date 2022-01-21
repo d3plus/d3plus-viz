@@ -21,31 +21,65 @@ export default function(d, i, x, event) {
     return id;
   })).length;
 
-  if (event.shiftKey) {
+  const inverted = this._legendFilterInvert.bind(this)();
 
-    if (hiddenIndex < 0 && !this._solo.length) {
-      this._hidden = this._hidden.concat(id);
-      if (this._solo.length === dataLength) this._solo = [];
-      if (this._hidden.length === dataLength) this._hidden = [];
-      this.render();
+  if (inverted) {
+
+    if (event.shiftKey) {
+
+      if (hiddenIndex < 0 && !this._solo.length) {
+        this._hidden = this._hidden.concat(id);
+        if (soloIndex >= 0) this._solo = [];
+        if (this._hidden.length === dataLength) this._hidden = [];
+        this.render();
+      }
+      else if (soloIndex >= 0) {
+        this._solo = [];
+        this._hidden = [];
+        this.render();
+      }
+
     }
-    else if (soloIndex >= 0) {
-      this._solo = [];
-      this._hidden = [];
+    else {
+      if (soloIndex < 0 && this._hidden.length < dataLength - 1) {
+        this._solo = id;
+        this._hidden = [];
+      }
+      else {
+        this._solo = [];
+        this._hidden = [];
+      }
       this.render();
     }
 
   }
   else {
-    if (soloIndex < 0 && this._hidden.length < dataLength - 1) {
+
+    if (event.shiftKey && soloIndex < 0) {
       this._solo = id;
       this._hidden = [];
+      this.render();
     }
-    else {
-      this._solo = [];
-      this._hidden = [];
+    else if (!event.shiftKey) {
+      if (hiddenIndex >= 0) {
+        this._hidden.splice(hiddenIndex, 1);
+      }
+      else if (soloIndex >= 0) {
+        this._solo = [];
+        this._hidden = [];
+      }
+      else if (this._solo.length && soloIndex < 0) {
+        this._solo = this._solo.concat(id);
+        if (this._solo.length === dataLength) this._solo = [];
+      }
+      else {
+        this._hidden = this._hidden.concat(id);
+        if (this._hidden.length === dataLength) this._hidden = [];
+      }
+      this.render();
+
     }
-    this.render();
+
   }
 
 }

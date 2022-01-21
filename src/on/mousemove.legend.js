@@ -26,14 +26,19 @@ export default function(d, i, x, event) {
     if (id instanceof Array) id = id[0];
     const t = this._translate;
 
+    const inverted = this._legendFilterInvert.bind(this)();
+
     this._select.style("cursor", "pointer");
     this._tooltipClass.data([x || d])
       .footer(
-        this._solo.length && !this._solo.includes(id) ? t("Click to Highlight")
-        : this._solo.length === 1 && this._solo.includes(id) || this._hidden.length === dataLength - 1 ? t("Click to Reset")
-        : this._solo.includes(id) ? t("Click to Hide")
-        : this._hidden.includes(id) ? t("Click to Highlight")
-        : `${t("Click to Highlight")}<br />${t("Shift+Click to Hide")}`
+        inverted
+          ? this._solo.length && !this._solo.includes(id) || this._hidden.includes(id) ? t("Click to Highlight")
+          : this._solo.length === 1 && this._solo.includes(id) || this._hidden.length === dataLength - 1 ? t("Click to Show All")
+          : `${t("Click to Highlight")}<br />${t("Shift+Click to Hide")}`
+
+          : this._solo.length && !this._solo.includes(id) || this._hidden.includes(id) ? `${t("Click to Show")}<br />${t("Shift+Click to Highlight")}`
+          : this._solo.length === 1 && this._solo.includes(id) || this._hidden.length === dataLength - 1 ? t("Click to Show All")
+          : `${t("Click to Hide")}<br />${t("Shift+Click to Highlight")}`
       )
       .title(this._legendConfig.label ? this._legendClass.label() : legendLabel.bind(this))
       .position(position)
