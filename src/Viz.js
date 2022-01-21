@@ -153,6 +153,7 @@ export default class Viz extends BaseClass {
         }
       }
     };
+    this._legendFilterInvert = constant(false);
     this._legendPadding = defaultPadding;
     this._legendPosition = () => this._width > this._height ? "right" : "bottom";
     this._legendSort = (a, b) => this._drawLabel(a).localeCompare(this._drawLabel(b));
@@ -1111,12 +1112,12 @@ function value(d) {
 
   /**
       @memberof Viz
-      @desc If *value* is specified, sets the config method for the legend tooltip and returns the current class instance.
-      @param {Object} [*value* = {}]
+      @desc Defines the click functionality of categorical legend squares. When set to false, clicking will hide that category and shift+clicking will solo that category. When set to true, clicking with solo that category and shift+clicking will hide that category.
+      @param {Boolean|Function} [*value* = false]
       @chainable
   */
-  legendTooltip(_) {
-    return arguments.length ? (this._legendTooltip = assign(this._legendTooltip, _), this) : this._legendTooltip;
+  legendFilterInvert(_) {
+    return arguments.length ? (this._legendFilterInvert = typeof _ === "function" ? _ : constant(_), this) : this._legendFilterInvert;
   }
 
   /**
@@ -1147,6 +1148,16 @@ function value(d) {
   */
   legendSort(_) {
     return arguments.length ? (this._legendSort = _, this) : this._legendSort;
+  }
+
+  /**
+      @memberof Viz
+      @desc If *value* is specified, sets the config method for the legend tooltip and returns the current class instance.
+      @param {Object} [*value* = {}]
+      @chainable
+  */
+  legendTooltip(_) {
+    return arguments.length ? (this._legendTooltip = assign(this._legendTooltip, _), this) : this._legendTooltip;
   }
 
   /**
