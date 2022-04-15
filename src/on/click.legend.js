@@ -62,7 +62,7 @@ export default function(d, i, x, event) {
     }
     else if (!event.shiftKey) {
       if (hiddenIndex >= 0) {
-        this._hidden.splice(hiddenIndex, 1);
+        this._hidden.splice(hiddenIndex, id.length);
       }
       else if (soloIndex >= 0) {
         this._solo = [];
