@@ -193,6 +193,7 @@ export default class Viz extends BaseClass {
       "mousemove.legend": mousemoveLegend.bind(this)
     };
     this._queue = [];
+    this._resizeContainer = typeof window === undefined ? "" : window;
     this._scrollContainer = typeof window === undefined ? "" : window;
     this._shape = constant("Rect");
     this._shapes = [];
@@ -586,7 +587,7 @@ export default class Viz extends BaseClass {
     this._resizePoll = clearTimeout(this._resizePoll);
     this._scrollPoll = clearTimeout(this._scrollPoll);
     select(this._scrollContainer).on(`scroll.${this._uuid}`, null);
-    select(this._scrollContainer).on(`resize.${this._uuid}`, null);
+    select(this._resizeContainer).on(`resize.${this._uuid}`, null);
     if (this._detectVisible && this._select.style("visibility") === "hidden") {
 
       this._visiblePoll = setInterval(() => {
@@ -679,7 +680,7 @@ export default class Viz extends BaseClass {
         }
 
         if (this._detectResize && (this._autoWidth || this._autoHeight)) {
-          select(this._scrollContainer).on(`resize.${this._uuid}`, () => {
+          select(this._resizeContainer).on(`resize.${this._uuid}`, () => {
             this._resizePoll = clearTimeout(this._resizePoll);
             this._resizePoll = setTimeout(() => {
               this._resizePoll = clearTimeout(this._resizePoll);
@@ -1218,6 +1219,16 @@ function value(d) {
   */
   noDataMessage(_) {
     return arguments.length ? (this._noDataMessage = _, this) : this._noDataMessage;
+  }
+
+  /**
+      @memberof Viz
+      @desc If using resize detection, this method allow a custom override of the element to which the resize detection function gets attached.
+      @param {String|HTMLElement} *selector*
+      @chainable
+  */
+  resizeContainer(_) {
+    return arguments.length ? (this._resizeContainer = _, this) : this._resizeContainer;
   }
 
   /**
