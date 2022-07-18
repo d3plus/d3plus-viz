@@ -227,7 +227,7 @@ export default class Viz extends BaseClass {
       opacity: constant(1),
       stroke: (d, i) => {
         const c = typeof this._shapeConfig.fill === "function" ? this._shapeConfig.fill(d, i) : this._shapeConfig.fill;
-        return color(c).darker();
+        return color(c).darker(0.25);
       },
       role: "presentation",
       strokeWidth: constant(0)
