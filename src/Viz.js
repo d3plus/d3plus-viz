@@ -68,6 +68,22 @@ function listify(n) {
 }
 
 /**
+ * A function that introspects the `d` Data Object for internally nested
+ * d3plus data and indices, runs the accessor function on that user data.
+ * @param {Function} acc Accessor function to use.
+ * @param {Object} d Data Object
+ * @param {Number} i Index of Data Object in Array
+ * @returns
+ */
+function accessorFetch(acc, d, i) {
+  while (d.__d3plus__ && d.data) {
+    d = d.data;
+    i = d.i;
+  }
+  return acc(d, i);
+}
+
+/**
     @class Viz
     @extends external:BaseClass
     @desc Creates an x/y plot based on an array of data. If *data* is specified, immediately draws the tree map based on the specified array and returns the current class instance. If *data* is not specified on instantiation, it can be passed/updated after instantiation using the [data](#treemap.data) method. See [this example](https://d3plus.org/examples/d3plus-treemap/getting-started/) for help getting started using the treemap generator.
@@ -330,10 +346,14 @@ export default class Viz extends BaseClass {
     this._drawDepth = this._depth !== void 0
       ? min([this._depth >= 0 ? this._depth : 0, this._groupBy.length - 1])
       : this._groupBy.length - 1;
-    this._id = this._groupBy[this._drawDepth];
+
+    // Returns the current unique ID for a data point, coerced to a String.
+    this._id = (d, i) => `${accessorFetch(this._groupBy[this._drawDepth], d, i)}`;
+
+    // Returns an array of the current unique groupBy ID for a data point, coerced to Strings.
     this._ids = (d, i) => this._groupBy
-      .map(g => !d || d.__d3plus__ && !d.data ? undefined : g(d.__d3plus__ ? d.data : d, d.__d3plus__ ? d.i : i))
-      .filter(g => g !== undefined && g !== null);
+      .map(g => `${accessorFetch(g, d, i)}`)
+      .filter(Boolean);
 
     this._drawLabel = (d, i, depth = this._drawDepth) => {
       if (!d) return "";
