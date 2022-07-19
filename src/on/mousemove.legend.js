@@ -2,6 +2,9 @@ import {merge} from "d3-array";
 
 import {configPrep} from "d3plus-common";
 
+import clickLegend from "./click.legend";
+const defaultClick = clickLegend.bind(this).toString();
+
 import {legendLabel} from "../_drawLegend";
 
 /**
@@ -26,19 +29,43 @@ export default function(d, i, x, event) {
     if (id instanceof Array) id = id[0];
     const t = this._translate;
 
-    const inverted = this._legendFilterInvert.bind(this)();
+    // does the legend have any user-defined click events?
+    const hasUserClick = Object.keys(this._on)
+      .some(e =>
+        // all valid click event keys,
+        ["click", "click.legend"].includes(e) &&
+        // truthy values (no nulls),
+        this._on[e] &&
+        // and it is not our default click.legend function
+        this._on[e].toString() !== defaultClick
+      );
 
-    this._select.style("cursor", "pointer");
+    // does the legend still have our default "click.legend" event?
+    // (if the user only sets "click", both functions will fire)
+    const hasDefaultClick = this._on["click.legend"] &&
+      this._on["click.legend"].toString() === defaultClick;
+
+    // can the viz show deeper data?
+    const hasDeeperLevel = this._drawDepth < this._groupBy.length - 1;
+
+    // only show the hand cursor when the shape has a click event
+    this._select.style("cursor",
+      hasUserClick || hasDefaultClick && hasDeeperLevel ? "pointer" : "auto");
+
+    const invertedBehavior = this._legendFilterInvert.bind(this)();
+
     this._tooltipClass.data([x || d])
       .footer(
-        inverted
-          ? this._solo.length && !this._solo.includes(id) || this._hidden.includes(id) ? t("Click to Highlight")
-          : this._solo.length === 1 && this._solo.includes(id) || this._hidden.length === dataLength - 1 ? t("Click to Show All")
-          : `${t("Click to Highlight")}<br />${t("Shift+Click to Hide")}`
+        hasDefaultClick
+          ? invertedBehavior
+            ? this._solo.length && !this._solo.includes(id) || this._hidden.includes(id) ? t("Click to Highlight")
+            : this._solo.length === 1 && this._solo.includes(id) || this._hidden.length === dataLength - 1 ? t("Click to Show All")
+            : `${t("Click to Highlight")}<br />${t("Shift+Click to Hide")}`
 
-          : this._solo.length && !this._solo.includes(id) || this._hidden.includes(id) ? `${t("Click to Show")}<br />${t("Shift+Click to Highlight")}`
-          : this._solo.length === 1 && this._solo.includes(id) || this._hidden.length === dataLength - 1 ? t("Click to Show All")
-          : `${t("Click to Hide")}<br />${t("Shift+Click to Highlight")}`
+            : this._solo.length && !this._solo.includes(id) || this._hidden.includes(id) ? `${t("Click to Show")}<br />${t("Shift+Click to Highlight")}`
+            : this._solo.length === 1 && this._solo.includes(id) || this._hidden.length === dataLength - 1 ? t("Click to Show All")
+            : `${t("Click to Hide")}<br />${t("Shift+Click to Highlight")}`
+          : false
       )
       .title(this._legendConfig.label ? this._legendClass.label() : legendLabel.bind(this))
       .position(position)
