@@ -1,6 +1,5 @@
 import {configPrep} from "d3plus-common";
 import clickShape from "./click.shape";
-const defaultClick = clickShape.bind(this).toString();
 
 /**
     @desc Tooltip logic for a specified data point.
@@ -12,6 +11,8 @@ const defaultClick = clickShape.bind(this).toString();
 export default function(d, i, x, event) {
 
   if (d && this._tooltip(d, i)) {
+
+    const defaultClick = clickShape.bind(this).toString();
 
     // does the shape have any user-defined click events?
     const hasUserClick = Object.keys(this._on)

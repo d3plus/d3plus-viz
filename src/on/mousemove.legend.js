@@ -1,10 +1,6 @@
 import {merge} from "d3-array";
-
 import {configPrep} from "d3plus-common";
-
 import clickLegend from "./click.legend";
-const defaultClick = clickLegend.bind(this).toString();
-
 import {legendLabel} from "../_drawLegend";
 
 /**
@@ -27,7 +23,9 @@ export default function(d, i, x, event) {
 
     let id = this._id(d, i);
     if (id instanceof Array) id = id[0];
+
     const t = this._translate;
+    const defaultClick = clickLegend.bind(this).toString();
 
     // does the legend have any user-defined click events?
     const hasUserClick = Object.keys(this._on)
