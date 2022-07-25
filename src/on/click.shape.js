@@ -7,9 +7,9 @@
 export default function(d, i, x, event) {
   event.stopPropagation();
 
-  this._select.style("cursor", "auto");
-
   if (this._drawDepth < this._groupBy.length - 1) {
+
+    this._select.style("cursor", "auto");
 
     const filterGroup = this._groupBy[this._drawDepth],
           filterId = filterGroup(d, i);
