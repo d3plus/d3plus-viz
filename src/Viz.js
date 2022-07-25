@@ -73,7 +73,7 @@ function listify(n) {
  * @param {Function} acc Accessor function to use.
  * @param {Object} d Data Object
  * @param {Number} i Index of Data Object in Array
- * @returns
+ * @private
  */
 function accessorFetch(acc, d, i) {
   while (d.__d3plus__ && d.data) {
