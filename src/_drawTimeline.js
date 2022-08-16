@@ -55,10 +55,15 @@ export default function(data = []) {
       .ticks(ticks.sort((a, b) => +a - +b))
       .width(this._width - (this._margin.left + this._margin.right + padding.left + padding.right));
 
+    const dataExtent = extent(data.map(this._time).map(date));
     if (!this._timelineSelection) {
-      this._timelineSelection = extent(data, this._time).map(date);
-      timeline.selection(this._timelineSelection);
+      this._timelineSelection = dataExtent;
     }
+    else {
+      if (this._timelineSelection[0] < dataExtent[0]) this._timelineSelection[0] = dataExtent[0];
+      if (this._timelineSelection[1] > dataExtent[1]) this._timelineSelection[1] = dataExtent[1];
+    }
+    timeline.selection(this._timelineSelection);
 
     const config = this._timelineConfig;
 
