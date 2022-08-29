@@ -348,7 +348,10 @@ export default class Viz extends BaseClass {
       : this._groupBy.length - 1;
 
     // Returns the current unique ID for a data point, coerced to a String.
-    this._id = (d, i) => typeof accessorFetch(this._groupBy[this._drawDepth], d, i) === "number" ? `${accessorFetch(this._groupBy[this._drawDepth], d, i)}` : accessorFetch(this._groupBy[this._drawDepth], d, i);
+    this._id = (d, i) => {
+      const groupByDrawDepth = accessorFetch(this._groupBy[this._drawDepth], d, i);
+      return typeof groupByDrawDepth === "number" ? `${groupByDrawDepth}` : groupByDrawDepth;
+    };
 
     // Returns an array of the current unique groupBy ID for a data point, coerced to Strings.
     this._ids = (d, i) => this._groupBy
