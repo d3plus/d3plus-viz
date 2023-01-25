@@ -1,11 +1,10 @@
-import {test} from "zora";
+import assert from "assert";
 import {default as Viz} from "../src/Viz.js";
+import it from "./jsdom.js";
 
-test("Viz", function *(assert) {
+it("Viz", function *() {
 
   yield cb => new Viz().render(cb);
   assert.ok(true, "function success");
 
 });
-
-export default test;

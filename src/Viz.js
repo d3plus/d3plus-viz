@@ -24,28 +24,28 @@ import {Tooltip} from "d3plus-tooltip";
 // import {Rect} from "d3plus-shape";
 // import {configPrep} from "d3plus-common";
 
-import Message from "./Message";
+import Message from "./Message.js";
 
-import drawBack from "./_drawBack";
-import drawColorScale from "./_drawColorScale";
-import {default as drawLegend, legendLabel} from "./_drawLegend";
-import drawTimeline from "./_drawTimeline";
-import drawTitle from "./_drawTitle";
-import drawTotal from "./_drawTotal";
-import getSize from "./_getSize";
-import inViewport from "./_inViewport";
-import addToQueue from "./data/addToQueue";
+import drawBack from "./_drawBack.js";
+import drawColorScale from "./_drawColorScale.js";
+import {default as drawLegend, legendLabel} from "./_drawLegend.js";
+import drawTimeline from "./_drawTimeline.js";
+import drawTitle from "./_drawTitle.js";
+import drawTotal from "./_drawTotal.js";
+import getSize from "./_getSize.js";
+import inViewport from "./_inViewport.js";
+import addToQueue from "./data/addToQueue.js";
 
-import clickShape from "./on/click.shape";
-import clickLegend from "./on/click.legend";
-import mouseenter from "./on/mouseenter";
-import mouseleave from "./on/mouseleave";
-import mousemoveLegend from "./on/mousemove.legend";
-import mousemoveShape from "./on/mousemove.shape";
-import touchstartBody from "./on/touchstart.body";
+import clickShape from "./on/click.shape.js";
+import clickLegend from "./on/click.legend.js";
+import mouseenter from "./on/mouseenter.js";
+import mouseleave from "./on/mouseleave.js";
+import mousemoveLegend from "./on/mousemove.legend.js";
+import mousemoveShape from "./on/mousemove.shape.js";
+import touchstartBody from "./on/touchstart.body.js";
 
-import zoomControls from "./_zoomControls";
-import drawAttribution from "./_drawAttribution";
+import zoomControls from "./_zoomControls.js";
+import drawAttribution from "./_drawAttribution.js";
 
 /**
  * Default padding logic that will return false if the screen is less than 600 pixels wide.
@@ -209,8 +209,8 @@ export default class Viz extends BaseClass {
       "mousemove.legend": mousemoveLegend.bind(this)
     };
     this._queue = [];
-    this._resizeContainer = typeof window === undefined ? "" : window;
-    this._scrollContainer = typeof window === undefined ? "" : window;
+    this._resizeContainer = typeof window === "undefined" ? "" : window;
+    this._scrollContainer = typeof window === "undefined" ? "" : window;
     this._shape = constant("Rect");
     this._shapes = [];
     this._shapeConfig = {

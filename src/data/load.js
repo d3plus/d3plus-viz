@@ -1,6 +1,6 @@
 import {csv, json, text, tsv} from "d3-request";
-import fold from "./fold";
-import concat from "./concat";
+import fold from "./fold.js";
+import concat from "./concat.js";
 import isData from "./isData.js";
 import {isObject} from "d3plus-common";
 

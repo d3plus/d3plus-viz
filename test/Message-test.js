@@ -1,9 +1,9 @@
-import {test} from "zora";
+import assert from "assert";
 import {selectAll} from "d3-selection";
-
 import Message from "../src/Message.js";
+import it from "./jsdom.js";
 
-test("Message", function *(assert) {
+it("Message", function *() {
 
   const msg = new Message();
 
@@ -18,5 +18,3 @@ test("Message", function *(assert) {
   // assert.ok(selectAll(".d3plus-Message").empty(), "removes from DOM");
 
 });
-
-export default test;

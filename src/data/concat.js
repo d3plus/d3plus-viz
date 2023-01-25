@@ -15,7 +15,7 @@ export default (arrayOfArrays, data = "data") =>
         dataArray = item[data];
       }
       else {
-        console.warn(`d3plus-viz: Please implement a \"dataFormat\" callback to concat the arrays manually (consider using the d3plus.dataConcat method in your callback). Currently unable to concatenate (using key: \"${data}\") the following response:`, item);
+        console.warn(`d3plus-viz: Please implement a "dataFormat" callback to concat the arrays manually (consider using the d3plus.dataConcat method in your callback). Currently unable to concatenate (using key: "${data}") the following response:`, item);
       }
     }
     return acc.concat(dataArray);

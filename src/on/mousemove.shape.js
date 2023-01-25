@@ -1,5 +1,5 @@
 import {configPrep} from "d3plus-common";
-import clickShape from "./click.shape";
+import clickShape from "./click.shape.js";
 
 /**
     @desc Tooltip logic for a specified data point.

@@ -1,7 +1,7 @@
 import {merge} from "d3-array";
 import {configPrep} from "d3plus-common";
-import clickLegend from "./click.legend";
-import {legendLabel} from "../_drawLegend";
+import clickLegend from "./click.legend.js";
+import {legendLabel} from "../_drawLegend.js";
 
 /**
     @desc Tooltip logic for a specified data point.
