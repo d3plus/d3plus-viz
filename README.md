@@ -1,12 +1,16 @@
 # d3plus-viz
 
-[![NPM Release](http://img.shields.io/npm/v/d3plus-viz.svg?style=flat)](https://www.npmjs.org/package/d3plus-viz) [![Build Status](https://travis-ci.org/d3plus/d3plus-viz.svg?branch=master)](https://travis-ci.org/d3plus/d3plus-viz) [![Dependency Status](http://img.shields.io/david/d3plus/d3plus-viz.svg?style=flat)](https://david-dm.org/d3plus/d3plus-viz) [![Gitter](https://img.shields.io/badge/-chat_on_gitter-brightgreen.svg?style=flat&logo=gitter-white)](https://gitter.im/d3plus/)
-
 Abstract ES6 class that drives d3plus visualizations.
 
 ## Installing
 
-If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest release](https://github.com/d3plus/d3plus-viz/releases/latest). You can also load d3plus-viz as a standalone library or as part of [D3plus](https://github.com/d3plus/d3plus). ES modules, AMD, CommonJS, and vanilla environments are supported. In vanilla, a `d3plus` global is exported:
+If using npm, `npm install d3plus-viz`. Otherwise, you can download the [latest release from GitHub](https://github.com/d3plus/d3plus-viz/releases/latest) or load from a [CDN](https://cdn.jsdelivr.net/npm/d3plus-viz@1).
+
+```js
+import modules from "d3plus-viz";
+```
+
+d3plus-viz can be loaded as a standalone library or bundled as part of [D3plus](https://github.com/d3plus/d3plus). ES modules, AMD, CommonJS, and vanilla environments are supported. In vanilla, a `d3plus` global is exported:
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/d3plus-viz@1"></script>
@@ -14,6 +18,10 @@ If you use NPM, `npm install d3plus-viz`. Otherwise, download the [latest releas
   console.log(d3plus);
 </script>
 ```
+
+## Examples
+
+Live examples can be found on [d3plus.org](https://d3plus.org/), which includes a collection of example visualizations using [d3plus-react](https://github.com/d3plus/d3plus-react/). These examples are powered by the [d3plus-storybook](https://github.com/d3plus/d3plus-storybook/) repo, and PRs are always welcome. :beers:
 
 ## API Reference
 
@@ -930,4 +938,4 @@ This is a global function.
 
 
 
-###### <sub>Documentation generated on Tue, 30 Aug 2022 13:53:44 GMT</sub>
+###### <sub>Documentation generated on Wed, 25 Jan 2023 17:09:45 GMT</sub>
