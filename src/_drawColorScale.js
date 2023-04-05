@@ -13,6 +13,7 @@ export default function() {
   let position = this._colorScalePosition.bind(this)(this.config());
   if (![false, "top", "bottom", "left", "right"].includes(position)) position = "bottom";
   const wide = ["top", "bottom"].includes(position);
+  const showColorScale = this._colorScale && position;
   const padding = this._colorScalePadding() ? this._padding : {top: 0, right: 0, bottom: 0, left: 0};
 
   const availableWidth = this._width - (this._margin.left + this._margin.right + padding.left + padding.right);
@@ -31,8 +32,6 @@ export default function() {
     opacity: position ? 1 : 0,
     transform: `translate(${wide ? this._margin.left + padding.left + (availableWidth - width) / 2 : this._margin.left}, ${wide ? this._margin.top : this._margin.top + padding.top + (availableHeight - height) / 2})`
   };
-
-  const showColorScale = this._colorScale && data && data.length > 1;
 
   const scaleGroup = elem("g.d3plus-viz-colorScale", {
     condition: showColorScale && !this._colorScaleConfig.select,
