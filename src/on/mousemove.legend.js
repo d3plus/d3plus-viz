@@ -52,16 +52,19 @@ export default function(d, i, x, event) {
 
     const invertedBehavior = this._legendFilterInvert.bind(this)();
 
+    const solo = this._solo.includes(id);
+    const hidden = this._hidden.includes(id);
+
     this._tooltipClass.data([x || d])
       .footer(
         hasDefaultClick
           ? invertedBehavior
-            ? this._solo.length && !this._solo.includes(id) || this._hidden.includes(id) ? t("Click to Highlight")
-            : this._solo.length === 1 && this._solo.includes(id) || this._hidden.length === dataLength - 1 ? t("Click to Show All")
+            ? this._solo.length && !solo || hidden ? t("Click to Highlight")
+            : this._solo.length === 1 && solo || this._hidden.length === dataLength - 1 ? t("Click to Show All")
             : `${t("Click to Highlight")}<br />${t("Shift+Click to Hide")}`
 
-            : this._solo.length && !this._solo.includes(id) || this._hidden.includes(id) ? `${t("Click to Show")}<br />${t("Shift+Click to Highlight")}`
-            : this._solo.length === 1 && this._solo.includes(id) || this._hidden.length === dataLength - 1 ? t("Click to Show All")
+            : this._solo.length && !solo || hidden ? `${t("Click to Show")}<br />${t("Shift+Click to Highlight")}`
+            : this._solo.length === 1 && solo || this._hidden.length === dataLength - 1 ? t("Click to Show All")
             : `${t("Click to Hide")}<br />${t("Shift+Click to Highlight")}`
           : false
       )
