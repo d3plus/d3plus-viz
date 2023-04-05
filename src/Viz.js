@@ -367,7 +367,7 @@ export default class Viz extends BaseClass {
       if (d._isAggregation) {
         return `${this._thresholdName(d, i)} < ${formatAbbreviate(d._threshold * 100, this._locale)}%`;
       }
-      if (this._label) return `${this._label(d, i)}`;
+      if (this._label && depth === this._drawDepth) return `${this._label(d, i)}`;
       const l = that._ids(d, i).slice(0, depth + 1);
       const n = l.reverse().find(ll => !(ll instanceof Array)) || l[l.length - 1];
       return n instanceof Array ? listify(n) : `${n}`;
