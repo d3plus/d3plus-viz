@@ -260,7 +260,6 @@ export default class Viz extends BaseClass {
       textAnchor: "middle"
     };
     this._subtitlePadding = defaultPadding;
-    this._subtitleClass = new TextBox();
 
     this._svgDesc = "";
     this._svgTitle = "";
@@ -280,7 +279,7 @@ export default class Viz extends BaseClass {
     this._titleClass = new TextBox();
     this._titleConfig = {
       ariaHidden: true,
-      fontSize: 12,
+      fontSize: 16,
       padding: 5,
       resize: false,
       textAnchor: "middle"
