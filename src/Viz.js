@@ -29,6 +29,7 @@ import Message from "./Message.js";
 import drawBack from "./_drawBack.js";
 import drawColorScale from "./_drawColorScale.js";
 import {default as drawLegend, legendLabel} from "./_drawLegend.js";
+import drawSubtitle from "./_drawSubtitle.js";
 import drawTimeline from "./_drawTimeline.js";
 import drawTitle from "./_drawTitle.js";
 import drawTotal from "./_drawTotal.js";
@@ -249,6 +250,18 @@ export default class Viz extends BaseClass {
       strokeWidth: constant(0)
     };
     this._solo = [];
+
+    this._subtitleClass = new TextBox();
+    this._subtitleConfig = {
+      ariaHidden: true,
+      fontSize: 12,
+      padding: 5,
+      resize: false,
+      textAnchor: "middle"
+    };
+    this._subtitlePadding = defaultPadding;
+    this._subtitleClass = new TextBox();
+
     this._svgDesc = "";
     this._svgTitle = "";
 
@@ -462,6 +475,7 @@ export default class Viz extends BaseClass {
 
     drawBack.bind(this)();
     drawTitle.bind(this)(this._filteredData);
+    drawSubtitle.bind(this)(this._filteredData);
     drawTotal.bind(this)(this._filteredData);
     drawTimeline.bind(this)(this._filteredData);
 
@@ -1292,6 +1306,36 @@ function value(d) {
   */
   shapeConfig(_) {
     return arguments.length ? (this._shapeConfig = assign(this._shapeConfig, _), this) : this._shapeConfig;
+  }
+
+  /**
+      @memberof Viz
+      @desc If *value* is specified, sets the subtitle accessor to the specified function or string and returns the current class instance.
+      @param {Function|String} [*value*]
+      @chainable
+  */
+  subtitle(_) {
+    return arguments.length ? (this._subtitle = typeof _ === "function" ? _ : constant(_), this) : this._subtitle;
+  }
+    
+  /**
+      @memberof Viz
+      @desc If *value* is specified, sets the config method for the subtitle and returns the current class instance.
+      @param {Object} [*value*]
+      @chainable
+  */
+  subtitleConfig(_) {
+    return arguments.length ? (this._subtitleConfig = assign(this._subtitleConfig, _), this) : this._subtitleConfig;
+  }
+    
+  /**
+      @memberof Viz
+      @desc Tells the subtitle whether or not to use the internal padding defined by the visualization in it's positioning. For example, d3plus-plot will add padding on the left so that the subtitle appears centered above the x-axis. By default, this padding is only applied on screens larger than 600 pixels wide.
+      @param {Boolean|Function} [*value*]
+      @chainable
+  */
+  subtitlePadding(_) {
+    return arguments.length ? (this._subtitlePadding = typeof _ === "function" ? _ : constant(_), this) : this._subtitlePadding;
   }
 
   /**
