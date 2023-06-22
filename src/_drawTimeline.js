@@ -69,10 +69,10 @@ export default function(data = []) {
 
     timeline
       .config(config)
-      // .on("brush", s => {
-      //   setTimeFilter.bind(this)(s);
-      //   if (config.on && config.on.brush) config.on.brush(s);
-      // })
+      .on("brush", s => {
+        setTimeFilter.bind(this)(s);
+        if (config.on && config.on.brush) config.on.brush(s);
+      })
       .on("end", s => {
         setTimeFilter.bind(this)(s);
         if (config.on && config.on.end) config.on.end(s);
