@@ -41,7 +41,8 @@ export default function() {
     update: transform
   }).node();
 
-  if (showColorScale) {
+  if (this._colorScale) {
+
     const scaleData = data.filter((d, i) => {
       const c = this._colorScale(d, i);
       return c !== undefined && c !== null;
@@ -60,15 +61,16 @@ export default function() {
       .config(this._colorScaleConfig)
       .render();
 
-    const scaleBounds = this._colorScaleClass.outerBounds();
-    if (position && !this._colorScaleConfig.select && scaleBounds.height) {
-      if (wide) this._margin[position] += scaleBounds.height + this._legendClass.padding() * 2;
-      else this._margin[position] += scaleBounds.width + this._legendClass.padding() * 2;
+    if (showColorScale) {
+
+      const scaleBounds = this._colorScaleClass.outerBounds();
+      if (!this._colorScaleConfig.select && scaleBounds.height) {
+        if (wide) this._margin[position] += scaleBounds.height + this._legendClass.padding() * 2;
+        else this._margin[position] += scaleBounds.width + this._legendClass.padding() * 2;
+      }
+
     }
 
-  }
-  else {
-    this._colorScaleClass.config(this._colorScaleConfig);
   }
 
 
