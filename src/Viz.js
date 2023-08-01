@@ -132,7 +132,7 @@ export default class Viz extends BaseClass {
       scale: "jenks"
     };
     this._colorScalePadding = defaultPadding;
-    this._colorScalePosition = () => this._width > this._height ? "right" : "bottom";
+    this._colorScalePosition = () => this._width > this._height * 1.5 ? "right" : "bottom";
     this._colorScaleMaxSize = 600;
 
     this._data = [];
@@ -172,7 +172,7 @@ export default class Viz extends BaseClass {
     };
     this._legendFilterInvert = constant(false);
     this._legendPadding = defaultPadding;
-    this._legendPosition = () => this._width > this._height ? "right" : "bottom";
+    this._legendPosition = () => this._width > this._height * 1.5 ? "right" : "bottom";
     this._legendSort = (a, b) => this._drawLabel(a).localeCompare(this._drawLabel(b));
     this._legendTooltip = {};
 
