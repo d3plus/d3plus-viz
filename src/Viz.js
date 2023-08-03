@@ -896,6 +896,11 @@ If *data* is not specified, this method returns the current primary data array, 
       addToQueue.bind(this)(_, f, "data");
       this._hidden = [];
       this._solo = [];
+      if (this._userData && JSON.stringify(_) !== JSON.stringify(this._userData)) {
+        this._timeFilter = false;
+        this._timelineSelection = false;
+      }
+      this._userData = _;
       return this;
     }
     return this._data;
@@ -1424,10 +1429,6 @@ function value(d) {
             return v.length === 1 ? v[0] : v;
           };
         }
-      }
-      if (this._data.length && this._timeFilter && !this._data.find(this._timeFilter)) {
-        this._timeFilter = false;
-        this._timelineSelection = false;
       }
       return this;
     }
