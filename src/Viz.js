@@ -1467,6 +1467,21 @@ function value(d) {
 
   /**
       @memberof Viz
+      @desc Sets the starting time or range for the timeline. The value provided can either be a single Date/String, or an Array of 2 values representing the min and max.
+      @param {Date|String|Array} [*value*]
+      @chainable
+  */
+  timelineDefault(_) {
+    if (arguments.length) {
+      if (!(_ instanceof Array)) _ = [_, _];
+      this._timelineDefault = _.map(date);
+      return this;
+    }
+    else return this._timelineDefault;
+  }
+
+  /**
+      @memberof Viz
       @desc Tells the timeline whether or not to use the internal padding defined by the visualization in it's positioning. For example, d3plus-plot will add padding on the left so that the timeline appears centered underneath the x-axis. By default, this padding is only applied on screens larger than 600 pixels wide.
       @param {Boolean|Function} [*value*]
       @chainable

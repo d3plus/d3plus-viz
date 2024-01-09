@@ -57,7 +57,7 @@ export default function(data = []) {
 
     const dataExtent = extent(data.map(this._time).map(date));
     if (!this._timelineSelection) {
-      this._timelineSelection = dataExtent;
+      this._timelineSelection = this._timelineDefault || dataExtent;
     }
     else {
       if (this._timelineSelection[0] < dataExtent[0]) this._timelineSelection[0] = dataExtent[0];
