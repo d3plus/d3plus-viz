@@ -514,7 +514,7 @@ export default class Viz extends BaseClass {
     //   }
     // };
 
-    // const testWidth = 10;
+    // const testWidth = 50;
     // this._shapes.push(new Rect()
     //   .config(this._shapeConfig)
     //   .config(configPrep.bind(this)(testConfig))
@@ -522,8 +522,14 @@ export default class Viz extends BaseClass {
     //   .label("Test Label")
     //   .select(this._zoomGroup.node())
     //   .id(this._id)
-    //   .x(() => Math.random() * bgWidth)
-    //   .y(() => Math.random() * bgHeight)
+    //   .x(d => {
+    //     if (!d.x) d.x = Math.random() * bgWidth;
+    //     return d.x;
+    //   })
+    //   .y(d => {
+    //     if (!d.y) d.y = Math.random() * bgHeight;
+    //     return d.y;
+    //   })
     //   .width(testWidth)
     //   .height(testWidth)
     //   .render());
