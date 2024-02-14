@@ -232,7 +232,7 @@ export default class Viz extends BaseClass {
         }
         const c = this._color(d, i);
         if (color(c)) return c;
-        return colorAssign(c);
+        return colorAssign(typeof c === "string" ? c : JSON.stringify(c));
       },
       labelConfig: {
         fontColor: (d, i) => {
