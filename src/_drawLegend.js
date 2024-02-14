@@ -1,6 +1,8 @@
 import {rollup} from "d3-array";
 import {configPrep, elem, merge} from "d3plus-common";
 
+const legendAttrs = ["fill", "opacity", "texture"];
+
 /**
     @function legendLabel
     @desc Default label function for the legend.
@@ -20,22 +22,15 @@ export default function(data = []) {
 
   const legendData = [];
 
-  const color = (d, i) => {
+  const getAttr = (d, i, attr) => {
     const shape = this._shape(d, i);
-    const attr = shape === "Line" ? "stroke" : "fill";
+    if (attr === "fill" && shape === "Line") attr = "stroke";
     const value = this._shapeConfig[shape] && this._shapeConfig[shape][attr]
       ? this._shapeConfig[shape][attr] : this._shapeConfig[attr];
     return typeof value === "function" ? value.bind(this)(d, i) : value;
   };
 
-  const opacity = (d, i) => {
-    const shape = this._shape(d, i);
-    const value = this._shapeConfig[shape] && this._shapeConfig[shape].opacity
-      ? this._shapeConfig[shape].opacity : this._shapeConfig.opacity;
-    return typeof value === "function" ? value.bind(this)(d, i) : value;
-  };
-
-  const fill = (d, i) => `${ color(d, i) }_${ opacity(d, i) }`;
+  const fill = (d, i) => legendAttrs.map(a => getAttr(d, i, a)).join("_");
 
   const rollupData = this._colorScale ? data.filter((d, i) => this._colorScale(d, i) === undefined) : data;
   rollup(rollupData, leaves => legendData.push(merge(leaves, this._aggs)), fill);
@@ -89,11 +84,10 @@ export default function(data = []) {
     .width(wide ? this._width - (this._margin.left + this._margin.right + padding.left + padding.right) : this._width - (this._margin.left + this._margin.right))
     .shapeConfig(configPrep.bind(this)(this._shapeConfig, "legend"))
     .shapeConfig({
-      fill: (d, i) => hidden(d, i) ? this._hiddenColor(d, i) : color(d, i),
+      fill: (d, i) => hidden(d, i) ? this._hiddenColor(d, i) : getAttr(d, i, "fill"),
       labelConfig: {
         fontOpacity: (d, i) => hidden(d, i) ? this._hiddenOpacity(d, i) : 1
-      },
-      opacity
+      }
     })
     .config(this._legendConfig)
     .render();
