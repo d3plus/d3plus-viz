@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "d3plus-dev": "^1.1.0",
-    "d3plus-shape": "^1.0.7"
+    "d3plus-shape": "^1.0.10"
   },
   "module": "es/index",
   "sideEffects": false,
