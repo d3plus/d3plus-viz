@@ -1435,6 +1435,11 @@ function value(d) {
             return v.length === 1 ? v[0] : v;
           };
         }
+        if (this._userTime && JSON.stringify(_) !== JSON.stringify(this._userTime)) {
+          this._timeFilter = false;
+          this._timelineSelection = false;
+        }
+        this._userTime = _;
       }
       return this;
     }
