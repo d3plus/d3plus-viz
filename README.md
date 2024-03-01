@@ -647,7 +647,7 @@ If *value* is specified, sets the time accessor to the specified function or str
 This is a static method of [<code>Viz</code>](#Viz), and is chainable with other methods of this Class.
 
 
-<a name="Viz.timeFilter" href="#Viz.timeFilter">#</a> Viz.**timeFilter**([*value*]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1450)
+<a name="Viz.timeFilter" href="#Viz.timeFilter">#</a> Viz.**timeFilter**([*value*]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1455)
 
 If *value* is specified, sets the time filter to the specified function and returns the current class instance.
 
@@ -655,7 +655,7 @@ If *value* is specified, sets the time filter to the specified function and retu
 This is a static method of [<code>Viz</code>](#Viz), and is chainable with other methods of this Class.
 
 
-<a name="Viz.timeline" href="#Viz.timeline">#</a> Viz.**timeline**([*value*]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1460)
+<a name="Viz.timeline" href="#Viz.timeline">#</a> Viz.**timeline**([*value*]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1465)
 
 If *value* is specified, toggles the timeline based on the specified boolean and returns the current class instance.
 
@@ -663,7 +663,7 @@ If *value* is specified, toggles the timeline based on the specified boolean and
 This is a static method of [<code>Viz</code>](#Viz), and is chainable with other methods of this Class.
 
 
-<a name="Viz.timelineConfig" href="#Viz.timelineConfig">#</a> Viz.**timelineConfig**([*value*]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1470)
+<a name="Viz.timelineConfig" href="#Viz.timelineConfig">#</a> Viz.**timelineConfig**([*value*]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1475)
 
 If *value* is specified, sets the config method for the timeline and returns the current class instance.
 
@@ -671,7 +671,7 @@ If *value* is specified, sets the config method for the timeline and returns the
 This is a static method of [<code>Viz</code>](#Viz), and is chainable with other methods of this Class.
 
 
-<a name="Viz.timelineDefault" href="#Viz.timelineDefault">#</a> Viz.**timelineDefault**([*value*]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1480)
+<a name="Viz.timelineDefault" href="#Viz.timelineDefault">#</a> Viz.**timelineDefault**([*value*]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1485)
 
 Sets the starting time or range for the timeline. The value provided can either be a single Date/String, or an Array of 2 values representing the min and max.
 
@@ -679,7 +679,7 @@ Sets the starting time or range for the timeline. The value provided can either 
 This is a static method of [<code>Viz</code>](#Viz), and is chainable with other methods of this Class.
 
 
-<a name="Viz.timelinePadding" href="#Viz.timelinePadding">#</a> Viz.**timelinePadding**([*value*]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1495)
+<a name="Viz.timelinePadding" href="#Viz.timelinePadding">#</a> Viz.**timelinePadding**([*value*]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1500)
 
 Tells the timeline whether or not to use the internal padding defined by the visualization in it's positioning. For example, d3plus-plot will add padding on the left so that the timeline appears centered underneath the x-axis. By default, this padding is only applied on screens larger than 600 pixels wide.
 
@@ -687,7 +687,7 @@ Tells the timeline whether or not to use the internal padding defined by the vis
 This is a static method of [<code>Viz</code>](#Viz), and is chainable with other methods of this Class.
 
 
-<a name="Viz.title" href="#Viz.title">#</a> Viz.**title**([*value*]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1505)
+<a name="Viz.title" href="#Viz.title">#</a> Viz.**title**([*value*]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1510)
 
 If *value* is specified, sets the title accessor to the specified function or string and returns the current class instance.
 
@@ -695,7 +695,7 @@ If *value* is specified, sets the title accessor to the specified function or st
 This is a static method of [<code>Viz</code>](#Viz), and is chainable with other methods of this Class.
 
 
-<a name="Viz.titleConfig" href="#Viz.titleConfig">#</a> Viz.**titleConfig**([*value*]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1515)
+<a name="Viz.titleConfig" href="#Viz.titleConfig">#</a> Viz.**titleConfig**([*value*]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1520)
 
 If *value* is specified, sets the config method for the title and returns the current class instance.
 
@@ -703,7 +703,7 @@ If *value* is specified, sets the config method for the title and returns the cu
 This is a static method of [<code>Viz</code>](#Viz), and is chainable with other methods of this Class.
 
 
-<a name="Viz.titlePadding" href="#Viz.titlePadding">#</a> Viz.**titlePadding**([*value*]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1525)
+<a name="Viz.titlePadding" href="#Viz.titlePadding">#</a> Viz.**titlePadding**([*value*]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1530)
 
 Tells the title whether or not to use the internal padding defined by the visualization in it's positioning. For example, d3plus-plot will add padding on the left so that the title appears centered above the x-axis. By default, this padding is only applied on screens larger than 600 pixels wide.
 
@@ -711,7 +711,7 @@ Tells the title whether or not to use the internal padding defined by the visual
 This is a static method of [<code>Viz</code>](#Viz), and is chainable with other methods of this Class.
 
 
-<a name="Viz.tooltip" href="#Viz.tooltip">#</a> Viz.**tooltip**([*value*]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1535)
+<a name="Viz.tooltip" href="#Viz.tooltip">#</a> Viz.**tooltip**([*value*]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1540)
 
 If *value* is specified, toggles the tooltip based on the specified boolean and returns the current class instance.
 
@@ -719,7 +719,7 @@ If *value* is specified, toggles the tooltip based on the specified boolean and 
 This is a static method of [<code>Viz</code>](#Viz), and is chainable with other methods of this Class.
 
 
-<a name="Viz.tooltipConfig" href="#Viz.tooltipConfig">#</a> Viz.**tooltipConfig**([*value*]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1545)
+<a name="Viz.tooltipConfig" href="#Viz.tooltipConfig">#</a> Viz.**tooltipConfig**([*value*]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1550)
 
 If *value* is specified, sets the config method for the tooltip and returns the current class instance.
 
@@ -727,7 +727,7 @@ If *value* is specified, sets the config method for the tooltip and returns the 
 This is a static method of [<code>Viz</code>](#Viz), and is chainable with other methods of this Class.
 
 
-<a name="Viz.total" href="#Viz.total">#</a> Viz.**total**([*value*]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1555)
+<a name="Viz.total" href="#Viz.total">#</a> Viz.**total**([*value*]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1560)
 
 If *value* is specified, sets the total accessor to the specified function or string and returns the current class instance.
 
@@ -735,7 +735,7 @@ If *value* is specified, sets the total accessor to the specified function or st
 This is a static method of [<code>Viz</code>](#Viz), and is chainable with other methods of this Class.
 
 
-<a name="Viz.totalConfig" href="#Viz.totalConfig">#</a> Viz.**totalConfig**([*value*]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1571)
+<a name="Viz.totalConfig" href="#Viz.totalConfig">#</a> Viz.**totalConfig**([*value*]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1576)
 
 If *value* is specified, sets the config method for the total and returns the current class instance.
 
@@ -743,7 +743,7 @@ If *value* is specified, sets the config method for the total and returns the cu
 This is a static method of [<code>Viz</code>](#Viz), and is chainable with other methods of this Class.
 
 
-<a name="Viz.totalFormat" href="#Viz.totalFormat">#</a> Viz.**totalFormat**(*value*) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1581)
+<a name="Viz.totalFormat" href="#Viz.totalFormat">#</a> Viz.**totalFormat**(*value*) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1586)
 
 Formatter function for the value in the total bar.
 
@@ -751,7 +751,7 @@ Formatter function for the value in the total bar.
 This is a static method of [<code>Viz</code>](#Viz), and is chainable with other methods of this Class.
 
 
-<a name="Viz.totalPadding" href="#Viz.totalPadding">#</a> Viz.**totalPadding**([*value*]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1591)
+<a name="Viz.totalPadding" href="#Viz.totalPadding">#</a> Viz.**totalPadding**([*value*]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1596)
 
 Tells the total whether or not to use the internal padding defined by the visualization in it's positioning. For example, d3plus-plot will add padding on the left so that the total appears centered above the x-axis. By default, this padding is only applied on screens larger than 600 pixels wide.
 
@@ -759,7 +759,7 @@ Tells the total whether or not to use the internal padding defined by the visual
 This is a static method of [<code>Viz</code>](#Viz), and is chainable with other methods of this Class.
 
 
-<a name="Viz.width" href="#Viz.width">#</a> Viz.**width**([*value*]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1601)
+<a name="Viz.width" href="#Viz.width">#</a> Viz.**width**([*value*]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1606)
 
 If *value* is specified, sets the overallwidth to the specified number and returns the current class instance.
 
@@ -767,7 +767,7 @@ If *value* is specified, sets the overallwidth to the specified number and retur
 This is a static method of [<code>Viz</code>](#Viz), and is chainable with other methods of this Class.
 
 
-<a name="Viz.zoom" href="#Viz.zoom">#</a> Viz.**zoom**(*value*) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1611)
+<a name="Viz.zoom" href="#Viz.zoom">#</a> Viz.**zoom**(*value*) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1616)
 
 Toggles the ability to zoom/pan the visualization. Certain parameters for zooming are required to be hooked up on a visualization by visualization basis.
 
@@ -775,7 +775,7 @@ Toggles the ability to zoom/pan the visualization. Certain parameters for zoomin
 This is a static method of [<code>Viz</code>](#Viz), and is chainable with other methods of this Class.
 
 
-<a name="Viz.zoomBrushHandleSize" href="#Viz.zoomBrushHandleSize">#</a> Viz.**zoomBrushHandleSize**(*value*) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1621)
+<a name="Viz.zoomBrushHandleSize" href="#Viz.zoomBrushHandleSize">#</a> Viz.**zoomBrushHandleSize**(*value*) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1626)
 
 The pixel stroke-width of the zoom brush area.
 
@@ -783,7 +783,7 @@ The pixel stroke-width of the zoom brush area.
 This is a static method of [<code>Viz</code>](#Viz), and is chainable with other methods of this Class.
 
 
-<a name="Viz.zoomBrushHandleStyle" href="#Viz.zoomBrushHandleStyle">#</a> Viz.**zoomBrushHandleStyle**(*value*) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1631)
+<a name="Viz.zoomBrushHandleStyle" href="#Viz.zoomBrushHandleStyle">#</a> Viz.**zoomBrushHandleStyle**(*value*) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1636)
 
 An object containing CSS key/value pairs that is used to style the outer handle area of the zoom brush. Passing `false` will remove all default styling.
 
@@ -791,7 +791,7 @@ An object containing CSS key/value pairs that is used to style the outer handle 
 This is a static method of [<code>Viz</code>](#Viz), and is chainable with other methods of this Class.
 
 
-<a name="Viz.zoomBrushSelectionStyle" href="#Viz.zoomBrushSelectionStyle">#</a> Viz.**zoomBrushSelectionStyle**(*value*) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1641)
+<a name="Viz.zoomBrushSelectionStyle" href="#Viz.zoomBrushSelectionStyle">#</a> Viz.**zoomBrushSelectionStyle**(*value*) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1646)
 
 An object containing CSS key/value pairs that is used to style the inner selection area of the zoom brush. Passing `false` will remove all default styling.
 
@@ -799,7 +799,7 @@ An object containing CSS key/value pairs that is used to style the inner selecti
 This is a static method of [<code>Viz</code>](#Viz), and is chainable with other methods of this Class.
 
 
-<a name="Viz.zoomControlStyle" href="#Viz.zoomControlStyle">#</a> Viz.**zoomControlStyle**(*value*) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1651)
+<a name="Viz.zoomControlStyle" href="#Viz.zoomControlStyle">#</a> Viz.**zoomControlStyle**(*value*) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1656)
 
 An object containing CSS key/value pairs that is used to style each zoom control button (`.zoom-in`, `.zoom-out`, `.zoom-reset`, and `.zoom-brush`). Passing `false` will remove all default styling.
 
@@ -807,7 +807,7 @@ An object containing CSS key/value pairs that is used to style each zoom control
 This is a static method of [<code>Viz</code>](#Viz), and is chainable with other methods of this Class.
 
 
-<a name="Viz.zoomControlStyleActive" href="#Viz.zoomControlStyleActive">#</a> Viz.**zoomControlStyleActive**(*value*) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1661)
+<a name="Viz.zoomControlStyleActive" href="#Viz.zoomControlStyleActive">#</a> Viz.**zoomControlStyleActive**(*value*) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1666)
 
 An object containing CSS key/value pairs that is used to style each zoom control button when active (`.zoom-in`, `.zoom-out`, `.zoom-reset`, and `.zoom-brush`). Passing `false` will remove all default styling.
 
@@ -815,7 +815,7 @@ An object containing CSS key/value pairs that is used to style each zoom control
 This is a static method of [<code>Viz</code>](#Viz), and is chainable with other methods of this Class.
 
 
-<a name="Viz.zoomControlStyleHover" href="#Viz.zoomControlStyleHover">#</a> Viz.**zoomControlStyleHover**(*value*) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1671)
+<a name="Viz.zoomControlStyleHover" href="#Viz.zoomControlStyleHover">#</a> Viz.**zoomControlStyleHover**(*value*) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1676)
 
 An object containing CSS key/value pairs that is used to style each zoom control button on hover (`.zoom-in`, `.zoom-out`, `.zoom-reset`, and `.zoom-brush`). Passing `false` will remove all default styling.
 
@@ -823,7 +823,7 @@ An object containing CSS key/value pairs that is used to style each zoom control
 This is a static method of [<code>Viz</code>](#Viz), and is chainable with other methods of this Class.
 
 
-<a name="Viz.zoomFactor" href="#Viz.zoomFactor">#</a> Viz.**zoomFactor**(*value*) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1681)
+<a name="Viz.zoomFactor" href="#Viz.zoomFactor">#</a> Viz.**zoomFactor**(*value*) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1686)
 
 The multiplier that is used in with the control buttons when zooming in and out.
 
@@ -831,7 +831,7 @@ The multiplier that is used in with the control buttons when zooming in and out.
 This is a static method of [<code>Viz</code>](#Viz), and is chainable with other methods of this Class.
 
 
-<a name="Viz.zoomMax" href="#Viz.zoomMax">#</a> Viz.**zoomMax**(*value*) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1691)
+<a name="Viz.zoomMax" href="#Viz.zoomMax">#</a> Viz.**zoomMax**(*value*) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1696)
 
 If *value* is specified, sets the max zoom scale to the specified number and returns the current class instance. If *value* is not specified, returns the current max zoom scale.
 
@@ -839,7 +839,7 @@ If *value* is specified, sets the max zoom scale to the specified number and ret
 This is a static method of [<code>Viz</code>](#Viz), and is chainable with other methods of this Class.
 
 
-<a name="Viz.zoomPan" href="#Viz.zoomPan">#</a> Viz.**zoomPan**(*value*) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1701)
+<a name="Viz.zoomPan" href="#Viz.zoomPan">#</a> Viz.**zoomPan**(*value*) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1706)
 
 If *value* is specified, toggles panning to the specified boolean and returns the current class instance. If *value* is not specified, returns the current panning value.
 
@@ -847,7 +847,7 @@ If *value* is specified, toggles panning to the specified boolean and returns th
 This is a static method of [<code>Viz</code>](#Viz), and is chainable with other methods of this Class.
 
 
-<a name="Viz.zoomPadding" href="#Viz.zoomPadding">#</a> Viz.**zoomPadding**(*value*) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1711)
+<a name="Viz.zoomPadding" href="#Viz.zoomPadding">#</a> Viz.**zoomPadding**(*value*) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1716)
 
 A pixel value to be used to pad all sides of a zoomed area.
 
@@ -855,7 +855,7 @@ A pixel value to be used to pad all sides of a zoomed area.
 This is a static method of [<code>Viz</code>](#Viz), and is chainable with other methods of this Class.
 
 
-<a name="Viz.zoomScroll" href="#Viz.zoomScroll">#</a> Viz.**zoomScroll**([*value*]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1721)
+<a name="Viz.zoomScroll" href="#Viz.zoomScroll">#</a> Viz.**zoomScroll**([*value*]) [<>](https://github.com/d3plus/d3plus-viz/blob/master/src/Viz.js#L1726)
 
 If *value* is specified, toggles scroll zooming to the specified boolean and returns the current class instance. If *value* is not specified, returns the current scroll zooming value.
 
@@ -974,4 +974,4 @@ This is a global function.
 
 
 
-###### <sub>Documentation generated on Wed, 14 Feb 2024 20:21:20 GMT</sub>
+###### <sub>Documentation generated on Fri, 01 Mar 2024 15:15:17 GMT</sub>
