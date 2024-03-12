@@ -32,10 +32,10 @@
     "d3-zoom": "^3.0.0",
     "d3plus-axis": "^1.2.12",
     "d3plus-color": "^1.1.2",
-    "d3plus-common": "^1.2.4",
+    "d3plus-common": "^1.2.7",
     "d3plus-format": "^1.2.7",
     "d3plus-legend": "^1.2.1",
-    "d3plus-text": "^1.2.3",
+    "d3plus-text": "^1.2.5",
     "d3plus-timeline": "^1.1.4",
     "d3plus-tooltip": "^1.1.1",
     "lrucache": "^1.0.3"
