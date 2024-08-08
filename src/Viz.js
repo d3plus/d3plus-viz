@@ -129,6 +129,9 @@ export default class Viz extends BaseClass {
     this._color = (d, i) => this._groupBy[0](d, i);
     this._colorScaleClass = new ColorScale();
     this._colorScaleConfig = {
+      axisConfig: {
+        rounding: "inside",
+      },
       scale: "jenks"
     };
     this._colorScalePadding = defaultPadding;
